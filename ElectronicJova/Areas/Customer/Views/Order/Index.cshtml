@@ -1,0 +1,59 @@
+@using ElectronicJova.Models
+@model IEnumerable<OrderHeader>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">My Order History</h2>
+        </div>
+    </div>
+    <br />
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderHeader in Model)
+                {
+                    <tr>
+                        <td>@orderHeader.Id</td>
+                        <td>@orderHeader.OrderDate.ToShortDateString()</td>
+                        <td>@orderHeader.OrderTotal.ToString("c")</td>
+                        <td>@orderHeader.OrderStatus</td>
+                        <td>@orderHeader.PaymentStatus</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary mx-2">
+                                    <i class="bi bi-info-circle"></i> Details
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="row pt-3">
+            <div class="col-12 text-center">
+                <p class="lead">You have no previous orders.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+    }
+</div>

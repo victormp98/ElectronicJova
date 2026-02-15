@@ -5,17 +5,6 @@ using ElectronicJova.Models;
 
 namespace ElectronicJova.Data
 {
-    // Custom ApplicationUser to extend IdentityUser with additional profile fields
-    // These fields are based on the AspNetUsers table in DOCUMENTACION.txt
-    public class ApplicationUser : IdentityUser
-    {
-        public string? Name { get; set; }
-        public string? StreetAddress { get; set; }
-        public string? City { get; set; }
-        public string? State { get; set; }
-        public string? PostalCode { get; set; }
-    }
-
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ElectronicJova.Data;
+using ElectronicJova.Models; // Added for ApplicationUser
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 

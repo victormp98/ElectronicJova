@@ -1,0 +1,60 @@
+@using ElectronicJova.Models
+@model IEnumerable<OrderHeader>
+
+@{
+    ViewData["Title"] = "Manage Orders";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Manage Orders</h2>
+        </div>
+    </div>
+    <br />
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderHeader in Model)
+                {
+                    <tr>
+                        <td>@orderHeader.Id</td>
+                        <td>@orderHeader.Name</td>
+                        <td>@orderHeader.PhoneNumber</td>
+                        <td>@orderHeader.Email</td>
+                        <td>@orderHeader.OrderTotal.ToString("c")</td>
+                        <td>@orderHeader.OrderStatus</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary mx-2">
+                                    <i class="bi bi-pencil-square"></i> Details
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="row pt-3">
+            <div class="col-12 text-center">
+                <p class="lead">No orders found.</p>
+            </div>
+        </div>
+    }
+</div>

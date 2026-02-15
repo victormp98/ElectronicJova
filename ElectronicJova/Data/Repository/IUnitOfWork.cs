@@ -11,7 +11,7 @@ namespace ElectronicJova.Data.Repository
         IRepository<ShoppingCart> ShoppingCart { get; }
         IRepository<OrderHeader> OrderHeader { get; }
         IRepository<OrderDetail> OrderDetail { get; }
-        // Potentially an IRepository for ApplicationUser if we need custom operations beyond Identity defaults
+        IRepository<ApplicationUser> ApplicationUser { get; }
 
         void Save();
         System.Threading.Tasks.Task SaveAsync();

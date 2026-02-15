@@ -126,5 +126,30 @@ namespace ElectronicJova.Data.Repository
         {
             dbSet.Update(entity);
         }
+
+        public IQueryable<T> GetQueryable(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool tracked = true)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return query;
+        }
     }
 }

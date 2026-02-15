@@ -1,0 +1,20 @@
+@model int
+
+@{
+    ViewData["Title"] = "Payment Cancelled";
+}
+
+<div class="container row">
+    <div class="col-12 text-center">
+        <h1 class="text-danger text-center">Payment was Cancelled!</h1>
+        <br />
+        <img src="~/images/payment_cancelled.png" width="65%" /> @* Assuming you have an image for this *@
+        <br />
+        <br />
+        <h4>Your Order ID was : @Model</h4>
+        <p>Your payment was not processed. You can try again from your cart or contact support.</p>
+        <br />
+        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="btn btn-secondary">Go to Cart</a>
+    </div>
+</div>

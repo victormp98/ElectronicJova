@@ -65,7 +65,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, "images", "products");
+                    string productPath = Path.Combine(wwwRootPath, @"images\products");
 
                     if (!Directory.Exists(productPath))
                     {
@@ -75,9 +75,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     // If editing, delete old image
                     if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
                     {
-                        // Remove any leading slashes from the stored ImageUrl before combining with wwwroot
-                        var trimmed = productVM.Product.ImageUrl.TrimStart('/', '\\');
-                        var oldImagePath = Path.Combine(wwwRootPath, trimmed);
+                        var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('/', '\\'));
                         if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
@@ -88,9 +86,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     {
                         file.CopyTo(fileStream);
                     }
-
-                    // Store a web-friendly relative URL (use forward slashes)
-                    productVM.Product.ImageUrl = "/images/products/" + fileName;
+                    productVM.Product.ImageUrl = @"\images\products" + fileName;
                 }
 
                 if (productVM.Product.Id == 0)
@@ -136,14 +132,10 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
+            var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart('/', '\\'));
+            if (System.IO.File.Exists(oldImagePath))
             {
-                var trimmed = productToDelete.ImageUrl.TrimStart('/', '\\');
-                var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, trimmed);
-                if (System.IO.File.Exists(oldImagePath))
-                {
-                    System.IO.File.Delete(oldImagePath);
-                }
+                System.IO.File.Delete(oldImagePath);
             }
 
             _unitOfWork.Product.Remove(productToDelete);

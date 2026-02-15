@@ -1,0 +1,19 @@
+@using ElectronicJova.Models
+@model OrderHeader
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="container row">
+    <div class="col-12 text-center">
+        <h1 class="text-primary text-center">Order Placed Successfully!</h1>
+        <br />
+        <img src="~/images/order_placed.png" width="65%" />
+        <br />
+        <br />
+        <h4>Your Order ID is : @Model.Id</h4>
+        <br />
+        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+    </div>
+</div>

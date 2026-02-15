@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using ElectronicJova.Data;
+using ElectronicJova.Models; // Added for ApplicationUser
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

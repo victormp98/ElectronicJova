@@ -11,6 +11,7 @@ namespace ElectronicJova.Data.Repository
         public IRepository<ShoppingCart> ShoppingCart { get; private set; }
         public IRepository<OrderHeader> OrderHeader { get; private set; }
         public IRepository<OrderDetail> OrderDetail { get; private set; }
+        public IRepository<ApplicationUser> ApplicationUser { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -21,6 +22,7 @@ namespace ElectronicJova.Data.Repository
             ShoppingCart = new Repository<ShoppingCart>(_db);
             OrderHeader = new Repository<OrderHeader>(_db);
             OrderDetail = new Repository<OrderDetail>(_db);
+            ApplicationUser = new Repository<ApplicationUser>(_db);
         }
 
         public void Save()

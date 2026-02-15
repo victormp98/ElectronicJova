@@ -1,5 +1,5 @@
-﻿================================================================
-PROYECTO: ELECTRONIC JOVA - PLAN MAESTRO (REVISADO POR QA)
+================================================================
+PROYECTO: ELECTRONIC JOVA - PLAN MAESTRO (REVISADO Y MEJORADO)
 ================================================================
 
 PARTE 1: BACKLOG DE DESARROLLO (ORDENADO POR PROCESO)
@@ -46,7 +46,6 @@ T04: (NUEVO) Gestión de Errores y Logging
      [x] Crear página de error personalizada.
 
 [FASE 2: ÁREA DE ADMINISTRACIÓN]
---> ESTAMOS AQUÍ <--
 T05: Dashboard & Layout Admin (Antes T14)
      [x] Sidebar lateral colapsable.
      [x] Panel de control (Resumen).
@@ -81,15 +80,18 @@ T10: Home Page (Antes T06)
      [x] Tarjetas de productos destacados (leídos de la DB).
 
 T11: Buscador y Filtros (Antes T08)
-     [ ] Búsqueda por texto en Navbar.
-     [ ] Página de resultados de búsqueda.
-     [ ] Filtrado por Categoría.
-     [ ] Paginación de resultados.
+     [x] Crear ViewModel SearchVM.
+     [x] Refactorizar Lógica de Precios a un Servicio/Utilidad Compartida (PricingCalculator).
+     [x] Búsqueda por texto en Navbar.
+     [x] Página de resultados de búsqueda.
+     [x] Filtrado por Categoría.
+     [x] Paginación de resultados.
 
 T12: Detalle de Producto (Antes T09)
-     [ ] Vista Details (Foto + Info).
-     [ ] Selector de Cantidad (1-100).
-     [ ] Botón "Agregar al Carrito".
+     [x] Crear ViewModel DetailsVM.
+     [x] Vista Details (Foto + Info).
+     [x] Selector de Cantidad (1-100).
+     [x] Botón "Agregar al Carrito".
 
 [FASE 4: CARRITO Y PROCESO DE PAGO]
 T13: Modelado de Carrito y Órdenes (Antes T10, T12)
@@ -98,46 +100,63 @@ T13: Modelado de Carrito y Órdenes (Antes T10, T12)
      [x] Incluir modelos en ApplicationDbContext y UnitOfWork.
 
 T14: Lógica del Carrito (Backend)
-     [ ] Lógica para añadir/actualizar ítems en ShoppingCart.
-     [ ] Uso de Sesiones (Session) para contador de ítems en Navbar.
-     [ ] Lógica de repositorio para el carrito.
+     [x] Habilitar Gestión de Sesiones en Program.cs.
+     [x] Actualizar Modelo ShoppingCart con Propiedad [NotMapped] Precio Calculado.
+     [x] Lógica para añadir/actualizar ítems en ShoppingCart.
+     [x] Uso de Sesiones (Session) para contador de ítems en Navbar.
+     [x] Lógica de repositorio para el carrito.
 
 T15: Vista del Carrito (Frontend) (Antes T11)
-     [ ] Tabla de ítems agregados.
-     [ ] Controles (+ / - / Eliminar) que llamen al backend.
-     [ ] Cálculo de Totales y botón "Proceder al Pago".
+     [x] Crear Controller Cart (Customer Area).
+     [x] Crear ViewModel CartVM.
+     [x] Tabla de ítems agregados.
+     [x] Controles (+ / - / Eliminar) que llamen al backend.
+     [x] Cálculo de Totales y botón "Proceder al Pago".
 
 T16: Checkout (Formulario y Resumen) (Antes T13)
-     [ ] Formulario de Envío (precargado si el usuario está logueado).
-     [ ] Resumen de la Orden.
-     [ ] Creación de la Orden (OrderHeader/OrderDetail) en la DB con estado 'Pendiente'.
+     [x] Crear ViewModel OrderVM.
+     [x] Formulario de Envío (precargado si el usuario está logueado).
+     [x] Resumen de la Orden.
+     [x] Creación de la Orden (OrderHeader/OrderDetail) en la DB con estado 'Pendiente'.
 
 T17: (NUEVO) Servicio de Notificaciones por Email
-     [ ] Configurar un servicio de email (ej. SendGrid, MailKit).
-     [ ] Implementar envío de email para confirmación de registro.
-     [ ] Implementar envío de email para confirmación de orden.
+     [x] Instalar Paquete NuGet Resend.
+     [x] Configurar Resend en appsettings.json.
+     [x] Inicializar Configuración de Resend en Program.cs.
+     [x] Crear Interfaz IEmailSender.
+     [x] Implementar ResendEmailSender.
+     [x] Implementar envío de email para confirmación de registro.
+     [x] Implementar envío de email para confirmación de orden.
 
 T18: Pasarela de Pagos (Antes T15)
-     [ ] Integración Stripe/PayPal.
-     [ ] Al completar el pago, actualizar estado en OrderHeader.
-     [ ] Webhooks para confirmación de pago asíncrona.
+     [x] Instalar Paquete NuGet Stripe.net.
+     [x] Configurar Stripe en appsettings.json.
+     [x] Inicializar Configuración de Stripe en Program.cs.
+     [x] Actualizar Modelo OrderHeader con Contacto del Cliente (PhoneNumber y Email).
+     [x] Integración Stripe/PayPal (Stripe Checkout Session).
+     [x] Al completar el pago, actualizar estado en OrderHeader.
+     [x] Webhooks para confirmación de pago asíncrona.
 
 [FASE 5: POST-COMPRA Y CIERRE]
 T19: Gestión de Pedidos (Antes T16)
-     [ ] Vista Cliente: Mis Pedidos (historial).
-     [ ] Vista Admin: Gestionar Envíos y estados de la orden.
-     [ ] Generación de Guías (Simulado).
+     [x] Crear ViewModel OrderDetailsVM para Administración.
+     [x] Vista Cliente: Mis Pedidos (historial).
+     [x] Vista Admin: Gestionar Envíos y estados de la orden.
+     [x] Generación de Guías (Simulado).
 
 T20: (NUEVO) Proyecto de Pruebas Unitarias
-     [ ] Crear proyecto xUnit o MSTest.
-     [ ] Añadir pruebas para la lógica de repositorios.
-     [ ] Añadir pruebas para lógica de cálculo de precios/totales.
+     [x] Crear proyecto xUnit.
+     [x] Configurar Ambiente de Pruebas (Referencias, Paquetes NuGet).
+     [x] Resolver Errores de Compilación (Conflictos Namespace, Usings, Tipos).
+     [x] Añadir pruebas para la lógica de repositorios (Categoría).
+     [x] Añadir pruebas para lógica de cálculo de precios/totales (PricingCalculator).
 
 T21: Despliegue (Antes T17)
-     [ ] Pruebas de Estrés.
-     [ ] Configuración de entorno de producción.
-     [ ] Deploy (IIS/Azure/Hostinger).
-     [ ] Despliegue de Base de Datos en servidor (Colique).
+     [x] Crear y Configurar appsettings.Production.json.
+     [x] Pruebas de Estrés (Guía).
+     [x] Configuración de entorno de producción (Detalles).
+     [x] Deploy (IIS/Azure/Hostinger) (Guía).
+     [x] Despliegue de Base de Datos en servidor (Guía).
 
 
 ================================================================
@@ -215,5 +234,3 @@ TABLA: OrderDetails (Detalle Pedido)
   - ProductId (FK -> Products)
   - Count (Int)
   - Price (Double)          [Precio al momento de compra]
-
-

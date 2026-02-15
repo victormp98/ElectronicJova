@@ -14,5 +14,7 @@ namespace ElectronicJova.Data.Repository
         void Update(T entity);
         System.Threading.Tasks.Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true);
         System.Threading.Tasks.Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+
+        IQueryable<T> GetQueryable(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool tracked = true);
     }
 }

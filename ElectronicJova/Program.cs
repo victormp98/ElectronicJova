@@ -1,11 +1,14 @@
 using ElectronicJova.Data;
 using ElectronicJova.Data.Repository;
+using ElectronicJova.Models;
 using Microsoft.EntityFrameworkCore;
 using ElectronicJova.DbInitializer;
 using Pomelo.EntityFrameworkCore.MySql; // Added for UseMySql and MySqlServerVersion
 using Microsoft.AspNetCore.Identity; // Added for IdentityRole (explicitly)
 using Serilog;
 using Microsoft.Extensions.Configuration;
+using ElectronicJova.Utilities; // Added for IEmailSender and ResendEmailSender
+using Stripe; // Added for StripeConfiguration
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
@@ -32,6 +35,28 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // You can customize Identity options here, for example:
 // .AddDefaultTokenProviders();
 
+// Register Email Sender
+builder.Services.AddSingleton<IEmailSender>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var apiKey = configuration["ResendSettings:ApiKey"];
+    var senderEmail = configuration["ResendSettings:SenderEmail"];
+    var senderName = configuration["ResendSettings:SenderName"];
+    return new ResendEmailSender(apiKey, senderEmail, senderName);
+});
+
+
+// Configure Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Configure Stripe API Key
+StripeConfiguration.ApiKey = builder.Configuration["StripeSettings:SecretKey"];
 
 var app = builder.Build();
 
@@ -47,6 +72,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession(); // Must be before UseAuthorization
 app.UseSerilogRequestLogging(); // Add Serilog request logging
 app.UseAuthentication(); // Must be before UseAuthorization
 app.UseAuthorization();

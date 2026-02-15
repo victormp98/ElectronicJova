@@ -1,4 +1,5 @@
-@model IEnumerable<Product>
+@using ElectronicJova.Models.ViewModels
+@model SearchVM
 
 @{
     ViewData["Title"] = "Search Results";
@@ -6,34 +7,58 @@
 
 <div class="container">
     <div class="row pt-4">
-        <div class="col-12 text-center">
-            <h1 class="display-4 text-primary">Search Results</h1>
-            <p class="lead">Products matching your search query.</p>
+        <div class="col-12">
+            <h1 class="display-4 text-primary">Search Products</h1>
+            <hr />
         </div>
     </div>
 
-    @if (Model != null && Model.Any())
+    <!-- Search and Filter Form -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <form asp-controller="Home" asp-action="Search" method="get" class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label for="searchString" class="form-label">Product Name or Description</label>
+                    <input type="text" name="searchString" class="form-control" id="searchString" placeholder="e.g., Lord of the Rings" value="@Model.SearchString">
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    @if (Model.Products != null && Model.Products.Any())
     {
         <!-- Product Cards -->
         <div class="row pb-3">
-            @foreach (var product in Model)
+            @foreach (var product in Model.Products)
             {
                 <div class="col-lg-3 col-md-6">
                     <div class="row p-2">
                         <div class="col-12 p-1">
-                            <div class="card border-0 p-3 shadow border-top-0 pt-2">
-                                <img src="@product.ImageUrl" class="card-img-top rounded" />
-                                <div class="card-body pb-0">
+                            <div class="card border-0 p-3 shadow border-top-0 pt-2 h-100">
+                                <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://via.placeholder.com/300x200?text=No+Image" : product.ImageUrl)" class="card-img-top rounded" alt="@product.Title"/>
+                                <div class="card-body pb-0 d-flex flex-column">
                                     <div class="pl-1">
-                                        <p class="card-title h5 text-dark opacity-75 text-center mb-0">@product.Title</p>
+                                        <p class="card-title h5 text-dark opacity-75 text-center mb-0" title="@product.Title">@product.Title</p>
                                         <p class="card-title text-secondary text-center">by <b>@product.Author</b></p>
                                     </div>
-                                    <div class="pl-1">
+                                    <div class="pl-1 mt-auto">
                                         <p class="text-dark text-opacity-75 text-center mb-0">List Price: <span class="text-decoration-line-through">@product.ListPrice.ToString("c")</span></p>
                                         <p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.ToString("c")</span></p>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="mt-2">
                                     <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary form-control">Details</a>
                                 </div>
                             </div>
@@ -47,8 +72,48 @@
     {
         <div class="row mt-5">
             <div class="col-12 text-center">
-                <p class="lead">No products found matching your search.</p>
+                <p class="lead">No products found matching your criteria.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
             </div>
+        </div>
+    }
+
+    <!-- Pagination Controls -->
+    @if (Model.Products != null && Model.Products.TotalPages > 1)
+    {
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @{
+                        var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
+                    }
+                    
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link" asp-action="Search"
+                           asp-route-pageNumber="@(Model.Products.PageIndex - 1)"
+                           asp-route-searchString="@Model.SearchString"
+                           asp-route-categoryId="@Model.CategoryId"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span> Previous
+                        </a>
+                    </li>
+
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">Page @Model.Products.PageIndex of @Model.Products.TotalPages</span>
+                    </li>
+
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link" asp-action="Search"
+                           asp-route-pageNumber="@(Model.Products.PageIndex + 1)"
+                           asp-route-searchString="@Model.SearchString"
+                           asp-route-categoryId="@Model.CategoryId"
+                           aria-label="Next">
+                            Next <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     }
 </div>

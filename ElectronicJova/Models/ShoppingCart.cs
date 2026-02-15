@@ -23,5 +23,8 @@ namespace ElectronicJova.Models
         [Required]
         [Range(1, 1000)]
         public int Count { get; set; }
+
+        [NotMapped]
+        public decimal Price { get; set; }
     }
 }
