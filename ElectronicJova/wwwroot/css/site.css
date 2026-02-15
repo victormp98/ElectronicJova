@@ -1,0 +1,33 @@
+html {
+  font-size: 14px;
+  height: 100%; /* Ensure html takes full height */
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+body {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack children vertically */
+  min-height: 100vh; /* Ensure body takes full viewport height */
+  margin: 0; /* Remove default body margin */
+}
+
+main {
+  flex-grow: 1; /* Allow main content to grow and push footer down */
+}
+
+.footer {
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  /* If you want it always at the bottom of the viewport, not just content: */
+  /* position: sticky; */
+  /* bottom: 0; */
+  /* width: 100%; */
+}

@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 mb-4">Admin Dashboard</h1>
+            <p class="lead">Welcome to the ElectronicJova Administration Panel. Use the sidebar to navigate.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-tags me-2"></i> Category Management</h5>
+                    <p class="card-text">Manage product categories.</p>
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-primary">Go to Categories</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-box-seam me-2"></i> Product Management</h5>
+                    <p class="card-text">Add, edit, or delete products.</p>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-primary">Go to Products</a>
+                </div>
+            </div>
+        </div>
+        <!-- Future summary cards could go here -->
+    </div>
+</div>

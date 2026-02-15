@@ -1,0 +1,219 @@
+﻿================================================================
+PROYECTO: ELECTRONIC JOVA - PLAN MAESTRO (REVISADO POR QA)
+================================================================
+
+PARTE 1: BACKLOG DE DESARROLLO (ORDENADO POR PROCESO)
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+NOTA DE ARQUITECTURA: PROVEEDOR ENTITY FRAMEWORK CORE PARA MYSQL
+----------------------------------------------------------------
+Durante la fase de Configuración Inicial (T01) y Capa de Datos (T02), se decidió utilizar MySQL como base de datos.
+Inicialmente se instaló el paquete NuGet `MySql.EntityFrameworkCore`. Sin embargo, durante la configuración del `DbContext` y la integración de Identity, surgieron errores de compilación relacionados con la ausencia de los métodos de extensión `UseMySql` y el tipo `MySqlServerVersion`.
+
+Tras una investigación detallada, se determinó que la implementación más compatible y robusta para .NET 8 y MySQL 8, que proporciona los métodos esperados, es el paquete **`Pomelo.EntityFrameworkCore.MySql`**. Por lo tanto, se procedió a:
+1.  Desinstalar `MySql.EntityFrameworkCore`.
+2.  Instalar `Pomelo.EntityFrameworkCore.MySql` (versión 8.0.0).
+3.  Ajustar las directivas `using` en `Program.cs` y las llamadas a `UseMySql` para reflejar este cambio.
+
+Este registro es para documentar la decisión y el proceso de corrección para referencia futura.
+
+----------------------------------------------------------------
+[FASE 1: CIMENTACIÓN Y SEGURIDAD]
+T01: Configuración Inicial
+     [x] Crear Solución ASP.NET Core MVC (.NET 8).
+     [x] Configurar Git y .gitignore.
+     [x] Estructura de Areas (Admin, Customer).
+     [x] Instalar NuGet (EF Core, MySQL, Identity).
+     [x] AppSettings (Connection Strings).
+
+T02: Capa de Datos (Repository Pattern)
+     [x] Crear ApplicationDbContext.
+     [x] Interfaz Genérica IRepository<T>.
+     [x] Implementar UnitOfWork (Save centralizado).
+     [x] Inyección de Dependencias en Program.cs.
+
+T03: Identity & Roles
+     [x] Scaffolding Identity (Login/Register/AccessDenied).
+     [x] Configurar IdentityUser + IdentityRole.
+     [x] Constantes: Role_Admin, Role_Customer.
+     [x] DbInitializer (Crear Admin por defecto).
+     [x] Bloqueo de rutas [Authorize].
+
+T04: (NUEVO) Gestión de Errores y Logging
+     [x] Instalar y configurar Serilog o similar.
+     [x] Configurar para guardar logs en archivos.
+     [x] Crear página de error personalizada.
+
+[FASE 2: ÁREA DE ADMINISTRACIÓN]
+--> ESTAMOS AQUÍ <--
+T05: Dashboard & Layout Admin (Antes T14)
+     [x] Sidebar lateral colapsable.
+     [x] Panel de control (Resumen).
+     [x] Ocultar opciones según Rol.
+     [x] Integrar el layout en el área "Admin".
+
+T06: CRUD Categorías (Antes T04)
+     [x] Modelo Category.
+     [x] Controller y Vistas (Index, Upsert, Delete) dentro del Layout Admin.
+     [x] Validaciones (Data Annotations).
+
+T07: (NUEVO) Semillas de Datos (Data Seeding)
+     [x] Extender DbInitializer para crear Categorías de ejemplo.
+     [x] Extender DbInitializer para crear Productos de ejemplo.
+
+T08: CRUD Productos (Complejo) (Antes T05)
+     [x] Modelo Product con FK (CategoryId).
+     [x] ViewModel (Product + CategoryList).
+     [x] Subida de Imágenes (IFormFile -> wwwroot).
+     [x] DataTables.js para la tabla Index.
+     [x] SweetAlert2 para confirmaciones.
+
+[FASE 3: TIENDA PÚBLICA Y EXPERIENCIA DE CLIENTE]
+T09: Layout Maestro Cliente (Antes T07)
+     [x] Navbar Responsivo (Menú Hamburguesa).
+     [x] Footer Sticky.
+     [x] PartialView Login (Saludo usuario).
+
+T10: Home Page (Antes T06)
+     [x] Implementar la vista dentro del Layout Maestro.
+     [x] Carrusel de imágenes.
+     [x] Tarjetas de productos destacados (leídos de la DB).
+
+T11: Buscador y Filtros (Antes T08)
+     [ ] Búsqueda por texto en Navbar.
+     [ ] Página de resultados de búsqueda.
+     [ ] Filtrado por Categoría.
+     [ ] Paginación de resultados.
+
+T12: Detalle de Producto (Antes T09)
+     [ ] Vista Details (Foto + Info).
+     [ ] Selector de Cantidad (1-100).
+     [ ] Botón "Agregar al Carrito".
+
+[FASE 4: CARRITO Y PROCESO DE PAGO]
+T13: Modelado de Carrito y Órdenes (Antes T10, T12)
+     [x] Crear modelo ShoppingCart.
+     [x] Crear modelos OrderHeader y OrderDetail.
+     [x] Incluir modelos en ApplicationDbContext y UnitOfWork.
+
+T14: Lógica del Carrito (Backend)
+     [ ] Lógica para añadir/actualizar ítems en ShoppingCart.
+     [ ] Uso de Sesiones (Session) para contador de ítems en Navbar.
+     [ ] Lógica de repositorio para el carrito.
+
+T15: Vista del Carrito (Frontend) (Antes T11)
+     [ ] Tabla de ítems agregados.
+     [ ] Controles (+ / - / Eliminar) que llamen al backend.
+     [ ] Cálculo de Totales y botón "Proceder al Pago".
+
+T16: Checkout (Formulario y Resumen) (Antes T13)
+     [ ] Formulario de Envío (precargado si el usuario está logueado).
+     [ ] Resumen de la Orden.
+     [ ] Creación de la Orden (OrderHeader/OrderDetail) en la DB con estado 'Pendiente'.
+
+T17: (NUEVO) Servicio de Notificaciones por Email
+     [ ] Configurar un servicio de email (ej. SendGrid, MailKit).
+     [ ] Implementar envío de email para confirmación de registro.
+     [ ] Implementar envío de email para confirmación de orden.
+
+T18: Pasarela de Pagos (Antes T15)
+     [ ] Integración Stripe/PayPal.
+     [ ] Al completar el pago, actualizar estado en OrderHeader.
+     [ ] Webhooks para confirmación de pago asíncrona.
+
+[FASE 5: POST-COMPRA Y CIERRE]
+T19: Gestión de Pedidos (Antes T16)
+     [ ] Vista Cliente: Mis Pedidos (historial).
+     [ ] Vista Admin: Gestionar Envíos y estados de la orden.
+     [ ] Generación de Guías (Simulado).
+
+T20: (NUEVO) Proyecto de Pruebas Unitarias
+     [ ] Crear proyecto xUnit o MSTest.
+     [ ] Añadir pruebas para la lógica de repositorios.
+     [ ] Añadir pruebas para lógica de cálculo de precios/totales.
+
+T21: Despliegue (Antes T17)
+     [ ] Pruebas de Estrés.
+     [ ] Configuración de entorno de producción.
+     [ ] Deploy (IIS/Azure/Hostinger).
+     [ ] Despliegue de Base de Datos en servidor (Colique).
+
+
+================================================================
+PARTE 2: ESTRUCTURA DE BASE DE DATOS (SCHEMA MYSQL)
+================================================================
+(El esquema de la base de datos es sólido y no requiere cambios.
+Las nuevas tareas T13 y T17 no introducen nuevas tablas, sino
+que utilizan las ya definidas de forma correcta.)
+
+[MÓDULO: IDENTITY (SEGURIDAD)]
+----------------------------------------------------------------
+TABLA: AspNetUsers (Usuarios)
+  - Id (PK, String)
+  - UserName / Email
+  - PasswordHash
+  - Name (String)           <-- Personalizado
+  - StreetAddress (String)  <-- Personalizado
+  - City (String)           <-- Personalizado
+  - State (String)          <-- Personalizado
+  - PostalCode (String)     <-- Personalizado
+
+TABLA: AspNetRoles (Roles)
+  - Id (PK)
+  - Name (Ej: "Admin", "Customer")
+
+TABLA: AspNetUserRoles (Relación)
+  - UserId (FK)
+  - RoleId (FK)
+
+[MÓDULO: CATÁLOGO]
+----------------------------------------------------------------
+TABLA: Categories
+  - Id (PK, Int, AutoInc)
+  - Name (String, Required)
+  - DisplayOrder (Int)
+
+TABLA: Products
+  - Id (PK, Int, AutoInc)
+  - Title (String)
+  - Description (Text/HTML)
+  - ISBN (String)
+  - Author (String)
+  - ListPrice (Double)
+  - Price (Double)
+  - Price50 (Double)
+  - Price100 (Double)
+  - ImageUrl (String)
+  - CategoryId (FK -> Categories)
+
+[MÓDULO: VENTAS & ÓRDENES]
+----------------------------------------------------------------
+TABLA: ShoppingCarts (Carrito Temporal)
+  - Id (PK, Int)
+  - ProductId (FK -> Products)
+  - ApplicationUserId (FK -> AspNetUsers)
+  - Count (Int)
+
+TABLA: OrderHeaders (Encabezado Pedido)
+  - Id (PK, Int)
+  - ApplicationUserId (FK -> AspNetUsers)
+  - OrderDate (DateTime)
+  - ShippingDate (DateTime)
+  - OrderTotal (Double)
+  - OrderStatus (String)    [Pendiente, Aprobado, Procesando, Enviado, Cancelado]
+  - PaymentStatus (String)  [Pendiente, Aprobado, Retrasado, Rechazado]
+  - TrackingNumber (String)
+  - Carrier (String)
+  - SessionId (String)      [Stripe]
+  - PaymentIntentId (String)[Stripe]
+  - Name, StreetAddress, City, State, Zip (Datos de Envío congelados)
+
+TABLA: OrderDetails (Detalle Pedido)
+  - Id (PK, Int)
+  - OrderHeaderId (FK -> OrderHeaders)
+  - ProductId (FK -> Products)
+  - Count (Int)
+  - Price (Double)          [Precio al momento de compra]
+
+

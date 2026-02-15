@@ -1,0 +1,83 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ElectronicJova.Models;
+
+namespace ElectronicJova.Data
+{
+    // Custom ApplicationUser to extend IdentityUser with additional profile fields
+    // These fields are based on the AspNetUsers table in DOCUMENTACION.txt
+    public class ApplicationUser : IdentityUser
+    {
+        public string? Name { get; set; }
+        public string? StreetAddress { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? PostalCode { get; set; }
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        // Define DbSet properties for the entities based on the database schema
+        // The actual model classes (Category, Product, etc.) will be created in T06, T08, T13.
+        // For now, these are placeholders for the DbContext configuration.
+        public DbSet<Category> Categories { get; set; } = null!; // Model for Categories
+        public DbSet<Product> Products { get; set; } = null!; // Model for Products
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!; // Model for ShoppingCarts
+        public DbSet<OrderHeader> OrderHeaders { get; set; } = null!; // Model for OrderHeaders
+        public DbSet<OrderDetail> OrderDetails { get; set; } = null!; // Model for OrderDetails
+
+        // For now, we will leave OnModelCreating empty.
+        // It will be used later for more advanced configuration or seeding.
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Configure decimal precision for monetary values
+            modelBuilder.Entity<Product>().Property(p => p.ListPrice).HasPrecision(18, 2);
+            modelBuilder.Entity<Product>().Property(p => p.Price).HasPrecision(18, 2);
+            modelBuilder.Entity<Product>().Property(p => p.Price50).HasPrecision(18, 2);
+            modelBuilder.Entity<Product>().Property(p => p.Price100).HasPrecision(18, 2);
+
+            modelBuilder.Entity<OrderHeader>().Property(o => o.OrderTotal).HasPrecision(18, 2);
+            modelBuilder.Entity<OrderDetail>().Property(od => od.Price).HasPrecision(18, 2);
+
+            // Indexes for performance
+            modelBuilder.Entity<Product>().HasIndex(p => p.CategoryId);
+            modelBuilder.Entity<ShoppingCart>().HasIndex(sc => sc.ApplicationUserId);
+            modelBuilder.Entity<ShoppingCart>().HasIndex(sc => sc.ProductId);
+            modelBuilder.Entity<OrderHeader>().HasIndex(o => o.ApplicationUserId);
+            modelBuilder.Entity<OrderDetail>().HasIndex(od => od.OrderHeaderId);
+            modelBuilder.Entity<OrderDetail>().HasIndex(od => od.ProductId);
+
+            // Configure relationships and delete behavior
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany()
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(sc => sc.Product)
+                .WithMany()
+                .HasForeignKey(sc => sc.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderDetail>()
+                .HasOne(od => od.Product)
+                .WithMany()
+                .HasForeignKey(od => od.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderDetail>()
+                .HasOne(od => od.OrderHeader)
+                .WithMany()
+                .HasForeignKey(od => od.OrderHeaderId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+    }
+}

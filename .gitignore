@@ -1,0 +1,49 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+*.pdb
+*.ilk
+*.meta
+*.o
+*.lo
+*.sbr
+*.lib
+*.ncb
+*.opensdf
+*.sdf
+*.cache
+*.aps
+*.bsc
+*.log
+*.mdf
+*.ldf
+*.exe
+*.dll
+*.obj
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because NuGet will restore them
+packages/
+# Except for project.json force restore for project.json-based projects
+!packages/*.json
+
+# Npm
+node_modules/
+npm-debug.log
+
+# Rider
+.idea/
+
+# Dotnet tool
+.config/
+.dotnet/
