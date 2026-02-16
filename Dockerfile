@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Cache buster to force a full rebuild
+ENV CACHE_BUSTER=2024-05-20-01
 WORKDIR /src
 COPY ["ElectronicJova/ElectronicJova.csproj", "ElectronicJova/"]
 RUN dotnet restore "ElectronicJova/ElectronicJova.csproj"
