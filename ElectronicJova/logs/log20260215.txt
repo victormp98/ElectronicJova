@@ -1,0 +1,392 @@
+2026-02-15 17:47:46.049 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-15 17:47:46.974 -06:00 [INF] Executed DbCommand (99ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-15 17:47:47.021 -06:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-15 17:47:47.521 -06:00 [INF] Executed DbCommand (62ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-15 17:47:47.612 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-15 17:47:47.623 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-15 17:47:47.691 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-15 17:47:48.033 -06:00 [INF] Now listening on: https://localhost:7095
+2026-02-15 17:47:48.035 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-15 17:47:48.240 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-15 17:47:48.243 -06:00 [INF] Hosting environment: Development
+2026-02-15 17:47:48.246 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-15 17:47:51.559 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ - null null
+2026-02-15 17:47:52.403 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 17:47:52.436 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:47:52.590 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+2026-02-15 17:47:52.703 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-15 17:47:53.042 -06:00 [INF] Executed ViewResult - view Index executed in 343.2442ms.
+2026-02-15 17:47:53.052 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 611.3002ms
+2026-02-15 17:47:53.054 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 17:47:53.065 -06:00 [INF] HTTP GET / responded 200 in 680.1531 ms
+2026-02-15 17:47:53.086 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ - 200 null text/html; charset=utf-8 1555.5168ms
+2026-02-15 17:47:53.093 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/css/bootstrap.min.css - null null
+2026-02-15 17:47:53.095 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/css/site.css?v=xsFPSOD49LVkEiUsSEb628yA79HQcMSuNeRE9TRABkI - null null
+2026-02-15 17:47:53.095 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - null null
+2026-02-15 17:47:53.130 -06:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\css\site.css'
+2026-02-15 17:47:53.130 -06:00 [INF] Sending file. Request path: '/ElectronicJova.styles.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\obj\Debug\net8.0\scopedcss\bundle\ElectronicJova.styles.css'
+2026-02-15 17:47:53.135 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/css/site.css?v=xsFPSOD49LVkEiUsSEb628yA79HQcMSuNeRE9TRABkI - 200 847 text/css 39.2272ms
+2026-02-15 17:47:53.141 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - 200 1109 text/css 46.059ms
+2026-02-15 17:47:53.151 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2026-02-15 17:47:53.153 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/css/bootstrap.min.css - 200 162720 text/css 61.2415ms
+2026-02-15 17:47:53.179 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/jquery/dist/jquery.min.js - null null
+2026-02-15 17:47:53.194 -06:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery\dist\jquery.min.js'
+2026-02-15 17:47:53.196 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/jquery/dist/jquery.min.js - 200 89501 text/javascript 17.309ms
+2026-02-15 17:47:53.999 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/js/bootstrap.bundle.min.js - null null
+2026-02-15 17:47:54.008 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2026-02-15 17:47:54.009 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/js/bootstrap.bundle.min.js - 200 78468 text/javascript 10.3905ms
+2026-02-15 17:47:54.015 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - null null
+2026-02-15 17:47:54.019 -06:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\js\site.js'
+2026-02-15 17:47:54.021 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - 200 231 text/javascript 6.3716ms
+2026-02-15 17:47:54.026 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:47:54.035 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 9.9216ms
+2026-02-15 17:47:54.040 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:47:54.795 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 755.2454ms
+2026-02-15 17:47:54.857 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/favicon.ico - null null
+2026-02-15 17:47:54.864 -06:00 [INF] Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\favicon.ico'
+2026-02-15 17:47:54.866 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/favicon.ico - 200 5430 image/x-icon 8.9897ms
+2026-02-15 17:48:16.066 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ - null null
+2026-02-15 17:48:16.082 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 17:48:16.084 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:48:16.159 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+2026-02-15 17:48:16.164 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-15 17:48:16.175 -06:00 [INF] Executed ViewResult - view Index executed in 10.7401ms.
+2026-02-15 17:48:16.184 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 98.0595ms
+2026-02-15 17:48:16.186 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 17:48:16.187 -06:00 [INF] HTTP GET / responded 200 in 108.0857 ms
+2026-02-15 17:48:16.191 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ - 200 null text/html; charset=utf-8 124.8303ms
+2026-02-15 17:48:16.192 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:16.193 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:48:16.201 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 10.1765ms
+2026-02-15 17:48:16.228 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 35.6771ms
+2026-02-15 17:48:17.310 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Privacy - null null
+2026-02-15 17:48:17.322 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Privacy (ElectronicJova)'
+2026-02-15 17:48:17.328 -06:00 [INF] Route matched with {action = "Privacy", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Privacy() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:48:17.335 -06:00 [INF] Executing ViewResult, running view Privacy.
+2026-02-15 17:48:17.355 -06:00 [INF] Executed ViewResult - view Privacy executed in 21.486ms.
+2026-02-15 17:48:17.357 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Privacy (ElectronicJova) in 26.9619ms
+2026-02-15 17:48:17.358 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Privacy (ElectronicJova)'
+2026-02-15 17:48:17.359 -06:00 [INF] HTTP GET /Home/Privacy responded 200 in 40.9190 ms
+2026-02-15 17:48:17.362 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Privacy - 200 null text/html; charset=utf-8 52.1633ms
+2026-02-15 17:48:17.365 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:48:17.365 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:17.371 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 6.2506ms
+2026-02-15 17:48:17.388 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 23.4568ms
+2026-02-15 17:48:18.525 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ - null null
+2026-02-15 17:48:18.529 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 17:48:18.530 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:48:18.536 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+2026-02-15 17:48:18.538 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-15 17:48:18.543 -06:00 [INF] Executed ViewResult - view Index executed in 4.8621ms.
+2026-02-15 17:48:18.545 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 13.3191ms
+2026-02-15 17:48:18.546 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 17:48:18.548 -06:00 [INF] HTTP GET / responded 200 in 18.5099 ms
+2026-02-15 17:48:18.550 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ - 200 null text/html; charset=utf-8 25.6319ms
+2026-02-15 17:48:18.558 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:48:18.558 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:18.565 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 7.4243ms
+2026-02-15 17:48:18.574 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 16.0272ms
+2026-02-15 17:48:20.604 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Details?productId=1 - null null
+2026-02-15 17:48:20.612 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
+2026-02-15 17:48:20.629 -06:00 [INF] Route matched with {action = "Details", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:48:20.687 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[@__productId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+WHERE `p`.`Id` = @__productId_0
+LIMIT 1
+2026-02-15 17:48:20.699 -06:00 [INF] Executing ViewResult, running view Details.
+2026-02-15 17:48:20.761 -06:00 [INF] Executed ViewResult - view Details executed in 62.8992ms.
+2026-02-15 17:48:20.762 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Details (ElectronicJova) in 131.1293ms
+2026-02-15 17:48:20.764 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
+2026-02-15 17:48:20.765 -06:00 [INF] HTTP GET /Home/Details responded 200 in 153.5091 ms
+2026-02-15 17:48:20.767 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Details?productId=1 - 200 null text/html; charset=utf-8 162.7636ms
+2026-02-15 17:48:20.772 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/jquery-validation/dist/jquery.validate.min.js - null null
+2026-02-15 17:48:20.776 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:20.776 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:48:20.787 -06:00 [INF] Sending file. Request path: '/lib/jquery-validation/dist/jquery.validate.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js'
+2026-02-15 17:48:20.776 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - null null
+2026-02-15 17:48:20.793 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/jquery-validation/dist/jquery.validate.min.js - 200 24601 text/javascript 21.3934ms
+2026-02-15 17:48:20.789 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 13.0643ms
+2026-02-15 17:48:20.811 -06:00 [INF] Sending file. Request path: '/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js'
+2026-02-15 17:48:20.815 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 39.2909ms
+2026-02-15 17:48:20.822 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - 200 5824 text/javascript 45.6712ms
+2026-02-15 17:48:29.197 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Search?searchString= - null null
+2026-02-15 17:48:29.203 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:48:29.210 -06:00 [INF] Route matched with {action = "Search", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Search(System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:48:29.218 -06:00 [INF] Search initiated for: null, CategoryId: null, Page: null
+2026-02-15 17:48:29.270 -06:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-15 17:48:29.282 -06:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-02-15 17:48:29.284 -06:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-02-15 17:48:29.318 -06:00 [INF] Executed DbCommand (13ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-15 17:48:29.325 -06:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Categories` AS `c`
+2026-02-15 17:48:29.328 -06:00 [INF] Executing ViewResult, running view Search.
+2026-02-15 17:48:29.357 -06:00 [INF] Executed ViewResult - view Search executed in 28.894ms.
+2026-02-15 17:48:29.358 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Search (ElectronicJova) in 146.7977ms
+2026-02-15 17:48:29.360 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:48:29.360 -06:00 [INF] HTTP GET /Home/Search responded 200 in 157.8360 ms
+2026-02-15 17:48:29.363 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Search?searchString= - 200 null text/html; charset=utf-8 166.1555ms
+2026-02-15 17:48:29.370 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:29.370 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:48:29.374 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 4.0033ms
+2026-02-15 17:48:29.396 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 25.6987ms
+2026-02-15 17:48:40.175 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Home/Search?page=%2FAccount%2FLogin - null null
+2026-02-15 17:48:40.183 -06:00 [INF] HTTP GET /Identity/Home/Search responded 404 in 0.5171 ms
+2026-02-15 17:48:40.185 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Home/Search?page=%2FAccount%2FLogin - 404 null null 11.0758ms
+2026-02-15 17:48:40.190 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7095/Identity/Home/Search, Response status code: 404
+2026-02-15 17:48:56.142 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:56.151 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 9.8436ms
+2026-02-15 17:48:57.884 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Home/Search?page=%2FAccount%2FRegister - null null
+2026-02-15 17:48:57.889 -06:00 [INF] HTTP GET /Identity/Home/Search responded 404 in 0.0806 ms
+2026-02-15 17:48:57.894 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Home/Search?page=%2FAccount%2FRegister - 404 null null 10.802ms
+2026-02-15 17:48:57.897 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7095/Identity/Home/Search, Response status code: 404
+2026-02-15 17:48:59.953 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:48:59.959 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 5.6914ms
+2026-02-15 17:49:54.187 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Search?searchString=&CategoryId= - null null
+2026-02-15 17:49:54.248 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:49:54.255 -06:00 [INF] Route matched with {action = "Search", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Search(System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:49:54.285 -06:00 [INF] Search initiated for: null, CategoryId: null, Page: null
+2026-02-15 17:49:54.375 -06:00 [INF] Executed DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-15 17:49:54.405 -06:00 [INF] Executed DbCommand (13ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-15 17:49:54.409 -06:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Categories` AS `c`
+2026-02-15 17:49:54.416 -06:00 [INF] Executing ViewResult, running view Search.
+2026-02-15 17:49:54.452 -06:00 [INF] Executed ViewResult - view Search executed in 37.7411ms.
+2026-02-15 17:49:54.453 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Search (ElectronicJova) in 195.6256ms
+2026-02-15 17:49:54.455 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:49:54.457 -06:00 [INF] HTTP GET /Home/Search responded 200 in 212.9124 ms
+2026-02-15 17:49:54.461 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Search?searchString=&CategoryId= - 200 null text/html; charset=utf-8 274.6449ms
+2026-02-15 17:49:54.471 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:49:54.472 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:49:54.476 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 4.9816ms
+2026-02-15 17:49:54.506 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 34.5697ms
+2026-02-15 17:50:07.391 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Search - null null
+2026-02-15 17:50:07.397 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:50:07.399 -06:00 [INF] Route matched with {action = "Search", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Search(System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:50:07.407 -06:00 [INF] Search initiated for: null, CategoryId: null, Page: null
+2026-02-15 17:50:07.418 -06:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-15 17:50:07.427 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-15 17:50:07.431 -06:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Categories` AS `c`
+2026-02-15 17:50:07.432 -06:00 [INF] Executing ViewResult, running view Search.
+2026-02-15 17:50:07.440 -06:00 [INF] Executed ViewResult - view Search executed in 7.0748ms.
+2026-02-15 17:50:07.441 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Search (ElectronicJova) in 40.2083ms
+2026-02-15 17:50:07.443 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:50:07.444 -06:00 [INF] HTTP GET /Home/Search responded 200 in 47.2635 ms
+2026-02-15 17:50:07.446 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Search - 200 null text/html; charset=utf-8 56.1925ms
+2026-02-15 17:50:07.454 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:50:07.455 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:50:07.458 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 4.3119ms
+2026-02-15 17:50:07.487 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 32.4781ms
+2026-02-15 17:50:24.845 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Search/Catgory - null null
+2026-02-15 17:50:24.851 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:50:24.852 -06:00 [INF] Route matched with {action = "Search", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Search(System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:50:24.856 -06:00 [INF] Search initiated for: null, CategoryId: null, Page: null
+2026-02-15 17:50:24.863 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-15 17:50:24.871 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-15 17:50:24.874 -06:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Categories` AS `c`
+2026-02-15 17:50:24.877 -06:00 [INF] Executing ViewResult, running view Search.
+2026-02-15 17:50:24.881 -06:00 [INF] Executed ViewResult - view Search executed in 4.78ms.
+2026-02-15 17:50:24.883 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Search (ElectronicJova) in 28.54ms
+2026-02-15 17:50:24.885 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:50:24.886 -06:00 [INF] HTTP GET /Home/Search/Catgory responded 200 in 35.0172 ms
+2026-02-15 17:50:24.888 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Search/Catgory - 200 null text/html; charset=utf-8 43.2115ms
+2026-02-15 17:50:24.896 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:50:24.896 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:50:24.900 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 4.3059ms
+2026-02-15 17:50:24.916 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 20.4952ms
+2026-02-15 17:50:42.958 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Search/Register - null null
+2026-02-15 17:50:42.970 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:50:42.973 -06:00 [INF] Route matched with {action = "Search", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Search(System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 17:50:42.976 -06:00 [INF] Search initiated for: null, CategoryId: null, Page: null
+2026-02-15 17:50:42.986 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-15 17:50:43.009 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-15 17:50:43.013 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Categories` AS `c`
+2026-02-15 17:50:43.016 -06:00 [INF] Executing ViewResult, running view Search.
+2026-02-15 17:50:43.024 -06:00 [INF] Executed ViewResult - view Search executed in 7.5147ms.
+2026-02-15 17:50:43.025 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Search (ElectronicJova) in 50.2919ms
+2026-02-15 17:50:43.026 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Search (ElectronicJova)'
+2026-02-15 17:50:43.027 -06:00 [INF] HTTP GET /Home/Search/Register responded 200 in 56.7684 ms
+2026-02-15 17:50:43.029 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Search/Register - 200 null text/html; charset=utf-8 72.0121ms
+2026-02-15 17:50:43.042 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 17:50:43.043 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 17:50:43.047 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 4.3265ms
+2026-02-15 17:50:43.071 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.0423ms
+2026-02-15 17:50:47.673 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Home/Search/Register?page=%2FAccount%2FRegister - null null
+2026-02-15 17:50:47.678 -06:00 [INF] HTTP GET /Identity/Home/Search/Register responded 404 in 0.1125 ms
+2026-02-15 17:50:47.680 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Home/Search/Register?page=%2FAccount%2FRegister - 404 null null 8.0026ms
+2026-02-15 17:50:47.684 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7095/Identity/Home/Search/Register, Response status code: 404
+2026-02-15 17:51:00.521 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Home/Search/Register - null null
+2026-02-15 17:51:00.527 -06:00 [INF] HTTP GET /Identity/Home/Search/Register responded 404 in 0.1071 ms
+2026-02-15 17:51:00.531 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Home/Search/Register - 404 null null 10.3542ms
+2026-02-15 17:51:00.535 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7095/Identity/Home/Search/Register, Response status code: 404
+2026-02-15 18:03:01.766 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-15 18:03:02.858 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-15 18:03:03.469 -06:00 [INF] Executed DbCommand (74ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-15 18:03:03.503 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-15 18:03:03.822 -06:00 [INF] Executed DbCommand (40ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-15 18:03:03.889 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-15 18:03:03.896 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-15 18:03:04.583 -06:00 [INF] Now listening on: https://localhost:7095
+2026-02-15 18:03:04.584 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-15 18:03:04.671 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-15 18:03:04.672 -06:00 [INF] Hosting environment: Development
+2026-02-15 18:03:04.674 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-15 18:03:06.008 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ - null null
+2026-02-15 18:03:06.373 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 18:03:06.413 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-15 18:03:06.598 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+2026-02-15 18:03:06.709 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-15 18:03:06.931 -06:00 [INF] Executed ViewResult - view Index executed in 230.6977ms.
+2026-02-15 18:03:06.940 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 521.771ms
+2026-02-15 18:03:06.943 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-15 18:03:06.947 -06:00 [INF] HTTP GET / responded 200 in 599.5634 ms
+2026-02-15 18:03:06.966 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ - 200 null text/html; charset=utf-8 971.6608ms
+2026-02-15 18:03:07.002 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 18:03:07.003 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 18:03:07.019 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 16.9114ms
+2026-02-15 18:03:07.084 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 81.2694ms
+2026-02-15 18:03:08.680 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Account/Register - null null
+2026-02-15 18:03:08.710 -06:00 [INF] Executing endpoint '/Account/Register'
+2026-02-15 18:03:08.752 -06:00 [INF] Route matched with {page = "/Account/Register", area = "Identity", action = "", controller = ""}. Executing page /Account/Register
+2026-02-15 18:03:08.765 -06:00 [INF] Executed page /Account/Register in 10.8699ms
+2026-02-15 18:03:08.767 -06:00 [INF] Executed endpoint '/Account/Register'
+2026-02-15 18:03:08.770 -06:00 [ERR] HTTP GET /Identity/Account/Register responded 500 in 73.4749 ms
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNetCore.Identity.UI.Services.IEmailSender' while attempting to activate 'ElectronicJova.Areas.Identity.Pages.Account.RegisterModel'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method176(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.DefaultPageModelFactoryProvider.<>c__DisplayClass3_0.<CreateModelFactory>b__0(PageContext pageContext)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.CreateInstance()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-02-15 18:03:08.805 -06:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNetCore.Identity.UI.Services.IEmailSender' while attempting to activate 'ElectronicJova.Areas.Identity.Pages.Account.RegisterModel'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method176(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.DefaultPageModelFactoryProvider.<>c__DisplayClass3_0.<CreateModelFactory>b__0(PageContext pageContext)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.CreateInstance()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-02-15 18:03:08.849 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Account/Register - 500 null text/html; charset=utf-8 168.577ms
+2026-02-15 18:03:08.867 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-15 18:03:08.867 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-15 18:03:08.872 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 5.4299ms
+2026-02-15 18:03:08.917 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 49.9524ms
