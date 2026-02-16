@@ -3,24 +3,29 @@ using ElectronicJova.Data.Repository;
 using ElectronicJova.Models;
 using Microsoft.EntityFrameworkCore;
 using ElectronicJova.DbInitializer;
-using Pomelo.EntityFrameworkCore.MySql; // Added for UseMySql and MySqlServerVersion
-using Microsoft.AspNetCore.Identity; // Added for IdentityRole (explicitly)
+using Pomelo.EntityFrameworkCore.MySql; 
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Microsoft.Extensions.Configuration;
-using ElectronicJova.Utilities; // Added for IEmailSender and ResendEmailSender
-using Stripe; // Added for StripeConfiguration
+using ElectronicJova.Utilities;
+using Stripe; 
+
+// Explicitly qualify the IEmailSender from Identity UI
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
     .WriteTo.Console()
-    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day) // Add file sink
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 // Configure DbContext for MySQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 0)))
@@ -31,19 +36,19 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-// You can customize Identity options here, for example:
-// .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders(); // Added DefaultTokenProviders for email confirmation
 
-// Register Email Sender
-builder.Services.AddSingleton<IEmailSender>(sp =>
-{
-    var configuration = sp.GetRequiredService<IConfiguration>();
-    var apiKey = configuration["ResendSettings:ApiKey"];
-    var senderEmail = configuration["ResendSettings:SenderEmail"];
-    var senderName = configuration["ResendSettings:SenderName"];
-    return new ResendEmailSender(apiKey, senderEmail, senderName);
-});
+// --- Corrected Email Sender Registration ---
+// Register our ResendEmailSender for the IEmailSender that Identity UI expects.
+builder.Services.AddSingleton<IEmailSender, ResendEmailSender>();
+
+// Register our ResendEmailSender for the custom IEmailSender used in the rest of the app.
+// Note: This registration is now redundant if the other parts of the app are updated
+// to use the Microsoft.AspNetCore.Identity.UI.Services.IEmailSender interface, 
+// but it is kept for compatibility with the existing code.
+builder.Services.AddSingleton<ElectronicJova.Utilities.IEmailSender, ResendEmailSender>();
+// --- End of Correction ---
 
 
 // Configure Session
@@ -64,7 +69,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -72,14 +76,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession(); // Must be before UseAuthorization
-app.UseSerilogRequestLogging(); // Add Serilog request logging
-app.UseAuthentication(); // Must be before UseAuthorization
+app.UseSession();
+app.UseSerilogRequestLogging();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "Areas",
-    pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

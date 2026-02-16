@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,7 +40,7 @@
                         @if (User.Identity.IsAuthenticated && !User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                     <i class="bi bi-cart"></i> &nbsp;
                                     (@(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0))
                                 </a>
