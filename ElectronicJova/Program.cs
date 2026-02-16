@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using ElectronicJova.Utilities;
 using Stripe; 
 
-// Explicitly qualify the IEmailSender from Identity UI
+// Import the Identity IEmailSender to be used in registration
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 Log.Logger = new LoggerConfiguration()
@@ -35,21 +35,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+// Update Identity registration to include token providers
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders(); // Added DefaultTokenProviders for email confirmation
+    .AddDefaultTokenProviders(); // Crucial for email confirmation tokens
 
-// --- Corrected Email Sender Registration ---
-// Register our ResendEmailSender for the IEmailSender that Identity UI expects.
+// --- Corrected and Unambiguous Email Sender Registration ---
+// Register our ResendEmailSender as the implementation for the IEmailSender that Identity UI expects.
 builder.Services.AddSingleton<IEmailSender, ResendEmailSender>();
 
-// Register our ResendEmailSender for the custom IEmailSender used in the rest of the app.
-// Note: This registration is now redundant if the other parts of the app are updated
-// to use the Microsoft.AspNetCore.Identity.UI.Services.IEmailSender interface, 
-// but it is kept for compatibility with the existing code.
+// Also register it for the custom IEmailSender interface to maintain compatibility with other parts of the app.
 builder.Services.AddSingleton<ElectronicJova.Utilities.IEmailSender, ResendEmailSender>();
-// --- End of Correction ---
-
 
 // Configure Session
 builder.Services.AddDistributedMemoryCache();
