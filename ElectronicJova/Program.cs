@@ -3,21 +3,20 @@ using ElectronicJova.Data.Repository;
 using ElectronicJova.Models;
 using Microsoft.EntityFrameworkCore;
 using ElectronicJova.DbInitializer;
-using Pomelo.EntityFrameworkCore.MySql; 
 using Microsoft.AspNetCore.Identity;
 using Serilog;
-using Microsoft.Extensions.Configuration;
 using ElectronicJova.Utilities;
-using Stripe; 
-
-// Import the Identity IEmailSender to be used in registration
+using Stripe;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Resend;
 
-Log.Logger = new LoggerConfiguration()
+var loggerConfig = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
+
+Log.Logger = loggerConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
@@ -38,14 +37,10 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 // Update Identity registration to include token providers
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders(); // Crucial for email confirmation tokens
+    .AddDefaultTokenProviders();
 
-// --- Corrected and Unambiguous Email Sender Registration ---
-// Register our ResendEmailSender as the implementation for the IEmailSender that Identity UI expects.
-builder.Services.AddSingleton<IEmailSender, ResendEmailSender>();
+builder.Services.AddScoped<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, ResendEmailSender>();
 
-// Also register it for the custom IEmailSender interface to maintain compatibility with other parts of the app.
-builder.Services.AddSingleton<ElectronicJova.Utilities.IEmailSender, ResendEmailSender>();
 
 // Configure Session
 builder.Services.AddDistributedMemoryCache();

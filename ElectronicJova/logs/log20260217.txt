@@ -1,0 +1,246 @@
+2026-02-17 20:21:20.820 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-17 20:21:22.723 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-17 20:21:23.600 -06:00 [INF] Executed DbCommand (108ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-17 20:21:23.682 -06:00 [INF] Executed DbCommand (36ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-17 20:21:24.113 -06:00 [INF] Executed DbCommand (55ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-17 20:21:24.213 -06:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-17 20:21:24.226 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-17 20:21:24.527 -06:00 [INF] Now listening on: https://localhost:7095
+2026-02-17 20:21:24.529 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-17 20:21:25.281 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-17 20:21:25.283 -06:00 [INF] Hosting environment: Development
+2026-02-17 20:21:25.285 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-17 20:21:27.208 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ - null null
+2026-02-17 20:21:27.798 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-17 20:21:27.825 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-17 20:21:27.959 -06:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+2026-02-17 20:21:28.048 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-17 20:21:28.292 -06:00 [INF] Executed ViewResult - view Index executed in 250.2426ms.
+2026-02-17 20:21:28.301 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 470.7381ms
+2026-02-17 20:21:28.303 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-17 20:21:28.308 -06:00 [INF] HTTP GET / responded 200 in 785.0255 ms
+2026-02-17 20:21:28.319 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ - 200 null text/html; charset=utf-8 1122.5176ms
+2026-02-17 20:21:28.364 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/css/bootstrap.min.css - null null
+2026-02-17 20:21:28.370 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/css/site.css?v=xsFPSOD49LVkEiUsSEb628yA79HQcMSuNeRE9TRABkI - null null
+2026-02-17 20:21:28.370 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - null null
+2026-02-17 20:21:28.371 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/js/bootstrap.bundle.min.js - null null
+2026-02-17 20:21:28.387 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:28.371 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/jquery/dist/jquery.min.js - null null
+2026-02-17 20:21:28.387 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - null null
+2026-02-17 20:21:28.401 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-17 20:21:28.479 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 92.6098ms
+2026-02-17 20:21:28.500 -06:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery\dist\jquery.min.js'
+2026-02-17 20:21:28.500 -06:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\js\site.js'
+2026-02-17 20:21:28.507 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/jquery/dist/jquery.min.js - 200 89501 text/javascript 135.6793ms
+2026-02-17 20:21:28.504 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2026-02-17 20:21:28.515 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - 200 231 text/javascript 127.8858ms
+2026-02-17 20:21:28.521 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/css/bootstrap.min.css - 200 162720 text/css 193.0997ms
+2026-02-17 20:21:28.500 -06:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\css\site.css'
+2026-02-17 20:21:28.500 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2026-02-17 20:21:28.500 -06:00 [INF] Sending file. Request path: '/ElectronicJova.styles.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\obj\Debug\net8.0\scopedcss\bundle\ElectronicJova.styles.css'
+2026-02-17 20:21:28.532 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/css/site.css?v=xsFPSOD49LVkEiUsSEb628yA79HQcMSuNeRE9TRABkI - 200 847 text/css 161.9519ms
+2026-02-17 20:21:28.534 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/bootstrap/dist/js/bootstrap.bundle.min.js - 200 78468 text/javascript 162.736ms
+2026-02-17 20:21:28.536 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - 200 1109 text/css 165.5892ms
+2026-02-17 20:21:28.610 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 210.5349ms
+2026-02-17 20:21:29.182 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/favicon.ico - null null
+2026-02-17 20:21:29.188 -06:00 [INF] Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\favicon.ico'
+2026-02-17 20:21:29.189 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/favicon.ico - 200 5430 image/x-icon 7.5919ms
+2026-02-17 20:21:31.938 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Home/Details?productId=2 - null null
+2026-02-17 20:21:31.953 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
+2026-02-17 20:21:31.968 -06:00 [INF] Route matched with {action = "Details", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-17 20:21:32.073 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__productId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+WHERE `p`.`Id` = @__productId_0
+LIMIT 1
+2026-02-17 20:21:32.085 -06:00 [INF] Executing ViewResult, running view Details.
+2026-02-17 20:21:32.153 -06:00 [INF] Executed ViewResult - view Details executed in 68.1851ms.
+2026-02-17 20:21:32.155 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Details (ElectronicJova) in 183.5562ms
+2026-02-17 20:21:32.157 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
+2026-02-17 20:21:32.159 -06:00 [INF] HTTP GET /Home/Details responded 200 in 207.0739 ms
+2026-02-17 20:21:32.163 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Home/Details?productId=2 - 200 null text/html; charset=utf-8 224.5436ms
+2026-02-17 20:21:32.206 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/jquery-validation/dist/jquery.validate.min.js - null null
+2026-02-17 20:21:32.207 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:32.207 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - null null
+2026-02-17 20:21:32.207 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-17 20:21:32.217 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 9.7334ms
+2026-02-17 20:21:32.222 -06:00 [INF] Sending file. Request path: '/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js'
+2026-02-17 20:21:32.215 -06:00 [INF] Sending file. Request path: '/lib/jquery-validation/dist/jquery.validate.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js'
+2026-02-17 20:21:32.234 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - 200 5824 text/javascript 27.1688ms
+2026-02-17 20:21:32.238 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/lib/jquery-validation/dist/jquery.validate.min.js - 200 24601 text/javascript 32.0883ms
+2026-02-17 20:21:32.242 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 34.936ms
+2026-02-17 20:21:34.403 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/ - null null
+2026-02-17 20:21:34.419 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-17 20:21:34.421 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-17 20:21:34.436 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+2026-02-17 20:21:34.442 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-17 20:21:34.470 -06:00 [INF] Executed ViewResult - view Index executed in 27.8304ms.
+2026-02-17 20:21:34.475 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 48.6822ms
+2026-02-17 20:21:34.480 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-17 20:21:34.483 -06:00 [INF] HTTP GET / responded 200 in 68.7982 ms
+2026-02-17 20:21:34.486 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/ - 200 null text/html; charset=utf-8 83.9766ms
+2026-02-17 20:21:34.537 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-17 20:21:34.537 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:34.559 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 22.3855ms
+2026-02-17 20:21:34.575 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 38.5366ms
+2026-02-17 20:21:35.955 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Account/Register - null null
+2026-02-17 20:21:35.967 -06:00 [INF] Executing endpoint '/Account/Register'
+2026-02-17 20:21:35.998 -06:00 [INF] Route matched with {page = "/Account/Register", area = "Identity", action = "", controller = ""}. Executing page /Account/Register
+2026-02-17 20:21:36.014 -06:00 [INF] Executed page /Account/Register in 12.5064ms
+2026-02-17 20:21:36.018 -06:00 [INF] Executed endpoint '/Account/Register'
+2026-02-17 20:21:36.024 -06:00 [ERR] HTTP GET /Identity/Account/Register responded 500 in 57.1144 ms
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNetCore.Identity.UI.Services.IEmailSender' while attempting to activate 'ElectronicJova.Areas.Identity.Pages.Account.RegisterModel'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method199(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.DefaultPageModelFactoryProvider.<>c__DisplayClass3_0.<CreateModelFactory>b__0(PageContext pageContext)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.CreateInstance()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-02-17 20:21:36.084 -06:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNetCore.Identity.UI.Services.IEmailSender' while attempting to activate 'ElectronicJova.Areas.Identity.Pages.Account.RegisterModel'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method199(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.DefaultPageModelFactoryProvider.<>c__DisplayClass3_0.<CreateModelFactory>b__0(PageContext pageContext)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.CreateInstance()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-02-17 20:21:36.135 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Account/Register - 500 null text/html; charset=utf-8 180.8853ms
+2026-02-17 20:21:36.179 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:36.179 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-17 20:21:36.186 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 7.5973ms
+2026-02-17 20:21:36.213 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 34.7581ms
+2026-02-17 20:21:38.561 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:38.572 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 11.98ms
+2026-02-17 20:21:39.671 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Account/Login - null null
+2026-02-17 20:21:39.688 -06:00 [INF] Executing endpoint '/Account/Login'
+2026-02-17 20:21:39.698 -06:00 [INF] Route matched with {page = "/Account/Login", area = "Identity", action = "", controller = ""}. Executing page /Account/Login
+2026-02-17 20:21:39.719 -06:00 [INF] Executing handler method ElectronicJova.Areas.Identity.Pages.Account.LoginModel.OnGetAsync - ModelState is "Valid"
+2026-02-17 20:21:39.731 -06:00 [INF] AuthenticationScheme: Identity.External signed out.
+2026-02-17 20:21:39.739 -06:00 [INF] Executed handler method OnGetAsync, returned result .
+2026-02-17 20:21:39.748 -06:00 [INF] Executing an implicit handler method - ModelState is "Valid"
+2026-02-17 20:21:39.751 -06:00 [INF] Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+2026-02-17 20:21:39.833 -06:00 [INF] Executed page /Account/Login in 131.9203ms
+2026-02-17 20:21:39.836 -06:00 [INF] Executed endpoint '/Account/Login'
+2026-02-17 20:21:39.838 -06:00 [INF] HTTP GET /Identity/Account/Login responded 200 in 150.7101 ms
+2026-02-17 20:21:39.842 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Account/Login - 200 null text/html; charset=utf-8 172.1734ms
+2026-02-17 20:21:39.891 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:39.891 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js - null null
+2026-02-17 20:21:39.891 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-17 20:21:39.897 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 6.3856ms
+2026-02-17 20:21:39.891 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/lib/jquery-validation/dist/jquery.validate.js - null null
+2026-02-17 20:21:39.907 -06:00 [INF] Sending file. Request path: '/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js'. Physical path: 'C:\Users\victo\.nuget\packages\microsoft.aspnetcore.identity.ui\8.0.0\staticwebassets\V5\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js'
+2026-02-17 20:21:39.933 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 42.4328ms
+2026-02-17 20:21:39.937 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js - 200 19385 text/javascript 46.2678ms
+2026-02-17 20:21:39.941 -06:00 [INF] Sending file. Request path: '/Identity/lib/jquery-validation/dist/jquery.validate.js'. Physical path: 'C:\Users\victo\.nuget\packages\microsoft.aspnetcore.identity.ui\8.0.0\staticwebassets\V5\lib\jquery-validation\dist\jquery.validate.js'
+2026-02-17 20:21:39.952 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/lib/jquery-validation/dist/jquery.validate.js - 200 51171 text/javascript 61.9194ms
+2026-02-17 20:21:43.170 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Account/Register - null null
+2026-02-17 20:21:43.179 -06:00 [INF] Executing endpoint '/Account/Register'
+2026-02-17 20:21:43.182 -06:00 [INF] Route matched with {page = "/Account/Register", area = "Identity", action = "", controller = ""}. Executing page /Account/Register
+2026-02-17 20:21:43.189 -06:00 [INF] Executed page /Account/Register in 5.1922ms
+2026-02-17 20:21:43.193 -06:00 [INF] Executed endpoint '/Account/Register'
+2026-02-17 20:21:43.196 -06:00 [ERR] HTTP GET /Identity/Account/Register responded 500 in 16.5616 ms
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNetCore.Identity.UI.Services.IEmailSender' while attempting to activate 'ElectronicJova.Areas.Identity.Pages.Account.RegisterModel'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method199(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.DefaultPageModelFactoryProvider.<>c__DisplayClass3_0.<CreateModelFactory>b__0(PageContext pageContext)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.CreateInstance()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-02-17 20:21:43.207 -06:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNetCore.Identity.UI.Services.IEmailSender' while attempting to activate 'ElectronicJova.Areas.Identity.Pages.Account.RegisterModel'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method199(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.DefaultPageModelFactoryProvider.<>c__DisplayClass3_0.<CreateModelFactory>b__0(PageContext pageContext)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.CreateInstance()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-02-17 20:21:43.226 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Account/Register - 500 null text/html; charset=utf-8 56.8264ms
+2026-02-17 20:21:43.283 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:43.283 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_vs/browserLink - null null
+2026-02-17 20:21:43.291 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 8.9322ms
+2026-02-17 20:21:43.315 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_vs/browserLink - 200 null text/javascript; charset=UTF-8 32.3447ms
+2026-02-17 20:21:57.974 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/Identity/Account/Login - null null
+2026-02-17 20:21:57.982 -06:00 [INF] Executing endpoint '/Account/Login'
+2026-02-17 20:21:57.984 -06:00 [INF] Route matched with {page = "/Account/Login", area = "Identity", action = "", controller = ""}. Executing page /Account/Login
+2026-02-17 20:21:57.988 -06:00 [INF] Executing handler method ElectronicJova.Areas.Identity.Pages.Account.LoginModel.OnGetAsync - ModelState is "Valid"
+2026-02-17 20:21:57.990 -06:00 [INF] AuthenticationScheme: Identity.External signed out.
+2026-02-17 20:21:57.991 -06:00 [INF] Executed handler method OnGetAsync, returned result .
+2026-02-17 20:21:57.994 -06:00 [INF] Executing an implicit handler method - ModelState is "Valid"
+2026-02-17 20:21:57.995 -06:00 [INF] Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+2026-02-17 20:21:58.005 -06:00 [INF] Executed page /Account/Login in 18.9922ms
+2026-02-17 20:21:58.007 -06:00 [INF] Executed endpoint '/Account/Login'
+2026-02-17 20:21:58.008 -06:00 [INF] HTTP GET /Identity/Account/Login responded 200 in 26.8013 ms
+2026-02-17 20:21:58.011 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/Identity/Account/Login - 200 null text/html; charset=utf-8 38.1353ms
+2026-02-17 20:21:58.063 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-17 20:21:58.074 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7095/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 12.6423ms
