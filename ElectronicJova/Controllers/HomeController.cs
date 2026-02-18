@@ -81,9 +81,9 @@ namespace ElectronicJova.Controllers
             return View("Search", searchVM);
         }
 
-        public async Task<IActionResult> Details(int productId)
+        public async Task<IActionResult> Details(int id)
         {
-            var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == productId, includeProperties: "Category");
+            var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id, includeProperties: "Category");
 
             if (product == null)
             {
@@ -94,7 +94,7 @@ namespace ElectronicJova.Controllers
             {
                 Product = product,
                 Count = 1,
-                ProductOptions = await _unitOfWork.ProductOption.GetAllAsync(u => u.ProductId == productId)
+                ProductOptions = await _unitOfWork.ProductOption.GetAllAsync(u => u.ProductId == id)
             };
 
             // Verificar si el producto está en favoritos del usuario
@@ -105,7 +105,7 @@ namespace ElectronicJova.Controllers
                 if (!string.IsNullOrEmpty(userId))
                 {
                     var wishlistItem = await _unitOfWork.Wishlist.GetFirstOrDefaultAsync(
-                        u => u.ApplicationUserId == userId && u.ProductId == productId
+                        u => u.ApplicationUserId == userId && u.ProductId == id
                     );
                     detailsVM.IsFavorite = wishlistItem != null;
                 }

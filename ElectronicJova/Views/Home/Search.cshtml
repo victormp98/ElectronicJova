@@ -44,7 +44,7 @@
         @foreach (var product in Model.Products)
         {
             <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <a asp-action="Details" asp-route-productId="@product.Id" class="product-card h-100">
+                <a asp-action="Details" asp-route-id="@product.Id" class="product-card h-100">
                     <div class="position-relative">
                         <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://via.placeholder.com/300x200?text=No+Image" : product.ImageUrl)" class="card-img-top" alt="@product!.Title" loading="lazy"/>
                         
