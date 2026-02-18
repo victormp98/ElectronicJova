@@ -2,6 +2,7 @@ using ElectronicJova.Data.Repository;
 using ElectronicJova.Models;
 using ElectronicJova.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -12,10 +13,12 @@ namespace ElectronicJova.Areas.Customer.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(IUnitOfWork unitOfWork)
+        public OrderController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         // GET: /Customer/Order — Historial de pedidos del cliente
@@ -53,6 +56,44 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
             ViewBag.OrderDetails = orderDetails;
             return View(orderHeader);
+        }
+
+        // GET: /Customer/Order/Profile
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+            return View(user);
+        }
+
+        // POST: /Customer/Order/Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(ApplicationUser model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
+            user.Name = model.Name;
+            user.PhoneNumber = model.PhoneNumber;
+            user.StreetAddress = model.StreetAddress;
+            user.City = model.City;
+            user.State = model.State;
+            user.PostalCode = model.PostalCode;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["success"] = "Perfil actualizado correctamente.";
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Profile));
         }
     }
 }

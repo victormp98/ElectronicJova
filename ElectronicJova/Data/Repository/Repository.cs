@@ -116,11 +116,6 @@ namespace ElectronicJova.Data.Repository
             dbSet.RemoveRange(entity);
         }
 
-        public async System.Threading.Tasks.Task RemoveRangeAsync(IEnumerable<T> entity)
-        {
-            dbSet.RemoveRange(entity);
-            await System.Threading.Tasks.Task.CompletedTask;
-        }
 
         public void Update(T entity)
         {

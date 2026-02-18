@@ -7,7 +7,7 @@
             <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h3 class="text-white">Order Summary</h3>
+                        <h3 class="text-white">Resumen del pedido</h3>
                     </div>
                 </div>
             </div>
@@ -17,12 +17,12 @@
                         <div class="col-12 col-lg-6 pb-4">
                             <div class="row">
                                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-primary">Shipping Details:</span>
+                                    <span class="text-primary">Detalles de envío:</span>
                                 </h4>
                             </div>
                             <div class="row my-2">
                                 <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Name</label>
+                                    <label class="text-secondary">Nombre</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.Name" class="form-control" />
@@ -31,7 +31,7 @@
                             </div>
                             <div class="row my-2">
                                 <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Phone</label>
+                                    <label class="text-secondary">Teléfono</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.PhoneNumber" class="form-control" />
@@ -40,7 +40,7 @@
                             </div>
                             <div class="row my-2">
                                 <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Address</label>
+                                    <label class="text-secondary">Dirección</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.StreetAddress" class="form-control" />
@@ -49,7 +49,7 @@
                             </div>
                             <div class="row my-2">
                                 <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">City</label>
+                                    <label class="text-secondary">Ciudad</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.City" class="form-control" />
@@ -58,7 +58,7 @@
                             </div>
                             <div class="row my-2">
                                 <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">State</label>
+                                    <label class="text-secondary">Estado / Provincia</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.State" class="form-control" />
@@ -67,7 +67,7 @@
                             </div>
                             <div class="row my-2">
                                 <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Zip Code</label>
+                                    <label class="text-secondary">Código postal</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.PostalCode" class="form-control" />
@@ -77,7 +77,7 @@
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-primary">Order Summary:</span>
+                                <span class="text-primary">Tu pedido:</span>
                             </h4>
                             <ul class="list-group mb-3">
                                 @foreach (var item in Model.ShoppingCartList)
@@ -85,7 +85,7 @@
                                     <li class="list-group-item d-flex justify-content-between lh-sm">
                                         <div>
                                             <h6 class="my-0">@item.Product.Title</h6>
-                                            <small class="text-muted">Quantity: @item.Count</small>
+                                            <small class="text-muted">Cantidad: @item.Count</small>
 
                                             @if (!string.IsNullOrEmpty(item.SelectedOptions))
                                             {
@@ -123,13 +123,13 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-md-8 mb-3 mb-md-0">
                         <p class="mb-0 text-muted" style="font-size:14px;">
-                            <i class="bi bi-truck me-2"></i>Estimate Arrival Date: 
+                            <i class="bi bi-truck me-2"></i>Fecha estimada de entrega:
                             <span class="fw-bold">@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()</span>
                         </p>
                     </div>
                     <div class="col-12 col-md-4">
                         <button type="submit" class="btn btn-primary bg-gradient btn-lg w-100 rounded-pill py-3 shadow-lg">
-                            Place Order
+                            Confirmar compra
                         </button>
                     </div>
                 </div>

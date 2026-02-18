@@ -50,15 +50,9 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 .Select(g => g.Key)
                 .ToList();
 
-            var topProducts = new List<Product>();
-            foreach (var productId in topProductIds)
-            {
-                var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == productId);
-                if (product != null)
-                {
-                    topProducts.Add(product);
-                }
-            }
+            var topProducts = (await _unitOfWork.Product.GetAllAsync(p => topProductIds.Contains(p.Id)))
+                .OrderBy(p => topProductIds.IndexOf(p.Id))
+                .ToList();
 
             var dashboardVM = new DashboardVM
             {

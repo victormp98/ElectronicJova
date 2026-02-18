@@ -31,6 +31,17 @@ namespace ElectronicJova.Controllers
             int pageSize = 8;
             var paginatedProducts = await PaginatedList<Product>.CreateAsync(productQuery, pageNumber ?? 1, pageSize);
 
+            // FS-05: Initialize CartItemCount from DB if session is missing (e.g., after login)
+            if (User.Identity?.IsAuthenticated == true && HttpContext.Session.GetInt32("CartItemCount") == null)
+            {
+                var userId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (userId != null)
+                {
+                    var cartCount = (await _unitOfWork.ShoppingCart.GetAllAsync(c => c.ApplicationUserId == userId)).Count();
+                    HttpContext.Session.SetInt32("CartItemCount", cartCount);
+                }
+            }
+
             return View(paginatedProducts);
         }
 
@@ -125,6 +136,13 @@ namespace ElectronicJova.Controllers
             if (userId == null)
             {
                 return Unauthorized();
+            }
+
+            // B-05: Reload product from DB to prevent tampered hidden-field attacks
+            var productFromDb = await _unitOfWork.Product.GetFirstOrDefaultAsync(p => p.Id == detailsVM.Product.Id);
+            if (productFromDb == null)
+            {
+                return NotFound();
             }
 
             // Almacenar opciones seleccionadas como JSON

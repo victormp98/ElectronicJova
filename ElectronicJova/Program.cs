@@ -67,7 +67,13 @@ builder.Services.AddSession(options =>
 
 // Configure Stripe API Key
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
-StripeConfiguration.ApiKey = builder.Configuration["StripeSettings:SecretKey"];
+var stripeSecretKey = builder.Configuration["StripeSettings:SecretKey"];
+var stripeWebhookSecret = builder.Configuration["StripeSettings:WebhookSecret"];
+if (string.IsNullOrEmpty(stripeSecretKey))
+    throw new InvalidOperationException("StripeSettings:SecretKey no está configurado. Revisa appsettings.json o las variables de entorno.");
+if (string.IsNullOrEmpty(stripeWebhookSecret))
+    throw new InvalidOperationException("StripeSettings:WebhookSecret no está configurado. Sin esto, los webhooks de Stripe no se verifican.");
+StripeConfiguration.ApiKey = stripeSecretKey;
 
 var app = builder.Build();
 

@@ -19,6 +19,7 @@ namespace ElectronicJova.Data
         public DbSet<Product> Products { get; set; } = null!; // Model for Products
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!; // Model for ShoppingCarts
         public DbSet<OrderHeader> OrderHeaders { get; set; } = null!; // Model for OrderHeaders
+        public DbSet<OrderDetail> OrderDetails { get; set; } = null!; // Model for OrderDetails
         public DbSet<ProductOption> ProductOptions { get; set; } = null!; // Model for ProductOptions
         public DbSet<Wishlist> Wishlists { get; set; } = null!; // Model for Wishlist
 

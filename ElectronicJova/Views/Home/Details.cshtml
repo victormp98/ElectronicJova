@@ -26,7 +26,7 @@
             <!-- Product Info Side -->
             <div class="col-12 col-md-5">
                 <div class="ps-md-4">
-                    <span class="text-muted small mb-1 d-block">Nuevo  |  10k+ vendidos</span>
+                    <span class="text-muted small mb-1 d-block">Nuevo</span>
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <h2 class="fw-bold fs-3 text-dark mb-0">@Model.Product.Title</h2>
                         @* The original favorite button was here, but the instruction implies moving it or adding a new one in the image container.
@@ -39,12 +39,18 @@
                     <p class="text-secondary small mb-3">por <span class="text-primary">@Model.Product.Author</span></p>
 
                     <div class="mb-4">
-                        <span class="text-muted text-decoration-line-through fs-5">@Model.Product.ListPrice.ToString("c")</span>
+                        @if (Model.Product.ListPrice > Model.Product.Price)
+                        {
+                            <span class="text-muted text-decoration-line-through fs-5">@Model.Product.ListPrice.ToString("c")</span>
+                        }
                         <div class="d-flex align-items-center">
                             <h1 class="fw-bold text-dark me-2 mb-0" style="font-size: 2.5rem;">@Model.Product.Price.ToString("c")</h1>
-                            <span class="text-success fw-bold">15% OFF</span>
+                            @if (Model.Product.ListPrice > Model.Product.Price)
+                            {
+                                var discountPct = (int)Math.Round((1 - (double)Model.Product.Price / (double)Model.Product.ListPrice) * 100);
+                                <span class="text-success fw-bold">@discountPct% OFF</span>
+                            }
                         </div>
-                        <p class="text-success small fw-bold mt-1">en 12x de @((Model.Product.Price / 12).ToString("c")) sin interés</p>
                     </div>
 
                     @if(Model.Product.Stock > 0)
@@ -96,9 +102,6 @@
                         <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al carrito
                         </button>
-                        <button type="button" class="btn btn-outline-primary btn-lg py-3 fw-bold">
-                            <i class="bi bi-lightning-fill me-2"></i>Comprar ahora
-                        </button>
                     </div>
 
                     <div class="mt-4 p-3 bg-opacity-10 bg-info rounded border border-info border-opacity-25">
@@ -142,7 +145,7 @@
 
             checkboxes.on('change', updateTotal);
 
-            $('#favoriteBtn').click(function() {
+            $('#favoriteBtnImage').click(function() {
                 const btn = $(this);
                 const icon = btn.find('i');
                 const productId = @Model.Product.Id;

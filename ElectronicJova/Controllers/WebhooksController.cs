@@ -59,7 +59,7 @@ namespace ElectronicJova.Controllers
                                 orderHeader.OrderStatusValue = (int)SD.OrderStatus.Approved;
                                 orderHeader.PaymentIntentId = session.PaymentIntentId;
                                 _unitOfWork.OrderHeader.Update(orderHeader);
-                                _unitOfWork.Save();
+                                await _unitOfWork.SaveAsync();
 
                                 // Decrement Stock
                                 var orderDetails = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == orderHeader.Id, includeProperties: "Product");
@@ -72,7 +72,7 @@ namespace ElectronicJova.Controllers
                                         _unitOfWork.Product.Update(product);
                                     }
                                 }
-                                _unitOfWork.Save();
+                                await _unitOfWork.SaveAsync();
 
                                 // SignalR: Notificar al cliente en tiempo real que el pago fue aprobado
                                 await _hubContext.Clients.Group($"order-{orderHeader.Id}")

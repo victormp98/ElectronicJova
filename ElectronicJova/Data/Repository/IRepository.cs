@@ -10,7 +10,6 @@ namespace ElectronicJova.Data.Repository
         System.Threading.Tasks.Task AddAsync(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
-        System.Threading.Tasks.Task RemoveRangeAsync(IEnumerable<T> entity);
         void Update(T entity);
         System.Threading.Tasks.Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true);
         System.Threading.Tasks.Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);

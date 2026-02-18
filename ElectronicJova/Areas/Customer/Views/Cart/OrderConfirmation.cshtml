@@ -1,19 +1,101 @@
 @using ElectronicJova.Models
+@using ElectronicJova.Utilities
 @model OrderHeader
 
 @{
-    ViewData["Title"] = "Order Confirmation";
+    ViewData["Title"] = "Confirmación de pedido";
 }
 
-<div class="container row">
-    <div class="col-12 text-center">
-        <h1 class="text-primary text-center">Order Placed Successfully!</h1>
-        <br />
-        <img src="~/images/order_placed.png" width="65%" />
-        <br />
-        <br />
-        <h4>Your Order ID is : @Model.Id</h4>
-        <br />
-        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 text-center">
+            <div id="statusIcon" class="mb-4">
+                <i class="bi bi-hourglass-split fs-1 text-warning" id="statusIconEl"></i>
+            </div>
+            <h1 class="text-success fw-bold mb-2" id="statusTitle">¡Pedido realizado!</h1>
+            <p class="text-muted mb-1">Número de pedido: <strong>#@Model.Id</strong></p>
+            <p class="text-muted mb-4">Recibirás una confirmación por correo electrónico.</p>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Estado del pedido</h5>
+                    <div id="orderStatusBadge" class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi @SD.GetOrderStatusIcon(Model.OrderStatus) fs-4 text-warning" id="statusBadgeIcon"></i>
+                        <span class="badge bg-warning text-dark fs-6 px-3 py-2" id="statusBadgeText">
+                            @SD.GetOrderStatusLabel(Model.OrderStatus)
+                        </span>
+                    </div>
+                    <p class="text-muted small mt-3 mb-0">
+                        <i class="bi bi-info-circle me-1"></i>
+                        El estado se actualizará automáticamente en tiempo real.
+                    </p>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-area="Customer" asp-controller="Order" asp-action="Details" asp-route-orderId="@Model.Id"
+                   class="btn btn-outline-primary px-4">
+                    <i class="bi bi-receipt me-2"></i>Ver detalle del pedido
+                </a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary px-4">
+                    <i class="bi bi-house me-2"></i>Volver al inicio
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const orderId = @Model.Id;
+
+            const statusColors = {
+                'Pending':    { badge: 'bg-warning text-dark', icon: 'text-warning' },
+                'Approved':   { badge: 'bg-success text-white', icon: 'text-success' },
+                'Processing': { badge: 'bg-info text-white',    icon: 'text-info' },
+                'Shipped':    { badge: 'bg-primary text-white', icon: 'text-primary' },
+                'Delivered':  { badge: 'bg-success text-white', icon: 'text-success' },
+                'Cancelled':  { badge: 'bg-danger text-white',  icon: 'text-danger' }
+            };
+
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/hubs/orderStatus")
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("OrderStatusUpdated", function (status, label, iconClass) {
+                const colors = statusColors[status] || { badge: 'bg-secondary text-white', icon: 'text-secondary' };
+
+                // Update badge text and color
+                $('#statusBadgeText')
+                    .text(label)
+                    .removeClass()
+                    .addClass('badge fs-6 px-3 py-2 ' + colors.badge);
+
+                // Update badge icon
+                $('#statusBadgeIcon')
+                    .removeClass()
+                    .addClass('bi ' + iconClass + ' fs-4 ' + colors.icon);
+
+                // If delivered, update the main title
+                if (status === 'Delivered') {
+                    $('#statusTitle').text('¡Pedido entregado!');
+                } else if (status === 'Approved') {
+                    $('#statusTitle').text('¡Pago confirmado!');
+                } else if (status === 'Cancelled') {
+                    $('#statusTitle').text('Pedido cancelado').removeClass('text-success').addClass('text-danger');
+                }
+            });
+
+            connection.start()
+                .then(function () {
+                    return connection.invoke("JoinOrderGroup", orderId);
+                })
+                .catch(function (err) {
+                    console.error("SignalR connection error:", err);
+                });
+        });
+    </script>
+}
