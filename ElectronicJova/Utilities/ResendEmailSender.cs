@@ -1,25 +1,28 @@
-using ElectronicJova.Utilities;
-using ResendClientLib = Resend; // Alias for the external library
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Resend;
 
 namespace ElectronicJova.Utilities
 {
-    public class ResendEmailSender : IEmailSender
+    // Update class to implement both the custom IEmailSender and the Identity IEmailSender
+    public class ResendEmailSender : IEmailSender, Microsoft.AspNetCore.Identity.UI.Services.IEmailSender
     {
-        private readonly ResendClientLib.IResend _resendClient;
+        private readonly string _apiKey;
         private readonly string _senderEmail;
         private readonly string _senderName;
 
-        public ResendEmailSender(string apiKey, string senderEmail, string senderName)
+        public ResendEmailSender(IConfiguration configuration)
         {
-            _resendClient = ResendClientLib.ResendClient.Create(apiKey);
-            _senderEmail = senderEmail;
-            _senderName = senderName;
+            _apiKey = configuration["ResendSettings:ApiKey"] ?? throw new InvalidOperationException("Resend API key is not configured.");
+            _senderEmail = configuration["ResendSettings:SenderEmail"] ?? throw new InvalidOperationException("Resend sender email is not configured.");
+            _senderName = configuration["ResendSettings:SenderName"] ?? throw new InvalidOperationException("Resend sender name is not configured.");
         }
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var emailOptions = new ResendClientLib.EmailMessage()
+            var client = new ResendClient(_apiKey);
+
+            var message = new EmailMessage
             {
                 From = $"{_senderName} <{_senderEmail}>",
                 To = email,
@@ -27,7 +30,7 @@ namespace ElectronicJova.Utilities
                 HtmlBody = htmlMessage
             };
 
-            await _resendClient.EmailSendAsync(emailOptions);
+            await client.Email.SendAsync(message);
         }
     }
 }
