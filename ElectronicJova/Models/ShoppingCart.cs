@@ -26,5 +26,8 @@ namespace ElectronicJova.Models
 
         [NotMapped]
         public decimal Price { get; set; }
+
+        public string? SelectedOptions { get; set; }
+        public string? SpecialNotes { get; set; }
     }
 }

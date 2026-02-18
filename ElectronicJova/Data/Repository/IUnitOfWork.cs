@@ -12,6 +12,8 @@ namespace ElectronicJova.Data.Repository
         IRepository<OrderHeader> OrderHeader { get; }
         IRepository<OrderDetail> OrderDetail { get; }
         IRepository<ApplicationUser> ApplicationUser { get; }
+        IRepository<ProductOption> ProductOption { get; }
+        IRepository<Wishlist> Wishlist { get; }
 
         void Save();
         System.Threading.Tasks.Task SaveAsync();

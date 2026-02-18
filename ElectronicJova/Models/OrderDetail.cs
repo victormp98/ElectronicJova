@@ -22,5 +22,11 @@ namespace ElectronicJova.Models
 
         [Required]
         public decimal Price { get; set; }
+
+        [Display(Name = "Opciones seleccionadas")]
+        public string? SelectedOptions { get; set; } // Almacenar como JSON
+
+        [Display(Name = "Notas especiales")]
+        public string? SpecialNotes { get; set; }
     }
 }

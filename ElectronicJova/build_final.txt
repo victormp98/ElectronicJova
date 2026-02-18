@@ -1,0 +1,12 @@
+﻿  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos están actualizados para la restauración.
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Customer\Views\Order\Index.cshtml(74,34): error RZ1010: Unexpected "{" after "@" character. Once inside the body of a code block (@if {}, @{}, etc.) you do not need to use "@{" to switch to code. [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+
+ERROR al compilar.
+
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Customer\Views\Order\Index.cshtml(74,34): error RZ1010: Unexpected "{" after "@" character. Once inside the body of a code block (@if {}, @{}, etc.) you do not need to use "@{" to switch to code. [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+    0 Advertencia(s)
+    1 Errores
+
+Tiempo transcurrido 00:00:03.97
+

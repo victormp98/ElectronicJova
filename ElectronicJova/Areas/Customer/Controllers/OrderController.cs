@@ -18,24 +18,40 @@ namespace ElectronicJova.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        // GET: /Customer/Order — Historial de pedidos del cliente
         public async Task<IActionResult> Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
 
-            IEnumerable<OrderHeader> orderHeaders = await _unitOfWork.OrderHeader.GetAllAsync(
+            var orders = await _unitOfWork.OrderHeader.GetAllAsync(
                 u => u.ApplicationUserId == userId,
-                includeProperties: "ApplicationUser"
-            );
-            return View(orderHeaders);
+                includeProperties: "ApplicationUser");
+
+            return View(orders.OrderByDescending(o => o.OrderDate));
         }
 
+        // GET: /Customer/Order/Details/{orderId}
         public async Task<IActionResult> Details(int orderId)
         {
-            OrderHeader orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(
                 u => u.Id == orderId,
-                includeProperties: "ApplicationUser,OrderDetails.Product"
-            );
+                includeProperties: "ApplicationUser");
+
+            if (orderHeader == null) return NotFound();
+
+            // Ownership check — solo el dueño puede ver su orden
+            if (orderHeader.ApplicationUserId != userId)
+                return Forbid();
+
+            var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(
+                u => u.OrderHeaderId == orderId,
+                includeProperties: "Product");
+
+            ViewBag.OrderDetails = orderDetails;
             return View(orderHeader);
         }
     }

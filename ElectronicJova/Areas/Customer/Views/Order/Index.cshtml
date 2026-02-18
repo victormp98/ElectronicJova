@@ -1,59 +1,91 @@
-@using ElectronicJova.Models
-@model IEnumerable<OrderHeader>
+@model IEnumerable<ElectronicJova.Models.OrderHeader>
+@using ElectronicJova.Utilities
 
 @{
-    ViewData["Title"] = "My Orders";
+    ViewData["Title"] = "Mis Pedidos";
 }
 
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">My Order History</h2>
-        </div>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">
+            <i class="bi bi-bag-check me-2 text-primary"></i>Mis Pedidos
+        </h2>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary rounded-pill">
+            <i class="bi bi-shop me-1"></i>Seguir Comprando
+        </a>
     </div>
-    <br />
 
-    @if (Model != null && Model.Any())
+    if (!Model.Any())
     {
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Payment Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var orderHeader in Model)
-                {
-                    <tr>
-                        <td>@orderHeader.Id</td>
-                        <td>@orderHeader.OrderDate.ToShortDateString()</td>
-                        <td>@orderHeader.OrderTotal.ToString("c")</td>
-                        <td>@orderHeader.OrderStatus</td>
-                        <td>@orderHeader.PaymentStatus</td>
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary mx-2">
-                                    <i class="bi bi-info-circle"></i> Details
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="text-center py-5">
+            <i class="bi bi-bag-x display-1 text-muted"></i>
+            <h4 class="mt-3 text-muted">Aún no tienes pedidos</h4>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3 rounded-pill px-4">
+                Explorar Productos
+            </a>
+        </div>
     }
     else
     {
-        <div class="row pt-3">
-            <div class="col-12 text-center">
-                <p class="lead">You have no previous orders.</p>
-                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Continue Shopping</a>
-            </div>
+        <div class="row g-3">
+            @foreach (var order in Model)
+            {
+                var statusEnum = SD.ParseOrderStatus(order.OrderStatus);
+                var isCancelled = order.OrderStatus == SD.StatusCancelled;
+
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <small class="text-muted d-block">Pedido #</small>
+                                    <strong class="fs-5">@order.Id</strong>
+                                </div>
+                                <div class="col-md-3">
+                                    <small class="text-muted d-block">Fecha</small>
+                                    <span>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <small class="text-muted d-block">Total</small>
+                                    <strong class="text-primary">@order.OrderTotal.ToString("c")</strong>
+                                </div>
+                                <div class="col-md-3">
+                                    <small class="text-muted d-block">Estado</small>
+                                    @{
+                                        var badgeClass = isCancelled ? "bg-danger" :
+                                            order.OrderStatus == SD.StatusDelivered ? "bg-success" :
+                                            order.OrderStatus == SD.StatusShipped ? "bg-info" : "bg-warning text-dark";
+                                    }
+                                    <span class="badge @badgeClass rounded-pill px-3 py-2">
+                                        <i class="bi @SD.GetOrderStatusIcon(order.OrderStatus) me-1"></i>
+                                        @SD.GetOrderStatusLabel(order.OrderStatus)
+                                    </span>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <a asp-action="Details" asp-route-orderId="@order.Id"
+                                       class="btn btn-outline-primary btn-sm rounded-pill">
+                                        <i class="bi bi-eye me-1"></i>Ver Detalle
+                                    </a>
+                                </div>
+                            </div>
+
+                            @if (!isCancelled)
+                            {
+                                var step = (int)statusEnum;
+                                var maxStep = 4;
+                                var pct = Math.Min((step * 100) / maxStep, 100);
+
+                                <!-- Mini barra de progreso -->
+                                <div class="mt-3">
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-primary" style="width: @pct%"></div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     }
 </div>

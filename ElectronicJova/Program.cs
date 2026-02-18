@@ -9,6 +9,7 @@ using ElectronicJova.Utilities;
 using Stripe;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Resend;
+using ElectronicJova.Hubs;
 
 var loggerConfig = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
@@ -24,6 +25,7 @@ builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR(); // Fase 3: Notificaciones en tiempo real
 
 // Configure DbContext for MySQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -88,6 +90,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+app.MapHub<OrderStatusHub>("/hubs/orderStatus"); // Fase 3: SignalR hub
 
 
 

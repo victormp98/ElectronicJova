@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe;
 using Stripe.Checkout;
+using Microsoft.AspNetCore.SignalR;
+using ElectronicJova.Hubs;
 
 namespace ElectronicJova.Controllers
 {
@@ -16,12 +18,15 @@ namespace ElectronicJova.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
         private readonly StripeSettings _stripeSettings;
+        private readonly IHubContext<OrderStatusHub> _hubContext;
 
-        public WebhooksController(IUnitOfWork unitOfWork, IEmailSender emailSender, IOptions<StripeSettings> stripeSettings)
+        public WebhooksController(IUnitOfWork unitOfWork, IEmailSender emailSender, 
+            IOptions<StripeSettings> stripeSettings, IHubContext<OrderStatusHub> hubContext)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
             _stripeSettings = stripeSettings.Value;
+            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -49,7 +54,9 @@ namespace ElectronicJova.Controllers
                             if (orderHeader != null && orderHeader.PaymentStatus != SD.PaymentStatusApproved)
                             {
                                 orderHeader.PaymentStatus = SD.PaymentStatusApproved;
+                                orderHeader.PaymentStatusValue = (int)SD.PaymentStatus.Approved;
                                 orderHeader.OrderStatus = SD.StatusApproved;
+                                orderHeader.OrderStatusValue = (int)SD.OrderStatus.Approved;
                                 orderHeader.PaymentIntentId = session.PaymentIntentId;
                                 _unitOfWork.OrderHeader.Update(orderHeader);
                                 _unitOfWork.Save();
@@ -66,6 +73,12 @@ namespace ElectronicJova.Controllers
                                     }
                                 }
                                 _unitOfWork.Save();
+
+                                // SignalR: Notificar al cliente en tiempo real que el pago fue aprobado
+                                _hubContext.Clients.Group($"order-{orderHeader.Id}")
+                                    .SendAsync("OrderStatusUpdated", SD.StatusApproved,
+                                        SD.GetOrderStatusLabel(SD.StatusApproved),
+                                        SD.GetOrderStatusIcon(SD.StatusApproved));
                             }
                         }
                     }

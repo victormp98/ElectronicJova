@@ -82,12 +82,27 @@ namespace ElectronicJova.Controllers
             DetailsVM detailsVM = new()
             {
                 Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == productId, includeProperties: "Category"),
-                Count = 1
+                Count = 1,
+                ProductOptions = await _unitOfWork.ProductOption.GetAllAsync(u => u.ProductId == productId)
             };
 
             if (detailsVM.Product == null)
             {
                 return NotFound();
+            }
+
+            // Verificar si el producto está en favoritos del usuario
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            if (claimsIdentity?.IsAuthenticated == true)
+            {
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    var wishlistItem = await _unitOfWork.Wishlist.GetFirstOrDefaultAsync(
+                        u => u.ApplicationUserId == userId && u.ProductId == productId
+                    );
+                    detailsVM.IsFavorite = wishlistItem != null;
+                }
             }
 
             return View(detailsVM);
@@ -96,32 +111,47 @@ namespace ElectronicJova.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize] // User must be logged in to add to cart
-        public async Task<IActionResult> Details(DetailsVM detailsVM)
+        public async Task<IActionResult> Details(DetailsVM detailsVM, List<int>? selectedOptions, string? specialNotes)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            // Almacenar opciones seleccionadas como JSON
+            string? optionsJson = null;
+            if (selectedOptions != null && selectedOptions.Any())
+            {
+                var options = await _unitOfWork.ProductOption.GetAllAsync(o => selectedOptions.Contains(o.Id));
+                optionsJson = System.Text.Json.JsonSerializer.Serialize(options.Select(o => new { o.Name, o.Value, o.AdditionalPrice }));
+            }
+
             ShoppingCart cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(
-                u => u.ApplicationUserId == userId && u.ProductId == detailsVM.Product.Id
+                u => u.ApplicationUserId == userId && u.ProductId == detailsVM.Product.Id && u.SelectedOptions == optionsJson
             );
 
             if (cartFromDb != null)
             {
-                // Shopping cart for user already exists, just update count
+                // Si ya existe el mismo producto con las mismas opciones, solo aumentar cantidad
                 cartFromDb.Count += detailsVM.Count;
+                if (!string.IsNullOrEmpty(specialNotes))
+                {
+                    cartFromDb.SpecialNotes = (cartFromDb.SpecialNotes ?? "") + " | " + specialNotes;
+                }
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
             }
             else
             {
-                // Add new cart record
+                // Agregar nuevo registro
                 ShoppingCart newCart = new()
                 {
                     ApplicationUserId = userId,
                     ProductId = detailsVM.Product.Id,
-                    Count = detailsVM.Count
+                    Count = detailsVM.Count,
+                    SelectedOptions = optionsJson,
+                    SpecialNotes = specialNotes
                 };
                 await _unitOfWork.ShoppingCart.AddAsync(newCart);
             }
+
             await _unitOfWork.SaveAsync();
 
             // Update session with cart item count

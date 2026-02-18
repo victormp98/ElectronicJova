@@ -19,7 +19,8 @@ namespace ElectronicJova.Data
         public DbSet<Product> Products { get; set; } = null!; // Model for Products
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!; // Model for ShoppingCarts
         public DbSet<OrderHeader> OrderHeaders { get; set; } = null!; // Model for OrderHeaders
-        public DbSet<OrderDetail> OrderDetails { get; set; } = null!; // Model for OrderDetails
+        public DbSet<ProductOption> ProductOptions { get; set; } = null!; // Model for ProductOptions
+        public DbSet<Wishlist> Wishlists { get; set; } = null!; // Model for Wishlist
 
         // For now, we will leave OnModelCreating empty.
         // It will be used later for more advanced configuration or seeding.
@@ -34,6 +35,7 @@ namespace ElectronicJova.Data
 
             modelBuilder.Entity<OrderHeader>().Property(o => o.OrderTotal).HasPrecision(18, 2);
             modelBuilder.Entity<OrderDetail>().Property(od => od.Price).HasPrecision(18, 2);
+            modelBuilder.Entity<ProductOption>().Property(po => po.AdditionalPrice).HasPrecision(18, 2);
 
             // Indexes for performance
             modelBuilder.Entity<Product>().HasIndex(p => p.CategoryId);
@@ -42,6 +44,9 @@ namespace ElectronicJova.Data
             modelBuilder.Entity<OrderHeader>().HasIndex(o => o.ApplicationUserId);
             modelBuilder.Entity<OrderDetail>().HasIndex(od => od.OrderHeaderId);
             modelBuilder.Entity<OrderDetail>().HasIndex(od => od.ProductId);
+            modelBuilder.Entity<ProductOption>().HasIndex(po => po.ProductId);
+            modelBuilder.Entity<Wishlist>().HasIndex(w => w.ApplicationUserId);
+            modelBuilder.Entity<Wishlist>().HasIndex(w => w.ProductId);
 
             // Configure relationships and delete behavior
             modelBuilder.Entity<Product>()
@@ -66,6 +71,24 @@ namespace ElectronicJova.Data
                 .HasOne(od => od.OrderHeader)
                 .WithMany()
                 .HasForeignKey(od => od.OrderHeaderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProductOption>()
+                .HasOne(po => po.Product)
+                .WithMany()
+                .HasForeignKey(po => po.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(w => w.ApplicationUser)
+                .WithMany(u => u.Wishlists)
+                .HasForeignKey(w => w.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(w => w.Product)
+                .WithMany()
+                .HasForeignKey(w => w.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

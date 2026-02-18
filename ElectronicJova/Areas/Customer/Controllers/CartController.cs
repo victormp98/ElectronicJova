@@ -2,14 +2,14 @@ using ElectronicJova.Data.Repository;
 using ElectronicJova.Models;
 using ElectronicJova.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http; // Added for Session
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks; // Added for async/await
-using ElectronicJova.Utilities; // Added for SD
-using Stripe.Checkout; // Added for Stripe Checkout
-using Stripe; // Added for StripeConfiguration and other Stripe types
-using Microsoft.AspNetCore.Identity.UI.Services; // Added for IEmailSender
+using System.Threading.Tasks;
+using ElectronicJova.Utilities;
+using Stripe.Checkout;
+using Stripe;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ElectronicJova.Areas.Customer.Controllers
 {
@@ -18,23 +18,31 @@ namespace ElectronicJova.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmailSender _emailSender; // Injected IEmailSender
+        private readonly IEmailSender _emailSender;
         public CartVM CartVM { get; set; }
 
-        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender) // Added IEmailSender to constructor
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
         }
 
+        // ─── Helper: obtiene el userId de forma segura ───────────────────────
+        private string? GetCurrentUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        // ─── Index ────────────────────────────────────────────────────────────
         public async Task<IActionResult> Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = GetCurrentUserId();
+            if (userId == null) return Unauthorized();
 
             CartVM = new()
             {
-                ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == userId, includeProperties: "Product"),
+                ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(
+                    u => u.ApplicationUserId == userId, includeProperties: "Product"),
                 OrderHeader = new()
             };
 
@@ -47,17 +55,22 @@ namespace ElectronicJova.Areas.Customer.Controllers
             return View(CartVM);
         }
 
+        // ─── Summary GET ──────────────────────────────────────────────────────
         public async Task<IActionResult> Summary()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = GetCurrentUserId();
+            if (userId == null) return Unauthorized();
 
             CartVM = new()
             {
-                ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == userId, includeProperties: "Product")
+                ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(
+                    u => u.ApplicationUserId == userId, includeProperties: "Product")
             };
 
-            CartVM.OrderHeader.ApplicationUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(u => u.Id == userId);
+            CartVM.OrderHeader.ApplicationUser = await _unitOfWork.ApplicationUser
+                .GetFirstOrDefaultAsync(u => u.Id == userId);
+
+            if (CartVM.OrderHeader.ApplicationUser == null) return Unauthorized();
 
             CartVM.OrderHeader.Name = CartVM.OrderHeader.ApplicationUser.Name;
             CartVM.OrderHeader.PhoneNumber = CartVM.OrderHeader.ApplicationUser.PhoneNumber;
@@ -71,26 +84,47 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 cart.Price = PricingCalculator.GetPriceBasedOnQuantity(cart);
                 CartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
+
             return View(CartVM);
         }
 
+        // ─── Summary POST ─────────────────────────────────────────────────────
         [HttpPost]
         [ActionName("Summary")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SummaryPOST(CartVM cartVM)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = GetCurrentUserId();
+            if (userId == null) return Unauthorized();
 
-            cartVM.ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == userId, includeProperties: "Product");
+            cartVM.ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(
+                u => u.ApplicationUserId == userId, includeProperties: "Product");
+
+            // ── FIX 4: Re-validar stock antes de crear la sesión de Stripe ──
+            foreach (var cart in cartVM.ShoppingCartList)
+            {
+                var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(p => p.Id == cart.ProductId);
+                if (product == null || product.Stock < cart.Count)
+                {
+                    TempData["error"] = $"'{product?.Title ?? "Un producto"}' ya no tiene suficiente stock disponible.";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
 
             cartVM.OrderHeader.OrderDate = System.DateTime.Now;
             cartVM.OrderHeader.ApplicationUserId = userId;
-            cartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
             cartVM.OrderHeader.OrderStatus = SD.StatusPending;
-            // Copy PhoneNumber and Email from ApplicationUser to OrderHeader for historical data
-            cartVM.OrderHeader.PhoneNumber = cartVM.OrderHeader.ApplicationUser.PhoneNumber;
-            cartVM.OrderHeader.Email = cartVM.OrderHeader.ApplicationUser.Email;
+            cartVM.OrderHeader.OrderStatusValue = (int)SD.OrderStatus.Pending;
+            cartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            cartVM.OrderHeader.PaymentStatusValue = (int)SD.PaymentStatus.Pending;
+
+            // Obtener datos del usuario de forma segura
+            var appUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(u => u.Id == userId);
+            if (appUser != null)
+            {
+                cartVM.OrderHeader.PhoneNumber = appUser.PhoneNumber;
+                cartVM.OrderHeader.Email = appUser.Email;
+            }
 
             foreach (var cart in cartVM.ShoppingCartList)
             {
@@ -108,21 +142,23 @@ namespace ElectronicJova.Areas.Customer.Controllers
                     ProductId = cart.ProductId,
                     OrderHeaderId = cartVM.OrderHeader.Id,
                     Price = cart.Price,
-                    Count = cart.Count
+                    Count = cart.Count,
+                    SelectedOptions = cart.SelectedOptions,
+                    SpecialNotes = cart.SpecialNotes
                 };
                 _unitOfWork.OrderDetail.Add(orderDetail);
             }
             await _unitOfWork.SaveAsync();
 
-            // Stripe Payment Logic
+            // ── Stripe Payment Session ──
             var domain = Request.Scheme + "://" + Request.Host.Value + "/";
             var options = new SessionCreateOptions
             {
-                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={cartVM.OrderHeader.Id}", // Updated to call a modified OrderConfirmation
-                CancelUrl = domain + $"customer/cart/PaymentCancelled?id={cartVM.OrderHeader.Id}", // New PaymentCancelled action
+                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={cartVM.OrderHeader.Id}",
+                CancelUrl = domain + $"customer/cart/PaymentCancelled?id={cartVM.OrderHeader.Id}",
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
-                CustomerEmail = cartVM.OrderHeader.ApplicationUser.Email, // Ensure user email is available in OrderHeader.ApplicationUser.Email
+                CustomerEmail = appUser?.Email,
                 ClientReferenceId = cartVM.OrderHeader.Id.ToString()
             };
 
@@ -132,7 +168,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        UnitAmount = (long)(item.Price * 100), // convert to cents
+                        UnitAmount = (long)(item.Price * 100),
                         Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
@@ -147,69 +183,67 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var service = new SessionService();
             Session session = service.Create(options);
 
-            _unitOfWork.OrderHeader.Update(cartVM.OrderHeader); // Update order with SessionId and PaymentIntentId
             cartVM.OrderHeader.SessionId = session.Id;
-            cartVM.OrderHeader.PaymentIntentId = session.PaymentIntentId; // This might be null for Checkout sessions, but keep for consistency
-
+            _unitOfWork.OrderHeader.Update(cartVM.OrderHeader);
             await _unitOfWork.SaveAsync();
 
-            Response.Headers.Add("Location", session.Url);
+            Response.Headers.Append("Location", session.Url);
             return new StatusCodeResult(303);
         }
 
+        // ─── Order Confirmation ───────────────────────────────────────────────
+        // FIX 1: Ya NO confirma el pago aquí. El webhook es la única fuente de verdad.
+        // FIX 5: Verifica que la orden pertenece al usuario actual.
         public async Task<IActionResult> OrderConfirmation(int id)
         {
-            OrderHeader orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == id);
-            
-            // Check if payment was successful through Stripe
-            var service = new SessionService();
-            Session session = service.Get(orderHeader.SessionId);
+            var userId = GetCurrentUserId();
+            if (userId == null) return Unauthorized();
 
-            if (session.PaymentStatus == "paid")
+            var orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == id);
+
+            if (orderHeader == null) return NotFound();
+
+            // FIX 5: Ownership check — solo el dueño puede ver su confirmación
+            if (orderHeader.ApplicationUserId != userId)
             {
-                _unitOfWork.OrderHeader.Update(orderHeader);
-                orderHeader.PaymentStatus = SD.PaymentStatusApproved;
-                orderHeader.OrderStatus = SD.StatusApproved;
-                orderHeader.PaymentIntentId = session.PaymentIntentId; // Ensure this is set
-                await _unitOfWork.SaveAsync();
-                
-                // Clear cart and session
-                var shoppingCarts = await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == orderHeader.ApplicationUserId);
-                _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
-                await _unitOfWork.SaveAsync();
-                HttpContext.Session.SetInt32("CartItemCount", 0);
-
-                // Send order confirmation email
-                var userEmail = (await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(u => u.Id == orderHeader.ApplicationUserId)).Email;
-                if (!string.IsNullOrEmpty(userEmail))
-                {
-                    await _emailSender.SendEmailAsync(
-                        userEmail,
-                        "Order Confirmation - ElectronicJova",
-                        $"<p>Thank you for your order! Your Order ID is: <strong>{orderHeader.Id}</strong></p>" +
-                        "<p>Your payment was successful. We've received your order and will process it shortly.</p>" +
-                        "<p>You can view your order details by logging into your account.</p>"
-                    );
-                }
+                return Forbid();
             }
 
-            return View(orderHeader); // Pass the entire OrderHeader object to the view
+            // Solo mostramos la página. El webhook ya habrá procesado el pago,
+            // decrementado el stock y enviado el email de confirmación.
+            return View(orderHeader);
         }
 
+        // ─── Payment Cancelled ────────────────────────────────────────────────
+        // FIX 9: Marca la orden como Cancelled para no dejar registros basura.
         public async Task<IActionResult> PaymentCancelled(int id)
         {
-            OrderHeader orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == id);
-            // Optionally, mark order as cancelled or pending review if needed
-            // For now, just display a cancellation message
+            var userId = GetCurrentUserId();
+            if (userId == null) return Unauthorized();
+
+            var orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == id);
+
+            if (orderHeader != null && orderHeader.ApplicationUserId == userId
+                && orderHeader.OrderStatus == SD.StatusPending)
+            {
+                orderHeader.OrderStatus = SD.StatusCancelled;
+                orderHeader.OrderStatusValue = (int)SD.OrderStatus.Cancelled;
+                orderHeader.PaymentStatus = SD.PaymentStatusPending; // pago no completado
+                orderHeader.PaymentStatusValue = (int)SD.PaymentStatus.Pending;
+                _unitOfWork.OrderHeader.Update(orderHeader);
+                await _unitOfWork.SaveAsync();
+            }
+
             return View(id);
         }
 
-
+        // ─── Plus ─────────────────────────────────────────────────────────────
         public async Task<IActionResult> Plus(int cartId)
         {
             var cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(
-                u => u.Id == cartId, 
-                includeProperties: "Product"); // Include Product to access Stock
+                u => u.Id == cartId, includeProperties: "Product");
+
+            if (cartFromDb == null) return NotFound();
 
             if (cartFromDb.Count < cartFromDb.Product.Stock)
             {
@@ -219,40 +253,51 @@ namespace ElectronicJova.Areas.Customer.Controllers
             }
             else
             {
-                TempData["error"] = "Cannot add more items. Max stock reached.";
+                TempData["error"] = "No puedes agregar más unidades. Stock máximo alcanzado.";
             }
+
             return RedirectToAction(nameof(Index));
         }
 
+        // ─── Minus ────────────────────────────────────────────────────────────
         public async Task<IActionResult> Minus(int cartId)
         {
             var cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(u => u.Id == cartId);
+            if (cartFromDb == null) return NotFound();
+
             if (cartFromDb.Count <= 1)
             {
-                // Remove from cart
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
-                HttpContext.Session.SetInt32("CartItemCount", 
-                    (await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == cartFromDb.ApplicationUserId)).Count() - 1);
+                await _unitOfWork.SaveAsync(); // FIX 8: guardar ANTES de contar
+
+                var count = (await _unitOfWork.ShoppingCart.GetAllAsync(
+                    u => u.ApplicationUserId == cartFromDb.ApplicationUserId)).Count();
+                HttpContext.Session.SetInt32("CartItemCount", count);
             }
             else
             {
                 cartFromDb.Count -= 1;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
+                await _unitOfWork.SaveAsync();
             }
-            await _unitOfWork.SaveAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
+        // ─── Remove ───────────────────────────────────────────────────────────
         public async Task<IActionResult> Remove(int cartId)
         {
             var cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(u => u.Id == cartId);
+            if (cartFromDb == null) return NotFound();
+
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
-            HttpContext.Session.SetInt32("CartItemCount", 
-                (await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == cartFromDb.ApplicationUserId)).Count() - 1);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync(); // FIX 8: guardar ANTES de contar
+
+            var count = (await _unitOfWork.ShoppingCart.GetAllAsync(
+                u => u.ApplicationUserId == cartFromDb.ApplicationUserId)).Count();
+            HttpContext.Session.SetInt32("CartItemCount", count);
+
             return RedirectToAction(nameof(Index));
         }
     }
 }
-
-

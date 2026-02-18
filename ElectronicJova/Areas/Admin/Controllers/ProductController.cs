@@ -64,8 +64,22 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 if (file != null)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @"images\products");
+                    // FIX 6: Whitelist de extensiones permitidas
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
+                    var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+                    if (!allowedExtensions.Contains(ext))
+                    {
+                        ModelState.AddModelError("file", "Solo se permiten imágenes (.jpg, .jpeg, .png, .webp, .gif).");
+                        productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                        {
+                            Text = u.Name,
+                            Value = u.Id.ToString()
+                        });
+                        return View(productVM);
+                    }
+
+                    string fileName = Guid.NewGuid().ToString() + ext;
+                    string productPath = Path.Combine(wwwRootPath, "images", "products");
 
                     if (!Directory.Exists(productPath))
                     {
@@ -86,7 +100,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     {
                         file.CopyTo(fileStream);
                     }
-                    productVM.Product.ImageUrl = @"\images\products" + fileName;
+                    // FIX 7: Usar forward slash para URLs correctas en todos los OS
+                    productVM.Product.ImageUrl = "/images/products/" + fileName;
                 }
 
                 if (productVM.Product.Id == 0)
@@ -132,10 +147,13 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
+            if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
+            {
             var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart('/', '\\'));
             if (System.IO.File.Exists(oldImagePath))
-            {
-                System.IO.File.Delete(oldImagePath);
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
             }
 
             _unitOfWork.Product.Remove(productToDelete);

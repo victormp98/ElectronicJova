@@ -3,6 +3,7 @@ using System;
 using ElectronicJova.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicJova.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260218075142_AddStatusEnumsToOrderHeader")]
+    partial class AddStatusEnumsToOrderHeader
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,12 +142,6 @@ namespace ElectronicJova.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SelectedOptions")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SpecialNotes")
-                        .HasColumnType("longtext");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderHeaderId");
@@ -153,7 +150,7 @@ namespace ElectronicJova.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("ElectronicJova.Models.OrderHeader", b =>
@@ -282,37 +279,6 @@ namespace ElectronicJova.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ElectronicJova.Models.ProductOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("AdditionalPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductOptions");
-                });
-
             modelBuilder.Entity("ElectronicJova.Models.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
@@ -329,12 +295,6 @@ namespace ElectronicJova.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SelectedOptions")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SpecialNotes")
-                        .HasColumnType("longtext");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
@@ -342,31 +302,6 @@ namespace ElectronicJova.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ShoppingCarts");
-                });
-
-            modelBuilder.Entity("ElectronicJova.Models.Wishlist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("AddedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -542,40 +477,10 @@ namespace ElectronicJova.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ElectronicJova.Models.ProductOption", b =>
-                {
-                    b.HasOne("ElectronicJova.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ElectronicJova.Models.ShoppingCart", b =>
                 {
                     b.HasOne("ElectronicJova.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ElectronicJova.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ElectronicJova.Models.Wishlist", b =>
-                {
-                    b.HasOne("ElectronicJova.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Wishlists")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -640,11 +545,6 @@ namespace ElectronicJova.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ElectronicJova.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("ElectronicJova.Models.OrderHeader", b =>

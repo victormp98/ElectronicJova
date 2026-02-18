@@ -20,7 +20,9 @@ namespace ElectronicJova.Models
         public decimal OrderTotal { get; set; }
 
         public string? OrderStatus { get; set; }
+        public int OrderStatusValue { get; set; } // Enums for strict validation
         public string? PaymentStatus { get; set; }
+        public int PaymentStatusValue { get; set; } // Enums for strict validation
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set; }
 

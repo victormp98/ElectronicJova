@@ -1,0 +1,11 @@
+﻿  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos están actualizados para la restauración.
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Customer\Views\Order\Index.cshtml(81,93): error CS0103: El nombre 'pct' no existe en el contexto actual [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+
+ERROR al compilar.
+
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Customer\Views\Order\Index.cshtml(81,93): error CS0103: El nombre 'pct' no existe en el contexto actual [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+    0 Advertencia(s)
+    1 Errores
+
+Tiempo transcurrido 00:00:03.91

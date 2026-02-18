@@ -12,6 +12,8 @@ namespace ElectronicJova.Data.Repository
         public IRepository<OrderHeader> OrderHeader { get; private set; }
         public IRepository<OrderDetail> OrderDetail { get; private set; }
         public IRepository<ApplicationUser> ApplicationUser { get; private set; }
+        public IRepository<ProductOption> ProductOption { get; private set; }
+        public IRepository<Wishlist> Wishlist { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -23,6 +25,8 @@ namespace ElectronicJova.Data.Repository
             OrderHeader = new Repository<OrderHeader>(_db);
             OrderDetail = new Repository<OrderDetail>(_db);
             ApplicationUser = new Repository<ApplicationUser>(_db);
+            ProductOption = new Repository<ProductOption>(_db);
+            Wishlist = new Repository<Wishlist>(_db);
         }
 
         public void Save()

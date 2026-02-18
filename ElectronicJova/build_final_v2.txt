@@ -1,0 +1,14 @@
+﻿  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos están actualizados para la restauración.
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Admin\Controllers\OrderController.cs(151,21): error CS0103: El nombre 'orderHeaderFromDb' no existe en el contexto actual [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Admin\Controllers\OrderController.cs(152,21): error CS0103: El nombre 'orderHeaderFromDb' no existe en el contexto actual [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+
+ERROR al compilar.
+
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Admin\Controllers\OrderController.cs(151,21): error CS0103: El nombre 'orderHeaderFromDb' no existe en el contexto actual [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\Areas\Admin\Controllers\OrderController.cs(152,21): error CS0103: El nombre 'orderHeaderFromDb' no existe en el contexto actual [C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\ElectronicJova.csproj]
+    0 Advertencia(s)
+    2 Errores
+
+Tiempo transcurrido 00:00:03.73
+

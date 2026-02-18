@@ -86,8 +86,28 @@
                                         <div>
                                             <h6 class="my-0">@item.Product.Title</h6>
                                             <small class="text-muted">Quantity: @item.Count</small>
+
+                                            @if (!string.IsNullOrEmpty(item.SelectedOptions))
+                                            {
+                                                var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(item.SelectedOptions);
+                                                <div class="mt-1">
+                                                    @foreach (var opt in opts)
+                                                    {
+                                                        <small class="text-info d-block" style="font-size: 0.75rem;">
+                                                            <i class="bi bi-check2-circle"></i> @opt.GetProperty("Name"): @opt.GetProperty("Value")
+                                                        </small>
+                                                    }
+                                                </div>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(item.SpecialNotes))
+                                            {
+                                                <small class="text-warning d-block" style="font-size: 0.75rem;">
+                                                    <i class="bi bi-sticky"></i> @item.SpecialNotes
+                                                </small>
+                                            }
                                         </div>
-                                        <span class="text-muted">@(item.Price * item.Count).ToString("c")</span>
+                                        <span class="text-muted">@((item.Price * item.Count).ToString("c"))</span>
                                     </li>
                                 }
                                 <li class="list-group-item d-flex justify-content-between">

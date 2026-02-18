@@ -1,0 +1,119 @@
+@model IEnumerable<ElectronicJova.Models.Wishlist>
+
+@{
+    ViewData["Title"] = "Mis Favoritos";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0 text-primary"><i class="bi bi-heart-fill me-2 text-danger"></i>Mis Favoritos</h2>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary rounded-pill">
+            <i class="bi bi-arrow-left me-1"></i>Seguir comprando
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-heart display-1 text-muted opacity-25"></i>
+                </div>
+                <h4 class="text-muted">Aún no tienes productos en tus favoritos</h4>
+                <p class="text-secondary mb-4">¡Explora nuestra tienda y guarda lo que más te guste!</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary rounded-pill px-4 btn-lg">
+                    Ir a la tienda
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4" id="wishlist-container">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 wishlist-item" data-id="@item.Id">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                        <div class="position-relative">
+                            <img src="@(string.IsNullOrEmpty(item.Product.ImageUrl) ? "https://via.placeholder.com/300x400?text=No+Image" : item.Product.ImageUrl)" 
+                                 class="card-img-top" alt="@item.Product.Title" style="height: 250px; object-fit: cover;">
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2">@item.Product.Category?.Name</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">@item.Product.Title</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-primary fw-bold fs-5">@item.Product.Price.ToString("c")</span>
+                                @if(item.Product.Stock > 0)
+                                {
+                                    <small class="text-success"><i class="bi bi-check2"></i> En stock</small>
+                                }
+                                else
+                                {
+                                    <small class="text-danger">Agotado</small>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pb-3">
+                            <div class="d-grid gap-2">
+                                <a asp-area="" asp-controller="Home" asp-action="Details" asp-route-productId="@item.ProductId" class="btn btn-primary rounded-pill">
+                                    <i class="bi bi-eye me-1"></i>Ver Detalles
+                                </a>
+                                <button class="btn btn-outline-danger rounded-pill remove-favorite" data-id="@item.Id">
+                                    <i class="bi bi-trash-fill me-1"></i>Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.remove-favorite').click(function() {
+                const btn = $(this);
+                const id = btn.data('id');
+                
+                Swal.fire({
+                    title: '¿Eliminar de favoritos?',
+                    text: "Podrás volver a agregarlo desde la página del producto.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post('/Customer/Wishlist/Remove', { id: id }, function(response) {
+                            if (response.success) {
+                                btn.closest('.wishlist-item').fadeOut(300, function() {
+                                    $(this).remove();
+                                    if ($('.wishlist-item').length === 0) {
+                                        location.reload();
+                                    }
+                                });
+                                toastr.success('Eliminado de favoritos');
+                            } else {
+                                toastr.error(response.message || 'Error al eliminar');
+                            }
+                        }).fail(function() {
+                            toastr.error('Error de conexión');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    .transition { transition: all 0.3s ease; }
+    .hover-shadow:hover { 
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>

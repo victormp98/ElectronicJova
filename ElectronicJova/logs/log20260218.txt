@@ -29,3 +29,195 @@ ALTER TABLE `OrderDetails` ADD CONSTRAINT `FK_OrderDetails_OrderHeaders_OrderHea
 2026-02-18 00:17:21.502 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
 VALUES ('20260218055032_AddStockToProduct', '8.0.0');
+2026-02-18 01:51:40.000 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 01:51:40.168 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 01:52:03.850 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 01:52:04.348 -06:00 [INF] Executed DbCommand (60ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 01:52:04.366 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 01:52:04.385 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 01:52:04.395 -06:00 [INF] Applying migration '20260218075142_AddStatusEnumsToOrderHeader'.
+2026-02-18 01:52:04.568 -06:00 [INF] Executed DbCommand (124ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderHeaders` ADD `OrderStatusValue` int NOT NULL DEFAULT 0;
+2026-02-18 01:52:04.647 -06:00 [INF] Executed DbCommand (79ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderHeaders` ADD `PaymentStatusValue` int NOT NULL DEFAULT 0;
+2026-02-18 01:52:04.652 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20260218075142_AddStatusEnumsToOrderHeader', '8.0.0');
+2026-02-18 02:05:23.438 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:05:23.622 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:05:33.800 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:05:34.182 -06:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 02:05:34.205 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 02:05:34.224 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 02:05:34.240 -06:00 [INF] Applying migration '20260218080524_AddProductOptionsAndNotes'.
+2026-02-18 02:05:34.379 -06:00 [INF] Executed DbCommand (70ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `ShoppingCarts` ADD `SelectedOptions` longtext CHARACTER SET utf8mb4 NULL;
+2026-02-18 02:05:34.425 -06:00 [INF] Executed DbCommand (43ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `ShoppingCarts` ADD `SpecialNotes` longtext CHARACTER SET utf8mb4 NULL;
+2026-02-18 02:05:34.477 -06:00 [INF] Executed DbCommand (50ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` ADD `SelectedOptions` longtext CHARACTER SET utf8mb4 NULL;
+2026-02-18 02:05:34.518 -06:00 [INF] Executed DbCommand (40ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` ADD `SpecialNotes` longtext CHARACTER SET utf8mb4 NULL;
+2026-02-18 02:05:34.549 -06:00 [INF] Executed DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `ProductOptions` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `ProductId` int NOT NULL,
+    `Name` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `Value` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `AdditionalPrice` decimal(18,2) NULL,
+    `DisplayOrder` int NOT NULL,
+    CONSTRAINT `PK_ProductOptions` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_ProductOptions_Products_ProductId` FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-02-18 02:05:34.575 -06:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_ProductOptions_ProductId` ON `ProductOptions` (`ProductId`);
+2026-02-18 02:05:34.580 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20260218080524_AddProductOptionsAndNotes', '8.0.0');
+2026-02-18 02:13:49.423 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:13:49.598 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:13:59.821 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:14:00.141 -06:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 02:14:00.164 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 02:14:00.182 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 02:14:00.196 -06:00 [INF] Applying migration '20260218081350_AddWishlistTable'.
+2026-02-18 02:14:00.315 -06:00 [INF] Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP PROCEDURE IF EXISTS `POMELO_BEFORE_DROP_PRIMARY_KEY`;
+CREATE PROCEDURE `POMELO_BEFORE_DROP_PRIMARY_KEY`(IN `SCHEMA_NAME_ARGUMENT` VARCHAR(255), IN `TABLE_NAME_ARGUMENT` VARCHAR(255))
+BEGIN
+	DECLARE HAS_AUTO_INCREMENT_ID TINYINT(1);
+	DECLARE PRIMARY_KEY_COLUMN_NAME VARCHAR(255);
+	DECLARE PRIMARY_KEY_TYPE VARCHAR(255);
+	DECLARE SQL_EXP VARCHAR(1000);
+	SELECT COUNT(*)
+		INTO HAS_AUTO_INCREMENT_ID
+		FROM `information_schema`.`COLUMNS`
+		WHERE `TABLE_SCHEMA` = (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA()))
+			AND `TABLE_NAME` = TABLE_NAME_ARGUMENT
+			AND `Extra` = 'auto_increment'
+			AND `COLUMN_KEY` = 'PRI'
+			LIMIT 1;
+	IF HAS_AUTO_INCREMENT_ID THEN
+		SELECT `COLUMN_TYPE`
+			INTO PRIMARY_KEY_TYPE
+			FROM `information_schema`.`COLUMNS`
+			WHERE `TABLE_SCHEMA` = (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA()))
+				AND `TABLE_NAME` = TABLE_NAME_ARGUMENT
+				AND `COLUMN_KEY` = 'PRI'
+			LIMIT 1;
+		SELECT `COLUMN_NAME`
+			INTO PRIMARY_KEY_COLUMN_NAME
+			FROM `information_schema`.`COLUMNS`
+			WHERE `TABLE_SCHEMA` = (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA()))
+				AND `TABLE_NAME` = TABLE_NAME_ARGUMENT
+				AND `COLUMN_KEY` = 'PRI'
+			LIMIT 1;
+		SET SQL_EXP = CONCAT('ALTER TABLE `', (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA())), '`.`', TABLE_NAME_ARGUMENT, '` MODIFY COLUMN `', PRIMARY_KEY_COLUMN_NAME, '` ', PRIMARY_KEY_TYPE, ' NOT NULL;');
+		SET @SQL_EXP = SQL_EXP;
+		PREPARE SQL_EXP_EXECUTE FROM @SQL_EXP;
+		EXECUTE SQL_EXP_EXECUTE;
+		DEALLOCATE PREPARE SQL_EXP_EXECUTE;
+	END IF;
+END;
+2026-02-18 02:14:00.327 -06:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP PROCEDURE IF EXISTS `POMELO_AFTER_ADD_PRIMARY_KEY`;
+CREATE PROCEDURE `POMELO_AFTER_ADD_PRIMARY_KEY`(IN `SCHEMA_NAME_ARGUMENT` VARCHAR(255), IN `TABLE_NAME_ARGUMENT` VARCHAR(255), IN `COLUMN_NAME_ARGUMENT` VARCHAR(255))
+BEGIN
+	DECLARE HAS_AUTO_INCREMENT_ID INT(11);
+	DECLARE PRIMARY_KEY_COLUMN_NAME VARCHAR(255);
+	DECLARE PRIMARY_KEY_TYPE VARCHAR(255);
+	DECLARE SQL_EXP VARCHAR(1000);
+	SELECT COUNT(*)
+		INTO HAS_AUTO_INCREMENT_ID
+		FROM `information_schema`.`COLUMNS`
+		WHERE `TABLE_SCHEMA` = (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA()))
+			AND `TABLE_NAME` = TABLE_NAME_ARGUMENT
+			AND `COLUMN_NAME` = COLUMN_NAME_ARGUMENT
+			AND `COLUMN_TYPE` LIKE '%int%'
+			AND `COLUMN_KEY` = 'PRI';
+	IF HAS_AUTO_INCREMENT_ID THEN
+		SELECT `COLUMN_TYPE`
+			INTO PRIMARY_KEY_TYPE
+			FROM `information_schema`.`COLUMNS`
+			WHERE `TABLE_SCHEMA` = (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA()))
+				AND `TABLE_NAME` = TABLE_NAME_ARGUMENT
+				AND `COLUMN_NAME` = COLUMN_NAME_ARGUMENT
+				AND `COLUMN_TYPE` LIKE '%int%'
+				AND `COLUMN_KEY` = 'PRI';
+		SELECT `COLUMN_NAME`
+			INTO PRIMARY_KEY_COLUMN_NAME
+			FROM `information_schema`.`COLUMNS`
+			WHERE `TABLE_SCHEMA` = (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA()))
+				AND `TABLE_NAME` = TABLE_NAME_ARGUMENT
+				AND `COLUMN_NAME` = COLUMN_NAME_ARGUMENT
+				AND `COLUMN_TYPE` LIKE '%int%'
+				AND `COLUMN_KEY` = 'PRI';
+		SET SQL_EXP = CONCAT('ALTER TABLE `', (SELECT IFNULL(SCHEMA_NAME_ARGUMENT, SCHEMA())), '`.`', TABLE_NAME_ARGUMENT, '` MODIFY COLUMN `', PRIMARY_KEY_COLUMN_NAME, '` ', PRIMARY_KEY_TYPE, ' NOT NULL AUTO_INCREMENT;');
+		SET @SQL_EXP = SQL_EXP;
+		PREPARE SQL_EXP_EXECUTE FROM @SQL_EXP;
+		EXECUTE SQL_EXP_EXECUTE;
+		DEALLOCATE PREPARE SQL_EXP_EXECUTE;
+	END IF;
+END;
+2026-02-18 02:14:00.341 -06:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` DROP FOREIGN KEY `FK_OrderDetails_OrderHeaders_OrderHeaderId`;
+2026-02-18 02:14:00.356 -06:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` DROP FOREIGN KEY `FK_OrderDetails_OrderHeaders_OrderHeaderId1`;
+2026-02-18 02:14:00.370 -06:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` DROP FOREIGN KEY `FK_OrderDetails_Products_ProductId`;
+2026-02-18 02:14:00.544 -06:00 [INF] Executed DbCommand (172ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CALL POMELO_BEFORE_DROP_PRIMARY_KEY(NULL, 'OrderDetails');
+ALTER TABLE `OrderDetails` DROP PRIMARY KEY;
+2026-02-18 02:14:00.562 -06:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` RENAME `OrderDetail`;
+2026-02-18 02:14:00.576 -06:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` RENAME INDEX `IX_OrderDetails_ProductId` TO `IX_OrderDetail_ProductId`;
+2026-02-18 02:14:00.587 -06:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` RENAME INDEX `IX_OrderDetails_OrderHeaderId1` TO `IX_OrderDetail_OrderHeaderId1`;
+2026-02-18 02:14:00.600 -06:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` RENAME INDEX `IX_OrderDetails_OrderHeaderId` TO `IX_OrderDetail_OrderHeaderId`;
+2026-02-18 02:14:00.711 -06:00 [INF] Executed DbCommand (108ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` ADD CONSTRAINT `PK_OrderDetail` PRIMARY KEY (`Id`);
+CALL POMELO_AFTER_ADD_PRIMARY_KEY(NULL, 'OrderDetail', 'Id');
+2026-02-18 02:14:00.746 -06:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Wishlists` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `ApplicationUserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductId` int NOT NULL,
+    `AddedDate` datetime(6) NOT NULL,
+    CONSTRAINT `PK_Wishlists` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Wishlists_AspNetUsers_ApplicationUserId` FOREIGN KEY (`ApplicationUserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_Wishlists_Products_ProductId` FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-02-18 02:14:00.768 -06:00 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Wishlists_ApplicationUserId` ON `Wishlists` (`ApplicationUserId`);
+2026-02-18 02:14:00.787 -06:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Wishlists_ProductId` ON `Wishlists` (`ProductId`);
+2026-02-18 02:14:00.846 -06:00 [INF] Executed DbCommand (58ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` ADD CONSTRAINT `FK_OrderDetail_OrderHeaders_OrderHeaderId` FOREIGN KEY (`OrderHeaderId`) REFERENCES `OrderHeaders` (`Id`) ON DELETE CASCADE;
+2026-02-18 02:14:00.914 -06:00 [INF] Executed DbCommand (65ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` ADD CONSTRAINT `FK_OrderDetail_OrderHeaders_OrderHeaderId1` FOREIGN KEY (`OrderHeaderId1`) REFERENCES `OrderHeaders` (`Id`);
+2026-02-18 02:14:00.975 -06:00 [INF] Executed DbCommand (60ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetail` ADD CONSTRAINT `FK_OrderDetail_Products_ProductId` FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`) ON DELETE RESTRICT;
+2026-02-18 02:14:00.980 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20260218081350_AddWishlistTable', '8.0.0');
+2026-02-18 02:14:01.003 -06:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP PROCEDURE `POMELO_BEFORE_DROP_PRIMARY_KEY`;
+2026-02-18 02:14:01.008 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP PROCEDURE `POMELO_AFTER_ADD_PRIMARY_KEY`;
