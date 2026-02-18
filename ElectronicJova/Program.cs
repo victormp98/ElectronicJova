@@ -39,7 +39,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, ResendEmailSender>();
+builder.Services.AddOptions();
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = builder.Configuration["ResendSettings:ApiKey"];
+});
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, ResendEmailSender>();
 
 
 // Configure Session
@@ -81,6 +87,9 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+
+
 SeedDatabase();
 
 app.Run();

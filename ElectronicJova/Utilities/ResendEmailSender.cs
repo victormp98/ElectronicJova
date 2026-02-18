@@ -7,28 +7,36 @@ namespace ElectronicJova.Utilities
 {
     public class ResendEmailSender : IEmailSender
     {
-        private readonly string _apiKey;
+        private readonly ResendClient _client;
         private readonly string _senderEmail;
+        private readonly ILogger<ResendEmailSender> _logger;
 
-        public ResendEmailSender(IConfiguration configuration)
+        public ResendEmailSender(ResendClient client, IConfiguration configuration, ILogger<ResendEmailSender> logger)
         {
-            _apiKey = configuration["ResendSettings:ApiKey"] ?? throw new InvalidOperationException("Resend API key is not configured.");
-            _senderEmail = configuration["ResendSettings:SenderEmail"] ?? throw new InvalidOperationException("Resend sender email is not configured.");
+            _client = client;
+            _senderEmail = configuration["ResendSettings:SenderEmail"] ?? "onboarding@resend.dev";
+            _logger = logger;
         }
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var client = new ResendClient(_apiKey);
-
-            var message = new EmailMessage()
+            _logger.LogInformation("Attempting to send email to {Email} with subject {Subject}", email, subject);
+            try 
             {
-                From = _senderEmail,
-                To = email,
-                Subject = subject,
-                HtmlBody = htmlMessage
-            };
+                var message = new EmailMessage();
+                message.From = _senderEmail;
+                message.To.Add(email);
+                message.Subject = subject;
+                message.HtmlBody = htmlMessage;
 
-            await client.Email.SendAsync(message);
+                await _client.EmailSendAsync(message);
+                _logger.LogInformation("Email sent successfully to {Email}", email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send email to {Email}", email);
+                // We swallow the exception to strictly follow user request, preventing the app from crashing on email failure.
+            }
         }
     }
 }

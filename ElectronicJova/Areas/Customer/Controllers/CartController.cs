@@ -9,6 +9,7 @@ using System.Threading.Tasks; // Added for async/await
 using ElectronicJova.Utilities; // Added for SD
 using Stripe.Checkout; // Added for Stripe Checkout
 using Stripe; // Added for StripeConfiguration and other Stripe types
+using Microsoft.AspNetCore.Identity.UI.Services; // Added for IEmailSender
 
 namespace ElectronicJova.Areas.Customer.Controllers
 {
