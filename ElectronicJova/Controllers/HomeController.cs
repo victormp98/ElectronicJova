@@ -50,8 +50,8 @@ namespace ElectronicJova.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                productQuery = productQuery.Where(p => p.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                                                    p.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+                productQuery = productQuery.Where(p => p.Title.Contains(searchString) ||
+                                                    p.Description.Contains(searchString));
             }
 
             if (categoryId.HasValue && categoryId.Value > 0)

@@ -1,0 +1,31 @@
+2026-02-18 00:17:20.311 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 00:17:20.863 -06:00 [INF] Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 00:17:20.883 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 00:17:20.903 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 00:17:20.917 -06:00 [INF] Applying migration '20260218055032_AddStockToProduct'.
+2026-02-18 00:17:21.118 -06:00 [INF] Executed DbCommand (129ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Products` ADD `Stock` int NOT NULL DEFAULT 0;
+2026-02-18 00:17:21.200 -06:00 [INF] Executed DbCommand (79ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderHeaders` ADD `Email` longtext CHARACTER SET utf8mb4 NULL;
+2026-02-18 00:17:21.245 -06:00 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderHeaders` ADD `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL;
+2026-02-18 00:17:21.291 -06:00 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` ADD `OrderHeaderId1` int NULL;
+2026-02-18 00:17:21.308 -06:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+UPDATE `AspNetUsers` SET `Name` = ''
+WHERE `Name` IS NULL;
+SELECT ROW_COUNT();
+2026-02-18 00:17:21.412 -06:00 [INF] Executed DbCommand (102ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `AspNetUsers` MODIFY COLUMN `Name` longtext CHARACTER SET utf8mb4 NOT NULL;
+2026-02-18 00:17:21.431 -06:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_OrderDetails_OrderHeaderId1` ON `OrderDetails` (`OrderHeaderId1`);
+2026-02-18 00:17:21.496 -06:00 [INF] Executed DbCommand (64ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `OrderDetails` ADD CONSTRAINT `FK_OrderDetails_OrderHeaders_OrderHeaderId1` FOREIGN KEY (`OrderHeaderId1`) REFERENCES `OrderHeaders` (`Id`);
+2026-02-18 00:17:21.502 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20260218055032_AddStockToProduct', '8.0.0');

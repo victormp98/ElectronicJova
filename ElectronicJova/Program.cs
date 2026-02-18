@@ -58,6 +58,7 @@ builder.Services.AddSession(options =>
 });
 
 // Configure Stripe API Key
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 StripeConfiguration.ApiKey = builder.Configuration["StripeSettings:SecretKey"];
 
 var app = builder.Build();

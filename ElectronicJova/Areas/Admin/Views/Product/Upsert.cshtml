@@ -56,6 +56,11 @@
                     <span asp-validation-for="Product.Price100" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="Product.Stock"></label>
+                    <input asp-for="Product.Stock" class="form-control" />
+                    <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <label asp-for="Product.CategoryId"></label>
                     <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select"></select>
                     <span asp-validation-for="Product.CategoryId" class="text-danger"></span>

@@ -31,6 +31,10 @@ namespace ElectronicJova.Models
         [Range(1, 10000)] // Example range for Price100
         public decimal Price100 { get; set; } // Precio para 100+ unidades
 
+        [Required]
+        [Range(0, 10000)]
+        public int Stock { get; set; }
+
         public string? ImageUrl { get; set; } // Nullable as it might be added later
 
         [Required]

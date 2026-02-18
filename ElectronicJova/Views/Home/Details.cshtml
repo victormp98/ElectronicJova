@@ -15,6 +15,14 @@
                 <div class="col-12 text-center">
                     <h3 class="text-white">@Model.Product.Title</h3>
                     <p class="text-white-50 fw-semibold mb-0">by @Model.Product.Author</p>
+                    @if(Model.Product.Stock > 0)
+                    {
+                        <span class="badge bg-success mt-2">In Stock: @Model.Product.Stock</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger mt-2">Out of Stock</span>
+                    }
                 </div>
             </div>
         </div>

@@ -1,6 +1,18 @@
+/* Modern Tech Theme - ElectronicJova */
+:root {
+  --primary-color: #3b82f6;
+  --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --secondary-color: #64748b;
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-glow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
 html {
   font-size: 14px;
-  height: 100%; /* Ensure html takes full height */
+  height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -9,39 +21,109 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
 body {
-  display: flex; /* Use flexbox */
-  flex-direction: column; /* Stack children vertically */
-  min-height: 100vh; /* Ensure body takes full viewport height */
-  margin: 0; /* Remove default body margin */
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
-  flex-grow: 1; /* Allow main content to grow and push footer down */
+  flex-grow: 1;
 }
 
+/* Navbar Customization */
+.navbar {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #fff !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Card Styling */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid #334155;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--accent-glow);
+  border-color: var(--primary-color);
+}
+
+.card-title {
+  color: var(--text-main);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* Footer */
 .footer {
-  flex-shrink: 0; /* Prevent footer from shrinking */
-  /* If you want it always at the bottom of the viewport, not just content: */
-  /* position: sticky; */
-  /* bottom: 0; */
-  /* width: 100%; */
+  background-color: var(--bg-card);
+  border-top: 1px solid #334155 !important;
+  color: var(--text-muted);
 }
 
-/* Custom styles for neon green navbar */
-.bg-primary {
-    background-color: #39FF14 !important; /* Neon green */
-    color: #333 !important; /* Adjust text color for contrast */
+/* Inputs */
+.form-control {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: white;
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: #333 !important; /* Adjust nav link color */
+.form-control:focus {
+  background-color: #0f172a;
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
 }
 
-.navbar-dark .navbar-brand {
-    color: #333 !important; /* Adjust brand text color */
+/* Hero Section Utilities */
+.hero-gradient-text {
+  background: var(--primary-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

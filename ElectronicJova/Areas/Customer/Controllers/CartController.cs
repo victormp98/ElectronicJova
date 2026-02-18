@@ -207,10 +207,20 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
         public async Task<IActionResult> Plus(int cartId)
         {
-            var cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(u => u.Id == cartId);
-            cartFromDb.Count += 1;
-            _unitOfWork.ShoppingCart.Update(cartFromDb);
-            await _unitOfWork.SaveAsync();
+            var cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(
+                u => u.Id == cartId, 
+                includeProperties: "Product"); // Include Product to access Stock
+
+            if (cartFromDb.Count < cartFromDb.Product.Stock)
+            {
+                cartFromDb.Count += 1;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+                await _unitOfWork.SaveAsync();
+            }
+            else
+            {
+                TempData["error"] = "Cannot add more items. Max stock reached.";
+            }
             return RedirectToAction(nameof(Index));
         }
 
