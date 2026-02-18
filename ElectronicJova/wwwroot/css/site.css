@@ -31,3 +31,17 @@ main {
   /* bottom: 0; */
   /* width: 100%; */
 }
+
+/* Custom styles for neon green navbar */
+.bg-primary {
+    background-color: #39FF14 !important; /* Neon green */
+    color: #333 !important; /* Adjust text color for contrast */
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #333 !important; /* Adjust nav link color */
+}
+
+.navbar-dark .navbar-brand {
+    color: #333 !important; /* Adjust brand text color */
+}
