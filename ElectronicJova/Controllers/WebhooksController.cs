@@ -47,7 +47,7 @@ namespace ElectronicJova.Controllers
                         var session = stripeEvent.Data.Object as Session;
 
                         // Fulfill the purchase
-                        if (session.PaymentStatus == "paid")
+                        if (session != null && session.PaymentStatus == "paid")
                         {
                             var orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.SessionId == session.Id);
 
@@ -75,7 +75,7 @@ namespace ElectronicJova.Controllers
                                 _unitOfWork.Save();
 
                                 // SignalR: Notificar al cliente en tiempo real que el pago fue aprobado
-                                _hubContext.Clients.Group($"order-{orderHeader.Id}")
+                                await _hubContext.Clients.Group($"order-{orderHeader.Id}")
                                     .SendAsync("OrderStatusUpdated", SD.StatusApproved,
                                         SD.GetOrderStatusLabel(SD.StatusApproved),
                                         SD.GetOrderStatusIcon(SD.StatusApproved));
@@ -85,7 +85,7 @@ namespace ElectronicJova.Controllers
 
                     return Ok();
                 }
-                catch (StripeException e)
+                catch (StripeException)
                 {
                     return BadRequest();
                 }

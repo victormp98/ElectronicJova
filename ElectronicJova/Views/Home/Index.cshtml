@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model PaginatedList<Product>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -18,10 +18,10 @@
     <div class="row pb-3">
         @foreach (var product in Model)
         {
-            <div class="col-lg-3 col-md-6 mb-4">
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden" style="animation: fadeIn 0.5s ease-in-out;">
                     <div style="height: 200px; overflow: hidden; position: relative;">
-                        <img src="@product.ImageUrl" class="card-img-top w-100 h-100" style="object-fit: cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"/>
+                        <img src="@product.ImageUrl" class="card-img-top w-100 h-100" style="object-fit: cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" loading="lazy"/>
                         @if(product.Stock > 0)
                         {
                              <span class="badge bg-success position-absolute top-0 end-0 m-2">In Stock: @product.Stock</span>
@@ -48,9 +48,67 @@
             </div>
         }
     </div>
+
+    <!-- Pagination Controls -->
+    @if (Model.TotalPages > 1)
+    {
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                    }
+                    
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link rounded-pill px-3 me-2 shadow-sm" asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span> Previous
+                        </a>
+                    </li>
+
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link rounded-circle mx-1 shadow-sm">@Model.PageIndex</span>
+                    </li>
+
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link rounded-pill px-3 ms-2 shadow-sm" asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           aria-label="Next">
+                            Next <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
 </div>
 
 <style>
+    .hero-gradient-text {
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: calc(1.5rem + 3.5vw);
+    }
+    
+    .pagination .page-link {
+        border: none;
+        color: #3b82f6;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #3b82f6;
+        color: white;
+    }
+    
+    .pagination .page-link:hover:not(.active) {
+        background-color: #f1f5f9;
+        transform: translateY(-2px);
+    }
+
     @@keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }

@@ -149,7 +149,7 @@
                             {
                                 <li class="list-group-item d-flex justify-content-between lh-sm">
                                     <div>
-                                        <h6 class="my-0">@item.Product.Title</h6>
+                                        <h6 class="my-0">@item.Product!.Title</h6>
                                         <small class="text-muted">Quantity: @item.Count</small>
 
                                         @if (!string.IsNullOrEmpty(item.SelectedOptions))
@@ -178,7 +178,7 @@
                             }
                             <li class="list-group-item d-flex justify-content-between">
                                 <h5 class="text-primary">Total (USD)</h5>
-                                <h5 class="text-primary">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
+                                <h5 class="text-primary">@Model.OrderHeader!.OrderTotal.ToString("c")</h5>
                             </li>
                         </ul>
                         <br />

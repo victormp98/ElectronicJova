@@ -9,17 +9,17 @@ namespace ElectronicJova.Utilities
             decimal basePrice = 0;
             if (shoppingCart.Count <= 50)
             {
-                basePrice = shoppingCart.Product.Price;
+                basePrice = shoppingCart.Product!.Price;
             }
             else
             {
                 if (shoppingCart.Count <= 100)
                 {
-                    basePrice = shoppingCart.Product.Price50;
+                    basePrice = shoppingCart.Product!.Price50;
                 }
                 else
                 {
-                    basePrice = shoppingCart.Product.Price100;
+                    basePrice = shoppingCart.Product!.Price100;
                 }
             }
 

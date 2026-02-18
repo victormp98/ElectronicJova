@@ -36,38 +36,36 @@
                 <div class="col-12">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-6 col-md-2 mb-3 mb-md-0">
                                     <small class="text-muted d-block">Pedido #</small>
                                     <strong class="fs-5">@order.Id</strong>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-6 col-md-3 mb-3 mb-md-0 text-end text-md-start">
                                     <small class="text-muted d-block">Fecha</small>
-                                    <span>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
+                                    <span class="small">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-6 col-md-2">
                                     <small class="text-muted d-block">Total</small>
-                                    <strong class="text-primary">@order.OrderTotal.ToString("c")</strong>
+                                    <strong class="text-primary h5 mb-0">@order.OrderTotal.ToString("c")</strong>
                                 </div>
-                                <div class="col-md-3">
-                                    <small class="text-muted d-block">Estado</small>
+                                <div class="col-6 col-md-3 text-end text-md-start">
+                                    <small class="text-muted d-block text-md-start">Estado</small>
                                     @{
                                         var badgeClass = isCancelled ? "bg-danger" :
                                             order.OrderStatus == SD.StatusDelivered ? "bg-success" :
                                             order.OrderStatus == SD.StatusShipped ? "bg-info" : "bg-warning text-dark";
                                     }
-                                    <span class="badge @badgeClass rounded-pill px-3 py-2">
+                                    <span class="badge @badgeClass rounded-pill px-3 py-2 shadow-sm">
                                         <i class="bi @SD.GetOrderStatusIcon(order.OrderStatus) me-1"></i>
                                         @SD.GetOrderStatusLabel(order.OrderStatus)
                                     </span>
                                 </div>
-                                <div class="col-md-2 text-end">
+                                <div class="col-12 col-md-2 text-md-end mt-3 mt-md-0 pt-2 border-top border-md-0 pt-md-0">
                                     <a asp-action="Details" asp-route-orderId="@order.Id"
-                                       class="btn btn-outline-primary btn-sm rounded-pill">
+                                       class="btn btn-outline-primary btn-lg w-100 btn-md-sm rounded-pill py-2">
                                         <i class="bi bi-eye me-1"></i>Ver Detalle
                                     </a>
                                 </div>
-                            </div>
 
                             @if (!isCancelled)
                             {

@@ -11,25 +11,28 @@ namespace ElectronicJova.DbInitializer
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
+        private readonly ILogger<DbInitializer> _logger;
 
         public DbInitializer(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            ApplicationDbContext db)
+            ApplicationDbContext db,
+            ILogger<DbInitializer> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _db = db;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public async Task InitializeAsync()
         {
             // Migrations if they are not applied
             try
             {
-                if (_db.Database.GetPendingMigrations().Count() > 0)
+                if ((await _db.Database.GetPendingMigrationsAsync()).Any())
                 {
-                    _db.Database.Migrate();
+                    await _db.Database.MigrateAsync();
                 }
             }
             catch (Exception ex)
@@ -38,35 +41,58 @@ namespace ElectronicJova.DbInitializer
             }
 
             // Create roles if they do not exist
-            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
+            if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
             {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
+            }
 
-                // Create admin user
-                _userManager.CreateAsync(new ApplicationUser
+            // Create or update admin user
+            var adminUser = await _userManager.FindByEmailAsync("admin@electronicjova.com");
+            if (adminUser == null)
+            {
+                adminUser = new ApplicationUser
                 {
                     UserName = "admin@electronicjova.com",
                     Email = "admin@electronicjova.com",
-                    Name = "Admin User",
+                    Name = "Administrador",
                     PhoneNumber = "1112223333",
                     StreetAddress = "123 Admin St",
                     City = "Admin City",
                     State = "AA",
                     PostalCode = "11111"
-                }, "Admin123*").GetAwaiter().GetResult();
+                };
 
-                ApplicationUser? user = _db.Users.FirstOrDefault(u => u.Email == "admin@electronicjova.com");
-                if (user == null)
+                var result = await _userManager.CreateAsync(adminUser, "Admin123*");
+                if (result.Succeeded)
                 {
-                    // This scenario should ideally not happen if CreateAsync succeeded, but for robustness
-                    // (e.g., if there's a unique constraint violation that CreateAsync silently handles or other issues)
-                    // we log an error or handle it. For now, we'll skip adding role if user is null.
-                    Console.WriteLine("Error: Admin user not found in DB after creation attempt. Skipping role assignment.");
+                    await _userManager.AddToRoleAsync(adminUser, SD.Role_Admin);
                 }
                 else
                 {
-                    _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    _logger.LogError("Error al crear admin: {Errors}", errors);
+                }
+            }
+            else
+            {
+                // Si ya existe pero no tiene nombre, actualizarlo
+                bool needsUpdate = false;
+                if (string.IsNullOrEmpty(adminUser.Name))
+                {
+                    adminUser.Name = "Administrador";
+                    needsUpdate = true;
+                }
+
+                if (needsUpdate)
+                {
+                    await _userManager.UpdateAsync(adminUser);
+                }
+
+                // Asegurar que tenga el rol Admin
+                if (!await _userManager.IsInRoleAsync(adminUser, SD.Role_Admin))
+                {
+                    await _userManager.AddToRoleAsync(adminUser, SD.Role_Admin);
                 }
             }
             // Seed Categories if they do not exist
@@ -134,6 +160,6 @@ namespace ElectronicJova.DbInitializer
     // Interface for DbInitializer
     public interface IDbInitializer
     {
-        void Initialize();
+        Task InitializeAsync();
     }
 }

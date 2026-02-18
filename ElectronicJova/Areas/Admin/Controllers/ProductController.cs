@@ -49,7 +49,12 @@ namespace ElectronicJova.Areas.Admin.Controllers
             else
             {
                 // Edit
-                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
+                var productFromDb = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
+                if (productFromDb == null)
+                {
+                    return NotFound();
+                }
+                productVM.Product = productFromDb;
                 return View(productVM);
             }
         }

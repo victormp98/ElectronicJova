@@ -9,7 +9,7 @@ namespace ElectronicJova.Models
         public int Id { get; set; }
 
         [Required]
-        public string ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; } = string.Empty;
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser? ApplicationUser { get; set; }
 
@@ -38,6 +38,6 @@ namespace ElectronicJova.Models
         public string? State { get; set; }
         public string? PostalCode { get; set; }
 
-        public List<OrderDetail> OrderDetails { get; set; } // Navigation property
+        public List<OrderDetail> OrderDetails { get; set; } = new(); // Navigation property
     }
 }

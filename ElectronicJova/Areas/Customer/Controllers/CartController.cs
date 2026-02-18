@@ -19,7 +19,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
-        public CartVM CartVM { get; set; }
+        public CartVM CartVM { get; set; } = new();
 
         public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
@@ -172,7 +172,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
                         Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = item.Product.Title
+                            Name = item.Product!.Title
                         }
                     },
                     Quantity = item.Count
@@ -245,7 +245,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
             if (cartFromDb == null) return NotFound();
 
-            if (cartFromDb.Count < cartFromDb.Product.Stock)
+            if (cartFromDb.Count < cartFromDb.Product!.Stock)
             {
                 cartFromDb.Count += 1;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);

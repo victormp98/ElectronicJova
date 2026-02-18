@@ -36,7 +36,12 @@ namespace ElectronicJova.Areas.Admin.Controllers
             else
             {
                 // Edit
-                category = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+                var categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+                if (categoryFromDb == null)
+                {
+                    return NotFound();
+                }
+                category = categoryFromDb;
                 return View(category);
             }
         }

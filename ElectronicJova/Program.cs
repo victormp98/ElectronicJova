@@ -44,7 +44,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddOptions();
 builder.Services.Configure<ResendClientOptions>(o =>
 {
-    o.ApiToken = builder.Configuration["ResendSettings:ApiKey"];
+    o.ApiToken = builder.Configuration["ResendSettings:ApiKey"] ?? string.Empty;
 });
 builder.Services.AddHttpClient<ResendClient>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, ResendEmailSender>();
@@ -94,15 +94,15 @@ app.MapHub<OrderStatusHub>("/hubs/orderStatus"); // Fase 3: SignalR hub
 
 
 
-SeedDatabase();
+await SeedDatabase();
 
 app.Run();
 
-void SeedDatabase()
+async Task SeedDatabase()
 {
     using (var scope = app.Services.CreateScope())
     {
         var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        dbInitializer.Initialize();
+        await dbInitializer.InitializeAsync();
     }
 }

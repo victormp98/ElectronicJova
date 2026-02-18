@@ -18,7 +18,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
         private readonly IHubContext<OrderStatusHub> _hubContext;
 
         [BindProperty]
-        public OrderDetailsVM OrderDetailsVM { get; set; }
+        public OrderDetailsVM OrderDetailsVM { get; set; } = new();
 
         public OrderController(IUnitOfWork unitOfWork, IHubContext<OrderStatusHub> hubContext)
         {
@@ -26,11 +26,14 @@ namespace ElectronicJova.Areas.Admin.Controllers
             _hubContext = hubContext;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            IEnumerable<OrderHeader> orderHeaders;
-            orderHeaders = await _unitOfWork.OrderHeader.GetAllAsync(includeProperties: "ApplicationUser");
-            return View(orderHeaders);
+            IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader.GetQueryable(includeProperties: "ApplicationUser", tracked: false);
+
+            int pageSize = 10;
+            var paginatedOrders = await PaginatedList<OrderHeader>.CreateAsync(orderHeaderQuery, pageNumber ?? 1, pageSize);
+
+            return View(paginatedOrders);
         }
 
         public async Task<IActionResult> Details(int orderId)
@@ -49,6 +52,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateOrderDetail()
         {
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
+            if (orderHEaderFromDb == null) return NotFound();
+
             orderHEaderFromDb.Name = OrderDetailsVM.OrderHeader.Name;
             orderHEaderFromDb.PhoneNumber = OrderDetailsVM.OrderHeader.PhoneNumber;
             orderHEaderFromDb.StreetAddress = OrderDetailsVM.OrderHeader.StreetAddress;
@@ -68,6 +73,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
         public async Task<IActionResult> StartProcessing()
         {
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
+            if (orderHEaderFromDb == null) return NotFound();
+
             orderHEaderFromDb.OrderStatus = SD.StatusInProcess;
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Processing;
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
@@ -89,6 +96,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
         public async Task<IActionResult> ShipOrder()
         {
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
+            if (orderHEaderFromDb == null) return NotFound();
+
             orderHEaderFromDb.TrackingNumber = OrderDetailsVM.OrderHeader.TrackingNumber;
             orderHEaderFromDb.Carrier = OrderDetailsVM.OrderHeader.Carrier;
             orderHEaderFromDb.OrderStatus = SD.StatusShipped;
@@ -113,6 +122,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
         public async Task<IActionResult> MarkDelivered()
         {
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
+            if (orderHEaderFromDb == null) return NotFound();
+
             orderHEaderFromDb.OrderStatus = SD.StatusDelivered;
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Delivered;
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
@@ -134,6 +145,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
         public async Task<IActionResult> CancelOrder()
         {
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
+            if (orderHEaderFromDb == null) return NotFound();
 
             // Si el pago fue aprobado, emitir reembolso en Stripe antes de cancelar
             if (orderHEaderFromDb.PaymentStatus == SD.PaymentStatusApproved

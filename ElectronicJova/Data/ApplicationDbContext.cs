@@ -69,7 +69,7 @@ namespace ElectronicJova.Data
 
             modelBuilder.Entity<OrderDetail>()
                 .HasOne(od => od.OrderHeader)
-                .WithMany()
+                .WithMany(o => o.OrderDetails)
                 .HasForeignKey(od => od.OrderHeaderId)
                 .OnDelete(DeleteBehavior.Cascade);
 

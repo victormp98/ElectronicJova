@@ -23,11 +23,15 @@ namespace ElectronicJova.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            // Retrieve products from the database, including their Category for display
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category");
-            return View(productList);
+            // Retrieve queryable for products
+            IQueryable<Product> productQuery = _unitOfWork.Product.GetQueryable(includeProperties: "Category", tracked: false);
+
+            int pageSize = 8;
+            var paginatedProducts = await PaginatedList<Product>.CreateAsync(productQuery, pageNumber ?? 1, pageSize);
+
+            return View(paginatedProducts);
         }
 
         public IActionResult Privacy()
@@ -79,20 +83,22 @@ namespace ElectronicJova.Controllers
 
         public async Task<IActionResult> Details(int productId)
         {
-            DetailsVM detailsVM = new()
-            {
-                Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == productId, includeProperties: "Category"),
-                Count = 1,
-                ProductOptions = await _unitOfWork.ProductOption.GetAllAsync(u => u.ProductId == productId)
-            };
+            var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == productId, includeProperties: "Category");
 
-            if (detailsVM.Product == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
+            DetailsVM detailsVM = new()
+            {
+                Product = product,
+                Count = 1,
+                ProductOptions = await _unitOfWork.ProductOption.GetAllAsync(u => u.ProductId == productId)
+            };
+
             // Verificar si el producto está en favoritos del usuario
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claimsIdentity = (ClaimsIdentity?)User.Identity;
             if (claimsIdentity?.IsAuthenticated == true)
             {
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -113,8 +119,13 @@ namespace ElectronicJova.Controllers
         [Authorize] // User must be logged in to add to cart
         public async Task<IActionResult> Details(DetailsVM detailsVM, List<int>? selectedOptions, string? specialNotes)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claimsIdentity = (ClaimsIdentity?)User.Identity;
+            var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
 
             // Almacenar opciones seleccionadas como JSON
             string? optionsJson = null;

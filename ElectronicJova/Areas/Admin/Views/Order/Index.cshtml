@@ -1,5 +1,5 @@
 @using ElectronicJova.Models
-@model IEnumerable<OrderHeader>
+@model PaginatedList<OrderHeader>
 
 @{
     ViewData["Title"] = "Manage Orders";
@@ -15,39 +15,41 @@
 
     @if (Model != null && Model.Any())
     {
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var orderHeader in Model)
-                {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-bordered table-striped align-middle mb-0" style="width:100%">
+                <thead class="bg-primary text-white">
                     <tr>
-                        <td>@orderHeader.Id</td>
-                        <td>@orderHeader.Name</td>
-                        <td>@orderHeader.PhoneNumber</td>
-                        <td>@orderHeader.Email</td>
-                        <td>@orderHeader.OrderTotal.ToString("c")</td>
-                        <td>@orderHeader.OrderStatus</td>
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary mx-2">
-                                    <i class="bi bi-pencil-square"></i> Details
-                                </a>
-                            </div>
-                        </td>
+                        <th class="py-3">Order ID</th>
+                        <th class="py-3">Name</th>
+                        <th class="py-3">Phone</th>
+                        <th class="py-3">Email</th>
+                        <th class="py-3">Amount</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3 text-center">Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var orderHeader in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@orderHeader.Id</td>
+                            <td>@orderHeader.Name</td>
+                            <td>@orderHeader.PhoneNumber</td>
+                            <td class="small">@orderHeader.Email</td>
+                            <td class="fw-bold text-primary">@orderHeader.OrderTotal.ToString("c")</td>
+                            <td>
+                                <span class="badge rounded-pill bg-info text-dark">@orderHeader.OrderStatus</span>
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary btn-sm rounded-pill px-3">
+                                    <i class="bi bi-pencil-square me-1"></i>Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
     else
     {
@@ -55,6 +57,41 @@
             <div class="col-12 text-center">
                 <p class="lead">No orders found.</p>
             </div>
+        </div>
+    }
+
+    <!-- Pagination Controls -->
+    @if (Model.TotalPages > 1)
+    {
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                    }
+                    
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span> Previous
+                        </a>
+                    </li>
+
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">Page @Model.PageIndex of @Model.TotalPages</span>
+                    </li>
+
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           aria-label="Next">
+                            Next <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     }
 </div>

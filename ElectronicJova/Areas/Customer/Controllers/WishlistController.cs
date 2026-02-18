@@ -19,8 +19,13 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claimsIdentity = (ClaimsIdentity?)User.Identity;
+            var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
 
             var wishlistItems = await _unitOfWork.Wishlist.GetAllAsync(
                 w => w.ApplicationUserId == userId,
@@ -33,8 +38,13 @@ namespace ElectronicJova.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Toggle(int productId)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claimsIdentity = (ClaimsIdentity?)User.Identity;
+            var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Debe iniciar sesión" });
+            }
 
             var existing = await _unitOfWork.Wishlist.GetFirstOrDefaultAsync(
                 w => w.ApplicationUserId == userId && w.ProductId == productId
@@ -69,8 +79,13 @@ namespace ElectronicJova.Areas.Customer.Controllers
             if (wishlist == null)
                 return Json(new { success = false, message = "No encontrado" });
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claimsIdentity = (ClaimsIdentity?)User.Identity;
+            var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Debe iniciar sesión" });
+            }
             if (wishlist.ApplicationUserId != userId)
                 return Json(new { success = false, message = "No autorizado" });
 

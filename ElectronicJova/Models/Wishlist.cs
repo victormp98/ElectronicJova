@@ -8,7 +8,7 @@ namespace ElectronicJova.Models
         public int Id { get; set; }
 
         [Required]
-        public string ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; } = string.Empty;
         [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser? ApplicationUser { get; set; }
 

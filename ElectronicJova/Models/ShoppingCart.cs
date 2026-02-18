@@ -16,7 +16,7 @@ namespace ElectronicJova.Models
 
         // FK to ApplicationUser
         [Required]
-        public string ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; } = string.Empty;
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser? ApplicationUser { get; set; }
 

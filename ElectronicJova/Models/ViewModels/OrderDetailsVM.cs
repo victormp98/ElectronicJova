@@ -6,7 +6,7 @@ namespace ElectronicJova.Models.ViewModels
 {
     public class OrderDetailsVM
     {
-        public OrderHeader OrderHeader { get; set; }
-        public IEnumerable<OrderDetail> OrderDetail { get; set; }
+        public OrderHeader OrderHeader { get; set; } = new();
+        public IEnumerable<OrderDetail> OrderDetail { get; set; } = new List<OrderDetail>();
     }
 }
