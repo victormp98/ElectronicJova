@@ -3,89 +3,168 @@
 
 @{
     ViewData["Title"] = Model.Product!.Title;
+    var hasDiscount = Model.Product.ListPrice > Model.Product.Price;
+    var discountPct = hasDiscount
+        ? (int)Math.Round((1 - (double)Model.Product.Price / (double)Model.Product.ListPrice) * 100)
+        : 0;
+    var inStock = Model.Product.Stock > 0;
 }
 
-<form method="post" asp-action="Details" class="bg-white">
+<form method="post" asp-action="Details">
     <input asp-for="Product.Id" hidden />
     <input asp-for="Product.ListPrice" hidden />
 
-    <div class="container py-4">
-        <div class="row">
-            <!-- Product Image -->
-            <div class="col-12 col-md-7 mb-4">
-                <div class="p-3 border rounded bg-white text-center product-image-container position-relative">
-                    <img src="@(string.IsNullOrEmpty(Model.Product!.ImageUrl) ? "https://via.placeholder.com/600x600?text=No+Image" : Model.Product.ImageUrl)" 
-                         class="img-fluid rounded" alt="@Model.Product.Title" loading="lazy" style="max-height: 500px; object-fit: contain;" id="mainProductImage" />
-                    
-                    <button type="button" class="btn btn-white position-absolute top-0 end-0 m-3 rounded-circle shadow-sm" id="favoriteBtnImage" data-bs-toggle="tooltip" title="Guardar a favoritos">
-                        <i class="bi @(Model.IsFavorite ? "bi-heart-fill text-danger" : "bi-heart text-danger") fs-4"></i>
+    <div class="container py-5">
+        <div class="row g-4">
+
+            <!-- ── Imagen del producto ──────────────────────── -->
+            <div class="col-12 col-md-7">
+                <div class="position-relative rounded-3 overflow-hidden"
+                     style="background: var(--bg-card); border: 1px solid var(--border); padding: 2rem;">
+
+                    <!-- Badges top-left -->
+                    <div class="position-absolute top-0 start-0 m-3 d-flex flex-column gap-2" style="z-index:2;">
+                        @if (!inStock)
+                        {
+                            <span class="badge rounded-pill px-3 py-2" style="background: var(--danger); font-size: 0.75rem;">Agotado</span>
+                        }
+                        else if (Model.Product.Stock < 5)
+                        {
+                            <span class="badge rounded-pill px-3 py-2" style="background: var(--warning); color: #0A0E1A; font-size: 0.75rem;">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i>¡Últimas unidades!
+                            </span>
+                        }
+                        @if (hasDiscount)
+                        {
+                            <span class="badge rounded-pill px-3 py-2" style="background: var(--success); color: #0A0E1A; font-size: 0.75rem; font-weight: 700;">
+                                -@discountPct% OFF
+                            </span>
+                        }
+                    </div>
+
+                    <!-- Favorite button top-right -->
+                    <button type="button"
+                            class="position-absolute top-0 end-0 m-3 btn rounded-circle d-flex align-items-center justify-content-center"
+                            id="favoriteBtnImage"
+                            data-bs-toggle="tooltip"
+                            title="@(Model.IsFavorite ? "Quitar de favoritos" : "Guardar en favoritos")"
+                            style="width:44px; height:44px; background: var(--bg-surface); border: 1px solid var(--border); transition: var(--transition); z-index:2;">
+                        <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-5"
+                           style="color: var(--danger); filter: @(Model.IsFavorite ? "drop-shadow(0 0 6px rgba(255,71,87,0.6))" : "none");"></i>
                     </button>
+
+                    <!-- Main image -->
+                    <img src="@(string.IsNullOrEmpty(Model.Product!.ImageUrl) ? "https://via.placeholder.com/600x600?text=No+Image" : Model.Product.ImageUrl)"
+                         class="img-fluid d-block mx-auto"
+                         alt="@Model.Product.Title"
+                         loading="lazy"
+                         id="mainProductImage"
+                         style="max-height: 480px; object-fit: contain;" />
                 </div>
             </div>
 
-            <!-- Product Info Side -->
+            <!-- ── Info del producto ────────────────────────── -->
             <div class="col-12 col-md-5">
-                <div class="ps-md-4">
-                    <span class="text-muted small mb-1 d-block">Nuevo</span>
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h2 class="fw-bold fs-3 text-dark mb-0">@Model.Product.Title</h2>
-                        @* The original favorite button was here, but the instruction implies moving it or adding a new one in the image container.
-                           Keeping the original button's ID for JS compatibility, but moving its functionality to the new button. *@
-                        @* <button id="favoriteBtn" type="button" class="btn btn-link text-primary p-0" title="Favorito">
-                            <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-3"></i>
-                        </button> *@
-                    </div>
-                    
-                    <p class="text-secondary small mb-3">por <span class="text-primary">@Model.Product.Author</span></p>
+                <div class="h-100 d-flex flex-column">
 
-                    <div class="mb-4">
-                        @if (Model.Product.ListPrice > Model.Product.Price)
+                    <!-- Category / condition badge -->
+                    <div class="mb-2">
+                        <span class="badge rounded-pill px-3 py-1"
+                              style="background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid var(--border-accent); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;">
+                            <i class="bi bi-lightning-charge-fill me-1"></i>Nuevo
+                        </span>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="fw-bold mb-1" style="color: var(--text-primary); font-size: 1.6rem; letter-spacing: -0.5px; line-height: 1.25;">
+                        @Model.Product.Title
+                    </h1>
+                    <p class="mb-3" style="color: var(--text-muted); font-size: 0.875rem;">
+                        por <span style="color: var(--cyan);">@Model.Product.Author</span>
+                    </p>
+
+                    <!-- Price block -->
+                    <div class="mb-4 p-3 rounded-3" style="background: var(--bg-card); border: 1px solid var(--border);">
+                        @if (hasDiscount)
                         {
-                            <span class="text-muted text-decoration-line-through fs-5">@Model.Product.ListPrice.ToString("c")</span>
+                            <span class="text-decoration-line-through" style="color: var(--text-muted); font-size: 0.95rem;">
+                                @Model.Product.ListPrice.ToString("c")
+                            </span>
                         }
-                        <div class="d-flex align-items-center">
-                            <h1 class="fw-bold text-dark me-2 mb-0" style="font-size: 2.5rem;">@Model.Product.Price.ToString("c")</h1>
-                            @if (Model.Product.ListPrice > Model.Product.Price)
+                        <div class="d-flex align-items-baseline gap-3 mt-1">
+                            <span id="totalPriceDisplay" class="fw-bold"
+                                  style="font-size: 2.4rem; color: var(--cyan); text-shadow: 0 0 20px var(--cyan-glow-sm); letter-spacing: -1px;">
+                                @Model.Product.Price.ToString("c")
+                            </span>
+                            @if (hasDiscount)
                             {
-                                var discountPct = (int)Math.Round((1 - (double)Model.Product.Price / (double)Model.Product.ListPrice) * 100);
-                                <span class="text-success fw-bold">@discountPct% OFF</span>
+                                <span class="badge rounded-pill px-2 py-1 fw-bold" style="background: rgba(0,200,150,0.15); color: var(--success); font-size: 0.85rem;">
+                                    @discountPct% OFF
+                                </span>
                             }
                         </div>
                     </div>
 
-                    @if(Model.Product.Stock > 0)
-                    {
-                        <p class="text-dark fw-bold mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>Stock disponible</p>
-                        <p class="text-muted small mb-3">Cantidad disponible: @Model.Product.Stock</p>
-                    }
-                    else
-                    {
-                        <p class="text-danger fw-bold mb-3"><i class="bi bi-x-circle-fill me-2"></i>Sin stock disponible</p>
-                    }
+                    <!-- Stock status -->
+                    <div class="mb-3">
+                        @if (inStock)
+                        {
+                            <p class="fw-semibold mb-1" style="color: var(--success);">
+                                <i class="bi bi-check-circle-fill me-2"></i>Stock disponible
+                            </p>
+                            <p class="small mb-0" style="color: var(--text-muted);">
+                                @Model.Product.Stock unidades disponibles
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fw-semibold mb-0" style="color: var(--danger);">
+                                <i class="bi bi-x-circle-fill me-2"></i>Sin stock disponible
+                            </p>
+                        }
+                    </div>
 
+                    <!-- Quantity -->
                     <div class="mb-4">
-                        <label asp-for="Count" class="form-label fw-bold text-dark">Cantidad:</label>
-                        <div class="input-group" style="max-width: 150px;">
-                            <input asp-for="Count" type="number" id="itemCount" class="form-control text-center shadow-none" value="1" min="1" max="@Model.Product.Stock" />
+                        <label asp-for="Count" class="form-label fw-semibold" style="color: var(--text-secondary);">Cantidad:</label>
+                        <div class="input-group" style="max-width: 140px;">
+                            <button type="button" class="btn btn-outline-secondary" id="btnMinus"
+                                    style="border-color: var(--border);">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input asp-for="Count" type="number" id="itemCount"
+                                   class="form-control text-center fw-bold"
+                                   value="1" min="1" max="@Model.Product.Stock"
+                                   style="border-color: var(--border); background: var(--bg-input); color: var(--text-primary);" />
+                            <button type="button" class="btn btn-outline-secondary" id="btnPlus"
+                                    style="border-color: var(--border);">
+                                <i class="bi bi-plus"></i>
+                            </button>
                         </div>
                     </div>
 
+                    <!-- Product options -->
                     @if (Model.ProductOptions != null && Model.ProductOptions.Any())
                     {
-                        <div class="mb-4 p-3 bg-light rounded border">
-                            <h6 class="fw-bold text-dark mb-3">Personaliza tu producto</h6>
+                        <div class="mb-4 p-3 rounded-3" style="background: var(--bg-card); border: 1px solid var(--border);">
+                            <h6 class="fw-bold mb-3" style="color: var(--text-primary);">
+                                <i class="bi bi-sliders me-2" style="color: var(--cyan);"></i>Personaliza tu producto
+                            </h6>
                             @foreach (var option in Model.ProductOptions.OrderBy(u => u.DisplayOrder))
                             {
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input option-checkbox shadow-none" type="checkbox" 
-                                           name="selectedOptions" value="@option.Id" 
-                                           data-price="@(option.AdditionalPrice ?? 0)" 
-                                           id="option_@option.Id" />
-                                    <label class="form-check-label text-dark" for="option_@option.Id">
-                                        @option.Name: @option.Value
+                                    <input class="form-check-input option-checkbox" type="checkbox"
+                                           name="selectedOptions" value="@option.Id"
+                                           data-price="@(option.AdditionalPrice ?? 0)"
+                                           id="option_@option.Id"
+                                           style="border-color: var(--border); background: var(--bg-input);" />
+                                    <label class="form-check-label" for="option_@option.Id" style="color: var(--text-secondary);">
+                                        @option.Name: <span style="color: var(--text-primary);">@option.Value</span>
                                         @if (option.AdditionalPrice > 0)
                                         {
-                                            <span class="text-success small fw-bold">(+@option.AdditionalPrice.Value.ToString("c"))</span>
+                                            <span class="fw-bold ms-1" style="color: var(--success); font-size: 0.85rem;">
+                                                (+@option.AdditionalPrice.Value.ToString("c"))
+                                            </span>
                                         }
                                     </label>
                                 </div>
@@ -93,31 +172,47 @@
                         </div>
                     }
 
-                    <div class="form-group mb-4">
-                        <label for="specialNotes" class="form-label fw-bold text-dark">Notas especiales:</label>
-                        <textarea class="form-control shadow-none" id="specialNotes" name="specialNotes" rows="2" placeholder="Ej: envolver para regalo..."></textarea>
+                    <!-- Special notes -->
+                    <div class="mb-4">
+                        <label for="specialNotes" class="form-label fw-semibold" style="color: var(--text-secondary);">
+                            <i class="bi bi-pencil me-1" style="color: var(--cyan);"></i>Notas especiales:
+                        </label>
+                        <textarea class="form-control" id="specialNotes" name="specialNotes" rows="2"
+                                  placeholder="Ej: envolver para regalo..."></textarea>
                     </div>
 
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm">
+                    <!-- CTA Button -->
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold" @(!inStock ? "disabled" : "")>
                             <i class="bi bi-cart-plus me-2"></i>Agregar al carrito
                         </button>
                     </div>
 
-                    <div class="mt-4 p-3 bg-opacity-10 bg-info rounded border border-info border-opacity-25">
-                        <h6 class="fw-bold text-dark mb-1"><i class="bi bi-shield-check me-2"></i>Compra Protegida</h6>
-                        <p class="text-muted small mb-0">Recibí el producto que esperabas o te devolvemos tu dinero.</p>
+                    <!-- Trust badge -->
+                    <div class="p-3 rounded-3 mt-auto"
+                         style="background: rgba(0,200,150,0.06); border: 1px solid rgba(0,200,150,0.2);">
+                        <p class="fw-semibold mb-1" style="color: var(--success); font-size: 0.875rem;">
+                            <i class="bi bi-shield-check-fill me-2"></i>Compra Protegida
+                        </p>
+                        <p class="mb-0" style="color: var(--text-muted); font-size: 0.8rem;">
+                            Recibí el producto que esperabas o te devolvemos tu dinero.
+                        </p>
                     </div>
+
                 </div>
             </div>
         </div>
 
-        <hr class="my-5" />
+        <!-- ── Divider ──────────────────────────────────────── -->
+        <div class="section-divider my-5"></div>
 
+        <!-- ── Descripción ─────────────────────────────────── -->
         <div class="row">
             <div class="col-12 col-md-8">
-                <h4 class="fw-bold text-dark mb-4">Descripción del producto</h4>
-                <div class="text-secondary" style="white-space: pre-wrap; line-height: 1.6;">
+                <h4 class="fw-bold mb-4" style="color: var(--text-primary);">
+                    <i class="bi bi-file-text me-2" style="color: var(--cyan);"></i>Descripción del producto
+                </h4>
+                <div style="color: var(--text-secondary); white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">
                     @Model.Product.Description
                 </div>
             </div>
@@ -128,49 +223,59 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const basePrice = @Model.Product.Price;
             const priceDisplay = $('#totalPriceDisplay');
             const checkboxes = $('.option-checkbox');
+            const itemCount = $('#itemCount');
+            const maxStock = @Model.Product.Stock;
 
+            // ── Quantity +/- buttons ──────────────────────
+            $('#btnMinus').click(function () {
+                let v = parseInt(itemCount.val()) || 1;
+                if (v > 1) itemCount.val(v - 1).trigger('change');
+            });
+            $('#btnPlus').click(function () {
+                let v = parseInt(itemCount.val()) || 1;
+                if (v < maxStock) itemCount.val(v + 1).trigger('change');
+            });
+
+            // ── Price update with options ─────────────────
             function updateTotal() {
                 let extra = 0;
-                checkboxes.filter(':checked').each(function() {
+                checkboxes.filter(':checked').each(function () {
                     extra += parseFloat($(this).data('price')) || 0;
                 });
-                
                 const total = basePrice + extra;
-                priceDisplay.text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total));
+                priceDisplay.text(new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(total));
             }
-
             checkboxes.on('change', updateTotal);
 
-            $('#favoriteBtnImage').click(function() {
+            // ── Favorite toggle ───────────────────────────
+            $('#favoriteBtnImage').click(function () {
                 const btn = $(this);
                 const icon = btn.find('i');
                 const productId = @Model.Product.Id;
 
-                $.post('/Customer/Wishlist/Toggle', { productId: productId }, function(response) {
+                $.post('/Customer/Wishlist/Toggle', { productId: productId }, function (response) {
                     if (response.success) {
                         if (response.action === 'added') {
-                            btn.removeClass('btn-outline-light').addClass('btn-danger');
                             icon.removeClass('bi-heart').addClass('bi-heart-fill');
+                            icon.css('filter', 'drop-shadow(0 0 6px rgba(255,71,87,0.6))');
                             btn.attr('title', 'Quitar de favoritos');
                             toastr.success('Agregado a favoritos');
                         } else {
-                            btn.removeClass('btn-danger').addClass('btn-outline-light');
                             icon.removeClass('bi-heart-fill').addClass('bi-heart');
-                            btn.attr('title', 'Agregar a favoritos');
+                            icon.css('filter', 'none');
+                            btn.attr('title', 'Guardar en favoritos');
                             toastr.info('Quitado de favoritos');
                         }
                     } else {
-                        // Si no está autenticado, el middleware de ASP.NET Core lo redirigirá o fallará el POST
-                        // En aplicaciones reales, podrías manejar el status 401 explícitamente.
                         toastr.error('Debes iniciar sesión para usar favoritos');
                     }
-                }).fail(function(xhr) {
+                }).fail(function (xhr) {
                     if (xhr.status === 401) {
-                         window.location.href = '/Identity/Account/Login?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        window.location.href = '/Identity/Account/Login?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);
                     } else {
                         toastr.error('Error al procesar la solicitud');
                     }

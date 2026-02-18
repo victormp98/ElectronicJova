@@ -78,6 +78,34 @@ main {
   flex-grow: 1;
 }
 
+/* ── Footer ──────────────────────────────────────────────────── */
+.footer {
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.footer a {
+  color: var(--cyan);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.footer a:hover {
+  color: var(--cyan-dark);
+  text-decoration: underline;
+}
+
+/* ── Section Divider ─────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  border: none;
+}
+
 img {
   max-width: 100%;
   height: auto;

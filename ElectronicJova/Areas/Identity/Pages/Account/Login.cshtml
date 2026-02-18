@@ -2,82 +2,317 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Iniciar sesión";
+    Layout = null; // Full-page custom layout
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión — ElectronicJova</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: var(--bg-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Ambient glow blobs */
+        .login-blob-1 {
+            position: fixed;
+            top: -15%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .login-blob-2 {
+            position: fixed;
+            bottom: -10%;
+            right: -5%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(91,141,239,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.05);
+            animation: fadeInUp 0.45s ease both;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--cyan), #5B8DEF);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #0A0E1A;
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+
+        .login-logo .logo-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--cyan), #5B8DEF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Input with icon */
+        .input-icon-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .input-icon-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .input-icon-group input {
+            padding-left: 2.75rem;
+            height: 48px;
+            font-size: 0.9rem;
+        }
+
+        .input-icon-group input:focus + .input-icon,
+        .input-icon-group input:focus ~ .input-icon {
+            color: var(--cyan);
+        }
+
+        .input-icon-group .input-icon { z-index: 5; }
+
+        /* Password toggle */
+        .input-icon-group .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+            z-index: 5;
+        }
+
+        .input-icon-group .toggle-password:hover { color: var(--cyan); }
+
+        /* Remember me */
+        .form-check-input {
+            background-color: var(--bg-input);
+            border-color: var(--border);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--cyan);
+            border-color: var(--cyan);
+        }
+
+        .form-check-label { color: var(--text-secondary); font-size: 0.875rem; }
+
+        /* Links */
+        .login-link {
+            color: var(--cyan);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .login-link:hover {
+            color: var(--cyan-dark);
+            text-decoration: underline;
+        }
+
+        /* Divider */
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient blobs -->
+    <div class="login-blob-1"></div>
+    <div class="login-blob-2"></div>
+
+    <div class="login-card">
+
+        <!-- Logo -->
+        <div class="login-logo">
+            <div class="logo-icon">
+                <i class="bi bi-lightning-charge-fill"></i>
+            </div>
+            <span class="logo-text">ElectronicJova</span>
+        </div>
+        <p class="login-subtitle">Inicia sesión para continuar</p>
+
+        <!-- Validation errors -->
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3" role="alert" style="display: none;"></div>
+
+        <form id="account" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Email -->
+            <div class="input-icon-group">
+                <i class="bi bi-envelope input-icon"></i>
+                <input asp-for="Input.Email"
+                       class="form-control"
+                       autocomplete="username"
+                       aria-required="true"
+                       placeholder="Correo electrónico" />
+                <span asp-validation-for="Input.Email" class="text-danger small d-block mt-1"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="input-icon-group">
+                <i class="bi bi-lock input-icon"></i>
+                <input asp-for="Input.Password"
+                       class="form-control"
+                       id="passwordInput"
+                       autocomplete="current-password"
+                       aria-required="true"
+                       placeholder="Contraseña" />
+                <button type="button" class="toggle-password" onclick="togglePassword()" title="Mostrar/ocultar contraseña">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                </button>
+                <span asp-validation-for="Input.Password" class="text-danger small d-block mt-1"></span>
+            </div>
+
+            <!-- Remember me + Forgot -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Input.RememberMe" id="rememberMe" />
+                    <label class="form-check-label" for="rememberMe">Recordarme</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
+                <a id="forgot-password" asp-page="./ForgotPassword" class="login-link">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <!-- Submit -->
+            <button id="login-submit" type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3" style="font-size: 1rem;">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+            </button>
+
+            <!-- Register link -->
+            <div class="login-divider">o</div>
+
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+               class="btn btn-outline-secondary w-100 py-2 fw-semibold" style="font-size: 0.9rem;">
+                <i class="bi bi-person-plus me-2"></i>Crear cuenta nueva
+            </a>
+
+            <!-- Resend confirmation -->
+            <p class="text-center mt-3 mb-0">
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="login-link" style="font-size: 0.8rem;">
+                    Reenviar confirmación de correo
+                </a>
+            </p>
+        </form>
+
+        <!-- External logins (only if configured) -->
+        @{
+            if ((Model.ExternalLogins?.Count ?? 0) > 0)
+            {
+                <div class="login-divider mt-4">o continúa con</div>
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    @foreach (var provider in Model.ExternalLogins!)
+                    {
+                        <button type="submit" class="btn btn-outline-secondary w-100 mb-2"
+                                name="provider" value="@provider.Name">
+                            @provider.DisplayName
+                        </button>
+                    }
+                </form>
             }
-        </section>
-    </div>
-</div>
+        }
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        // Show validation summary if it has content
+        document.addEventListener('DOMContentLoaded', function () {
+            const vs = document.querySelector('[data-valmsg-summary]');
+            if (vs && vs.querySelectorAll('li').length > 0) {
+                vs.style.display = 'block';
+            }
+        });
+
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const icon = document.getElementById('toggleIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'bi bi-eye';
+            }
+        }
+    </script>
+</body>
+</html>
