@@ -15,78 +15,141 @@
         </div>
         <div class="row">
             <div class="col-12 col-lg-10 order-2 order-lg-1">
-                <div class="mb-3">
-                    <label asp-for="Product.Title" class="form-label fw-bold"></label>
-                    <input asp-for="Product.Title" class="form-control" placeholder="Enter title" />
-                    <span asp-validation-for="Product.Title" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Product.Description" class="form-label fw-bold"></label>
-                    <textarea asp-for="Product.Description" rows="4" class="form-control" placeholder="Enter description"></textarea>
-                    <span asp-validation-for="Product.Description" class="text-danger"></span>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-6 mb-3">
-                        <label asp-for="Product.ISBN" class="form-label fw-bold"></label>
-                        <input asp-for="Product.ISBN" class="form-control" />
-                        <span asp-validation-for="Product.ISBN" class="text-danger"></span>
-                    </div>
-                    <div class="col-12 col-md-6 mb-3">
-                        <label asp-for="Product.Author" class="form-label fw-bold"></label>
-                        <input asp-for="Product.Author" class="form-control" />
-                        <span asp-validation-for="Product.Author" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 col-md-3 mb-3">
-                        <label asp-for="Product.ListPrice" class="form-label fw-bold"></label>
-                        <input asp-for="Product.ListPrice" class="form-control" />
-                        <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <label asp-for="Product.Price" class="form-label fw-bold"></label>
-                        <input asp-for="Product.Price" class="form-control" />
-                        <span asp-validation-for="Product.Price" class="text-danger"></span>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <label asp-for="Product.Price50" class="form-label fw-bold"></label>
-                        <input asp-for="Product.Price50" class="form-control" />
-                        <span asp-validation-for="Product.Price50" class="text-danger"></span>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <label asp-for="Product.Price100" class="form-label fw-bold"></label>
-                        <input asp-for="Product.Price100" class="form-control" />
-                        <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                <!-- ── Basic Info ────────────────────────── -->
+                <div class="card mb-4 border-secondary shadow-sm">
+                    <div class="card-header bg-dark text-white fw-bold">Basic Information</div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Product.Title" class="form-label fw-bold"></label>
+                            <input asp-for="Product.Title" class="form-control" placeholder="Enter title" />
+                            <span asp-validation-for="Product.Title" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Product.Description" class="form-label fw-bold"></label>
+                            <textarea asp-for="Product.Description" rows="4" class="form-control" placeholder="Enter description"></textarea>
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.ISBN" class="form-label fw-bold"></label>
+                                <input asp-for="Product.ISBN" class="form-control" />
+                                <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.Author" class="form-label fw-bold"></label>
+                                <input asp-for="Product.Author" class="form-control" />
+                                <span asp-validation-for="Product.Author" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-md-6 mb-3">
-                        <label asp-for="Product.Stock" class="form-label fw-bold"></label>
-                        <input asp-for="Product.Stock" class="form-control" />
-                        <span asp-validation-for="Product.Stock" class="text-danger"></span>
-                    </div>
-                    <div class="col-12 col-md-6 mb-3">
-                        <label asp-for="Product.CategoryId" class="form-label fw-bold"></label>
-                        <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
-                            <option disabled selected>--Select Category--</option>
-                        </select>
-                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+
+                <!-- ── Pricing & Inventory ───────────────── -->
+                <div class="card mb-4 border-secondary shadow-sm">
+                    <div class="card-header bg-dark text-white fw-bold">Pricing & Inventory</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.ListPrice" class="form-label fw-bold"></label>
+                                <input asp-for="Product.ListPrice" class="form-control" />
+                                <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.Price" class="form-label fw-bold"></label>
+                                <input asp-for="Product.Price" class="form-control" />
+                                <span asp-validation-for="Product.Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.Price50" class="form-label fw-bold"></label>
+                                <input asp-for="Product.Price50" class="form-control" />
+                                <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.Price100" class="form-label fw-bold"></label>
+                                <input asp-for="Product.Price100" class="form-control" />
+                                <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.Stock" class="form-label fw-bold"></label>
+                                <input asp-for="Product.Stock" class="form-control" />
+                                <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label asp-for="Product.CategoryId" class="form-label fw-bold"></label>
+                                <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                                    <option disabled selected>--Select Category--</option>
+                                </select>
+                                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                 <!-- ── Product Options ───────────────────── -->
+                <div class="card mb-4 border-secondary shadow-sm">
+                    <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
+                        <span>Product Options</span>
+                        <button type="button" class="btn btn-sm btn-success" id="btnAddOption">
+                            <i class="bi bi-plus-lg"></i> Add Option
+                        </button>
+                    </div>
+                    <div class="card-body">
+                         <div class="table-responsive">
+                            <table class="table table-bordered text-center" id="optionsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Name (e.g. Color)</th>
+                                        <th>Value (e.g. Red)</th>
+                                        <th>Extra Price</th>
+                                        <th>Order</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.ProductOptions.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input asp-for="ProductOptions[i].Id" hidden />
+                                                <input asp-for="ProductOptions[i].Name" class="form-control" required />
+                                            </td>
+                                            <td>
+                                                <input asp-for="ProductOptions[i].Value" class="form-control" required />
+                                            </td>
+                                            <td>
+                                                <input asp-for="ProductOptions[i].AdditionalPrice" class="form-control" type="number" step="0.01" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="ProductOptions[i].DisplayOrder" class="form-control" type="number" />
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm remove-option" onclick="removeRow(this)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                         </div>
+                    </div>
+                </div>
+
+
                 <div class="mb-4">
                     <label for="formFile" class="form-label fw-bold">Update Product Image</label>
                     <input type="file" name="file" class="form-control" id="formFile" />
                 </div>
+
                 <div class="row">
                     <div class="col-12 col-md-6 mb-2">
-                        @if (Model.Product.Id == 0)
-                        {
-                            <button type="submit" class="btn btn-primary w-100 py-2">Create Product</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-primary w-100 py-2">Update Product</button>
-                        }
+                         <button type="submit" class="btn btn-primary w-100 py-2">
+                            @(Model.Product.Id == 0 ? "Create Product" : "Update Product")
+                        </button>
                     </div>
                     <div class="col-12 col-md-6">
                         <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary w-100 py-2">
@@ -95,6 +158,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-12 col-lg-2 order-1 order-lg-2 mb-4 mb-lg-0 text-center">
                 @if (Model.Product.ImageUrl != null)
                 {
@@ -110,4 +174,44 @@
     @{
         <partial name="_ValidationScriptsPartial" />
     }
+    <script>
+        $(document).ready(function() {
+            let optionIndex = @Model.ProductOptions.Count;
+
+            $('#btnAddOption').click(function() {
+                let newRow = `
+                    <tr>
+                        <td>
+                            <input name="ProductOptions[${optionIndex}].Id" type="hidden" value="0" />
+                            <input name="ProductOptions[${optionIndex}].Name" class="form-control" required placeholder="Color" />
+                        </td>
+                        <td>
+                            <input name="ProductOptions[${optionIndex}].Value" class="form-control" required placeholder="Red" />
+                        </td>
+                        <td>
+                            <input name="ProductOptions[${optionIndex}].AdditionalPrice" class="form-control" type="number" step="0.01" value="0" />
+                        </td>
+                         <td>
+                            <input name="ProductOptions[${optionIndex}].DisplayOrder" class="form-control" type="number" value="${optionIndex + 1}" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#optionsTable tbody').append(newRow);
+                optionIndex++;
+            });
+        });
+
+        function removeRow(btn) {
+            $(btn).closest('tr').remove();
+            // Optional: Re-index lines if you want strictly sequential indices, 
+            // but ASP.NET Core model binding can handle non-sequential indices 
+            // if you use a specific syntax or just ensure uniqueness.
+            // For simple list binding, sequential 0...N is safest.
+        }
+    </script>
 }

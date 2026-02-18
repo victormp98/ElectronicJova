@@ -135,6 +135,10 @@ namespace ElectronicJova.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    
+                    // Assign default role
+                    await _userManager.AddToRoleAsync(user, ElectronicJova.Utilities.SD.Role_Customer);
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

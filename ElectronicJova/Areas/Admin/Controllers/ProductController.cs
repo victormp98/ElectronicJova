@@ -5,6 +5,9 @@ using ElectronicJova.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering; // For SelectListItem
+using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ElectronicJova.Areas.Admin.Controllers
 {
@@ -38,7 +41,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                })
+                }),
+                ProductOptions = new List<ProductOption>()
             };
 
             if (id == null || id == 0)
@@ -55,6 +59,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     return NotFound();
                 }
                 productVM.Product = productFromDb;
+                productVM.ProductOptions = _unitOfWork.ProductOption.GetAll(u => u.ProductId == id).OrderBy(u => u.DisplayOrder).ToList();
                 return View(productVM);
             }
         }
@@ -69,7 +74,6 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 if (file != null)
                 {
-                    // FIX 6: Whitelist de extensiones permitidas
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
                     var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
                     if (!allowedExtensions.Contains(ext))
@@ -91,7 +95,6 @@ namespace ElectronicJova.Areas.Admin.Controllers
                         Directory.CreateDirectory(productPath);
                     }
 
-                    // If editing, delete old image
                     if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
                     {
                         var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('/', '\\'));
@@ -105,25 +108,65 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     {
                         await file.CopyToAsync(fileStream);
                     }
-                    // FIX 7: Usar forward slash para URLs correctas en todos los OS
                     productVM.Product.ImageUrl = "/images/products/" + fileName;
                 }
 
                 if (productVM.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
+                    await _unitOfWork.SaveAsync(); // Save to get the ID for options
                 }
                 else
                 {
                     _unitOfWork.Product.Update(productVM.Product);
                 }
+
+                // Handle Product Options
+                if (productVM.ProductOptions != null)
+                {
+                    var existingOptions = _unitOfWork.ProductOption.GetAll(u => u.ProductId == productVM.Product.Id).ToList();
+                    
+                    // 1. Update or Add
+                    foreach (var option in productVM.ProductOptions)
+                    {
+                        option.ProductId = productVM.Product.Id;
+                        if (option.Id == 0)
+                        {
+                            _unitOfWork.ProductOption.Add(option);
+                        }
+                        else
+                        {
+                            _unitOfWork.ProductOption.Update(option);
+                        }
+                    }
+
+                    // 2. Delete removed options
+                    var inputIds = productVM.ProductOptions.Select(u => u.Id).ToList();
+                    var optionsToDelete = existingOptions.Where(u => !inputIds.Contains(u.Id)).ToList();
+                    if (optionsToDelete.Any())
+                    {
+                        _unitOfWork.ProductOption.RemoveRange(optionsToDelete);
+                    }
+                }
+                else
+                {
+                    // If no options passed but product exists, remove all existing options (case: user removed all rows)
+                     if (productVM.Product.Id != 0)
+                     {
+                         var existingOptions = _unitOfWork.ProductOption.GetAll(u => u.ProductId == productVM.Product.Id).ToList();
+                         if (existingOptions.Any())
+                         {
+                             _unitOfWork.ProductOption.RemoveRange(existingOptions);
+                         }
+                     }
+                }
+
                 await _unitOfWork.SaveAsync();
                 TempData["success"] = "Product created/updated successfully";
                 return RedirectToAction("Index");
             }
             else
             {
-                // If model state is invalid, re-populate CategoryList for the view
                 productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,

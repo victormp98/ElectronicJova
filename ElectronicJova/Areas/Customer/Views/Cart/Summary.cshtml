@@ -1,102 +1,115 @@
 @using ElectronicJova.Models.ViewModels
 @model OrderVM
 
+@{
+    ViewData["Title"] = "Resumen del pedido";
+}
+
 <form method="post" asp-action="Summary">
-    <div class="container py-4">
-        <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border) !important; border-radius: 14px; overflow: hidden;">
-            <div class="card-header py-4" style="background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(91,141,239,0.1)); border-bottom: 1px solid var(--border);">
+    <div class="container py-5">
+        <div class="card border-0 shadow-lg overflow-hidden">
+            <div class="card-header py-4 bg-gradient-dark-blue border-bottom-0">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h3 class="fw-bold mb-0" style="color: var(--text-primary);">
-                            <i class="bi bi-bag-check-fill me-2" style="color: var(--cyan);"></i>Resumen del pedido
+                        <h3 class="fw-bold mb-0 text-light">
+                            <i class="bi bi-bag-check-fill me-2 text-info"></i>Resumen del pedido
                         </h3>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="container rounded p-2">
+            
+            <div class="card-body p-4 bg-card">
+                <div class="container rounded">
                     <div class="row">
+                        <!-- ── Shipping Details ────────────────────── -->
                         <div class="col-12 col-lg-6 pb-4">
-                            <div class="row">
-                                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-primary">Detalles de envío:</span>
-                                </h4>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Nombre</label>
+                            <h4 class="d-flex justify-content-between align-items-center mb-4 text-info border-bottom border-secondary pb-2">
+                                <span><i class="bi bi-truck me-2"></i>Detalles de envío</span>
+                            </h4>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.Name" class="form-label text-secondary">Nombre</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.Name" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                                    <span asp-validation-for="OrderHeader.Name" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Teléfono</label>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.PhoneNumber" class="form-label text-secondary">Teléfono</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.PhoneNumber" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                                    <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Dirección</label>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.StreetAddress" class="form-label text-secondary">Dirección</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.StreetAddress" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Ciudad</label>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.City" class="form-label text-secondary">Ciudad</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.City" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                                    <span asp-validation-for="OrderHeader.City" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Estado / Provincia</label>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.State" class="form-label text-secondary">Estado</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.State" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                    <span asp-validation-for="OrderHeader.State" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col-12 col-md-3 mb-1 mb-md-0">
-                                    <label class="text-secondary">Código postal</label>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.PostalCode" class="form-label text-secondary">C.P.</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input asp-for="OrderHeader.PostalCode" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger small"></span>
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- ── Order Items ─────────────────────────── -->
                         <div class="col-12 col-lg-5 offset-lg-1">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-primary">Tu pedido:</span>
+                            <h4 class="d-flex justify-content-between align-items-center mb-4 text-info border-bottom border-secondary pb-2">
+                                <span><i class="bi bi-cart3 me-2"></i>Tu pedido</span>
                             </h4>
-                            <ul class="list-group mb-3">
+                            
+                            <ul class="list-group mb-3 shadow-sm">
                                 @foreach (var item in Model.ShoppingCartList)
                                 {
-                                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                                    <li class="list-group-item d-flex justify-content-between lh-sm bg-surface border-secondary">
                                         <div>
-                                            <h6 class="my-0">@item.Product.Title</h6>
-                                            <small class="text-muted">Cantidad: @item.Count</small>
+                                            <h6 class="my-0 text-light">@item.Product.Title</h6>
+                                            <small class="text-muted">Cantidad: <span class="fw-bold text-light">@item.Count</span></small>
 
                                             @if (!string.IsNullOrEmpty(item.SelectedOptions))
                                             {
                                                 var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(item.SelectedOptions);
-                                                <div class="mt-1">
+                                                <div class="mt-2 p-2 rounded bg-dark border border-secondary">
                                                     @foreach (var opt in opts)
                                                     {
                                                         <small class="text-info d-block" style="font-size: 0.75rem;">
-                                                            <i class="bi bi-check2-circle"></i> @opt.GetProperty("Name"): @opt.GetProperty("Value")
+                                                            <i class="bi bi-check2-circle"></i> @opt.GetProperty("Name"): <span class="text-light">@opt.GetProperty("Value")</span>
                                                         </small>
                                                     }
                                                 </div>
@@ -104,34 +117,35 @@
 
                                             @if (!string.IsNullOrEmpty(item.SpecialNotes))
                                             {
-                                                <small class="text-warning d-block" style="font-size: 0.75rem;">
-                                                    <i class="bi bi-sticky"></i> @item.SpecialNotes
+                                                <small class="text-warning d-block mt-1" style="font-size: 0.75rem;">
+                                                    <i class="bi bi-sticky-fill me-1"></i> @item.SpecialNotes
                                                 </small>
                                             }
                                         </div>
-                                        <span class="text-muted">@((item.Price * item.Count).ToString("c"))</span>
+                                        <span class="text-info fw-bold">@((item.Price * item.Count).ToString("c"))</span>
                                     </li>
                                 }
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <h5 class="text-primary">Total (USD)</h5>
-                                    <h5 class="text-primary">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
+                                <li class="list-group-item d-flex justify-content-between bg-dark border-secondary">
+                                    <h5 class="text-light mb-0">Total (MXN)</h5>
+                                    <h5 class="text-info fw-bold mb-0">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card-footer bg-white border-0 py-4">
+            
+            <div class="card-footer py-4 border-top border-secondary bg-surface">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-8 mb-3 mb-md-0">
-                        <p class="mb-0 text-muted" style="font-size:14px;">
-                            <i class="bi bi-truck me-2"></i>Fecha estimada de entrega:
-                            <span class="fw-bold">@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()</span>
+                        <p class="mb-0 text-secondary small">
+                            <i class="bi bi-calendar-event me-2 text-info"></i>Fecha estimada de entrega:
+                            <span class="fw-bold text-light">@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()</span>
                         </p>
                     </div>
                     <div class="col-12 col-md-4">
-                        <button type="submit" class="btn btn-primary bg-gradient btn-lg w-100 rounded-pill py-3 shadow-lg">
-                            Confirmar compra
+                        <button type="submit" class="btn btn-primary btn-lg w-100 py-3 shadow-info fw-bold text-uppercase">
+                            Confirmar compra <i class="bi bi-chevron-right ms-1"></i>
                         </button>
                     </div>
                 </div>
@@ -139,3 +153,7 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

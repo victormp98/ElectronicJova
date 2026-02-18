@@ -12,28 +12,29 @@
 
             <!-- Success Icon with glow -->
             <div id="statusIcon" class="mb-4">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-                     style="width:80px; height:80px; background: rgba(0,212,255,0.1); border: 2px solid var(--border-accent); box-shadow: 0 0 30px var(--cyan-glow);">
-                    <i class="bi bi-hourglass-split fs-2" id="statusIconEl" style="color: var(--warning);"></i>
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 position-relative"
+                     style="width: 100px; height: 100px; background: rgba(0, 212, 255, 0.05); border: 2px solid var(--border-accent);">
+                    <div class="position-absolute w-100 h-100 rounded-circle" style="box-shadow: 0 0 30px var(--cyan-glow); animation: pulse-glow 2s infinite;"></div>
+                    <i class="bi bi-hourglass-split display-4 text-warning position-relative z-1" id="statusIconEl"></i>
                 </div>
             </div>
 
-            <h1 class="fw-bold mb-2" id="statusTitle" style="color: var(--text-primary);">¡Pedido realizado!</h1>
-            <p class="mb-1" style="color: var(--text-muted);">Número de pedido: <strong style="color: var(--cyan);">#@Model.Id</strong></p>
-            <p class="mb-4" style="color: var(--text-muted);">Recibirás una confirmación por correo electrónico.</p>
+            <h1 class="fw-bold mb-2 text-light" id="statusTitle">¡Pedido realizado!</h1>
+            <p class="mb-1 text-muted">Número de pedido: <strong class="text-info">#@Model.Id</strong></p>
+            <p class="mb-4 text-muted">Recibirás una confirmación por correo electrónico.</p>
 
             <!-- Status Card -->
-            <div class="card border-0 mb-4" style="background: var(--bg-card); border: 1px solid var(--border) !important; border-radius: 14px;">
+            <div class="card border-secondary mb-4 bg-card shadow-sm">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-3" style="color: var(--text-primary);">Estado del pedido</h5>
+                    <h5 class="fw-bold mb-3 text-light">Estado del pedido</h5>
                     <div id="orderStatusBadge" class="d-flex align-items-center justify-content-center gap-2">
-                        <i class="bi @SD.GetOrderStatusIcon(Model.OrderStatus) fs-4" id="statusBadgeIcon" style="color: var(--warning);"></i>
+                        <i class="bi @SD.GetOrderStatusIcon(Model.OrderStatus) fs-4 text-warning" id="statusBadgeIcon"></i>
                         <span class="badge bg-warning text-dark fs-6 px-3 py-2" id="statusBadgeText">
                             @SD.GetOrderStatusLabel(Model.OrderStatus)
                         </span>
                     </div>
-                    <p class="small mt-3 mb-0" style="color: var(--text-muted);">
-                        <i class="bi bi-wifi me-1" style="color: var(--cyan);"></i>
+                    <p class="small mt-3 mb-0 text-muted">
+                        <i class="bi bi-wifi me-1 text-info"></i>
                         El estado se actualiza automáticamente en tiempo real.
                     </p>
                 </div>
@@ -41,10 +42,10 @@
 
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <a asp-area="Customer" asp-controller="Order" asp-action="Details" asp-route-orderId="@Model.Id"
-                   class="btn btn-outline-primary px-4">
+                   class="btn btn-outline-secondary px-4">
                     <i class="bi bi-receipt me-2"></i>Ver detalle del pedido
                 </a>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary px-4">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary px-4 shadow-info">
                     <i class="bi bi-house me-2"></i>Volver al inicio
                 </a>
             </div>
@@ -85,6 +86,11 @@
                 $('#statusBadgeIcon')
                     .removeClass()
                     .addClass('bi ' + iconClass + ' fs-4 ' + colors.icon);
+                    
+                // Update large icon
+                $('#statusIconEl')
+                    .removeClass()
+                    .addClass('bi ' + iconClass + ' display-4 position-relative z-1 ' + colors.icon);
 
                 // If delivered, update the main title
                 if (status === 'Delivered') {
@@ -105,4 +111,12 @@
                 });
         });
     </script>
+    
+    <style>
+        @@keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 212, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+        }
+    </style>
 }

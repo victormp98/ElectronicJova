@@ -7,5 +7,6 @@ namespace ElectronicJova.Models.ViewModels
     {
         public Product Product { get; set; } = new();
         public IEnumerable<SelectListItem> CategoryList { get; set; } = new List<SelectListItem>();
+        public List<ProductOption> ProductOptions { get; set; } = new();
     }
 }

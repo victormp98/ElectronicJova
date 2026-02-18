@@ -1,164 +1,151 @@
 @using ElectronicJova.Models
+@using ElectronicJova.Utilities
 @model OrderDetailsVM
 
 @{
-    ViewData["Title"] = "Order Details (Admin)";
+    ViewData["Title"] = $"Pedido #{Model.OrderHeader?.Id} — Admin";
+    var SD_Admin = SD.Role_Admin;
 }
 
-<form method="post" asp-action="UpdateOrderDetail">
-    <input asp-for="OrderHeader.Id" hidden />
-    <div class="card shadow border-0 mt-4">
-        <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h3 class="text-white">Order Details</h3>
-                </div>
-            </div>
+<div class="container-fluid py-4">
+
+    <!-- ── Header ───────────────────────────────────────── -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">
+                Pedido <span style="color: var(--accent-cyan);">#@Model.OrderHeader?.Id</span>
+            </h2>
+            <small class="text-muted">@Model.OrderHeader?.OrderDate.ToString("dddd, dd MMMM yyyy HH:mm")</small>
         </div>
-        <div class="card-body">
-            <div class="container rounded p-2">
-                <div class="row">
-                    <div class="col-12 col-lg-6 pb-4">
-                        <div class="row">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-primary">Shipping Details:</span>
-                            </h4>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Name</label>
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
+            <i class="bi bi-arrow-left me-1"></i> Volver a Pedidos
+        </a>
+    </div>
+
+    <form method="post" asp-action="UpdateOrderDetail">
+        <input asp-for="OrderHeader.Id" hidden />
+
+        <div class="row g-4">
+            <!-- ── Shipping Details ──────────────────────── -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm h-100" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+                    <div class="card-header border-0 py-3" style="background: rgba(0,212,255,0.05); border-bottom: 1px solid var(--border-color) !important;">
+                        <h6 class="fw-bold mb-0" style="color: var(--accent-cyan);">
+                            <i class="bi bi-geo-alt-fill me-2"></i>Datos de Envío
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        @{
+                            var isAdmin = User.IsInRole(SD_Admin);
+                            var fields = new[]
+                            {
+                                ("Nombre",          "OrderHeader.Name",          Model.OrderHeader?.Name,          false),
+                                ("Teléfono",        "OrderHeader.PhoneNumber",   Model.OrderHeader?.PhoneNumber,   false),
+                                ("Dirección",       "OrderHeader.StreetAddress", Model.OrderHeader?.StreetAddress, false),
+                                ("Ciudad",          "OrderHeader.City",          Model.OrderHeader?.City,          false),
+                                ("Estado",          "OrderHeader.State",         Model.OrderHeader?.State,         false),
+                                ("Código Postal",   "OrderHeader.PostalCode",    Model.OrderHeader?.PostalCode,    false),
+                                ("Núm. Rastreo",    "OrderHeader.TrackingNumber",Model.OrderHeader?.TrackingNumber,true),
+                                ("Transportista",   "OrderHeader.Carrier",       Model.OrderHeader?.Carrier,       true),
+                            };
+                        }
+
+                        @foreach (var (label, aspFor, val, adminOnly) in fields)
+                        {
+                            <div class="row align-items-center mb-2">
+                                <div class="col-4">
+                                    <label class="form-label text-muted small mb-0">@label</label>
+                                </div>
+                                <div class="col-8">
+                                    @if (isAdmin || !adminOnly)
+                                    {
+                                        <input name="@aspFor" value="@val" class="form-control form-control-sm"
+                                               style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);"
+                                               @(isAdmin ? "" : "readonly") />
+                                    }
+                                    else
+                                    {
+                                        <input value="@val" class="form-control form-control-sm" readonly
+                                               style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);" />
+                                    }
+                                </div>
                             </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.Name" class="form-control" />
-                                <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                        }
+
+                        <!-- Order Date (readonly) -->
+                        <div class="row align-items-center mb-2">
+                            <div class="col-4">
+                                <label class="form-label text-muted small mb-0">Fecha Pedido</label>
                             </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Phone</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.PhoneNumber" class="form-control" />
-                                <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Street Address</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.StreetAddress" class="form-control" />
-                                <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>City</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.City" class="form-control" />
-                                <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>State</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.State" class="form-control" />
-                                <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Postal Code</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.PostalCode" class="form-control" />
-                                <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Order Date</label>
-                            </div>
-                            <div class="col-9">
-                                <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" class="form-control" readonly />
+                            <div class="col-8">
+                                <input value="@Model.OrderHeader?.OrderDate.ToShortDateString()" class="form-control form-control-sm" readonly
+                                       style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);" />
                             </div>
                         </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Tracking Number</label>
+
+                        <!-- Order Status -->
+                        <div class="row align-items-center mb-2">
+                            <div class="col-4">
+                                <label class="form-label text-muted small mb-0">Estado</label>
                             </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
+                            <div class="col-8">
+                                @if (isAdmin)
                                 {
-                                    <input asp-for="OrderHeader.TrackingNumber" class="form-control" />
+                                    <select name="OrderHeader.OrderStatus" class="form-select form-select-sm"
+                                            style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);">
+                                        @foreach (var s in new[] { SD.StatusPending, SD.StatusApproved, SD.StatusInProcess, SD.StatusShipped, SD.StatusDelivered, SD.StatusCancelled })
+                                        {
+                                            <option value="@s" selected="@(Model.OrderHeader?.OrderStatus == s)">@SD.GetOrderStatusLabel(s)</option>
+                                        }
+                                    </select>
                                 }
                                 else
                                 {
-                                    <input asp-for="OrderHeader.TrackingNumber" class="form-control" readonly />
+                                    <input value="@SD.GetOrderStatusLabel(Model.OrderHeader?.OrderStatus ?? "")" class="form-control form-control-sm" readonly
+                                           style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);" />
                                 }
                             </div>
                         </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Carrier</label>
+
+                        <!-- Payment Status -->
+                        <div class="row align-items-center mb-2">
+                            <div class="col-4">
+                                <label class="form-label text-muted small mb-0">Pago</label>
                             </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
-                                {
-                                    <input asp-for="OrderHeader.Carrier" class="form-control" />
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.Carrier" class="form-control" readonly />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Order Status</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
-                                {
-                                    <select asp-for="OrderHeader.OrderStatus" asp-items="@(new SelectList(new List<string>(){ElectronicJova.Utilities.SD.StatusPending,ElectronicJova.Utilities.SD.StatusApproved,ElectronicJova.Utilities.SD.StatusInProcess,ElectronicJova.Utilities.SD.StatusShipped,ElectronicJova.Utilities.SD.StatusCancelled}))" class="form-select"></select>
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.OrderStatus" class="form-control" readonly />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>Payment Status</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.PaymentStatus" class="form-control" readonly />
+                            <div class="col-8">
+                                <input value="@Model.OrderHeader?.PaymentStatus" class="form-control form-control-sm" readonly
+                                       style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-5 offset-lg-1">
-                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-primary">Order Summary:</span>
-                        </h4>
-                        <ul class="list-group mb-3">
+                </div>
+            </div>
+
+            <!-- ── Order Summary & Actions ───────────────── -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm mb-4" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+                    <div class="card-header border-0 py-3" style="background: rgba(0,212,255,0.05); border-bottom: 1px solid var(--border-color) !important;">
+                        <h6 class="fw-bold mb-0" style="color: var(--accent-cyan);">
+                            <i class="bi bi-receipt me-2"></i>Resumen del Pedido
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
                             @foreach (var item in Model.OrderDetail)
                             {
-                                <li class="list-group-item d-flex justify-content-between lh-sm">
-                                    <div>
-                                        <h6 class="my-0">@item.Product!.Title</h6>
-                                        <small class="text-muted">Quantity: @item.Count</small>
+                                <li class="list-group-item d-flex justify-content-between align-items-start py-3"
+                                    style="background: transparent; border-color: var(--border-color); color: var(--text-primary);">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold">@item.Product?.Title</div>
+                                        <small class="text-muted">Cant: @item.Count &nbsp;·&nbsp; @item.Price.ToString("c") c/u</small>
 
                                         @if (!string.IsNullOrEmpty(item.SelectedOptions))
                                         {
                                             var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(item.SelectedOptions);
                                             <div class="mt-1">
-                                                @foreach (var opt in opts)
+                                                @foreach (var opt in opts!)
                                                 {
-                                                    <span class="badge bg-light text-primary border me-1" style="font-size: 0.7rem;">
+                                                    <span class="badge me-1" style="background: rgba(0,212,255,0.15); color: var(--accent-cyan); font-size: 0.7rem;">
                                                         @opt.GetProperty("Name"): @opt.GetProperty("Value")
                                                     </span>
                                                 }
@@ -167,48 +154,66 @@
 
                                         @if (!string.IsNullOrEmpty(item.SpecialNotes))
                                         {
-                                            <div class="mt-1 p-2 bg-warning bg-opacity-10 border-start border-warning border-3 rounded">
-                                                <small class="text-muted d-block fw-bold">Nota Especial:</small>
-                                                <small class="text-dark">@item.SpecialNotes</small>
+                                            <div class="mt-1 p-2 rounded" style="background: rgba(255,193,7,0.1); border-left: 3px solid #ffc107;">
+                                                <small class="text-warning-emphasis">Nota: @item.SpecialNotes</small>
                                             </div>
                                         }
                                     </div>
-                                    <span class="text-muted">@((item.Count * item.Price).ToString("c"))</span>
+                                    <span class="fw-bold ms-3" style="color: var(--accent-cyan);">
+                                        @((item.Count * item.Price).ToString("c"))
+                                    </span>
                                 </li>
                             }
-                            <li class="list-group-item d-flex justify-content-between">
-                                <h5 class="text-primary">Total (USD)</h5>
-                                <h5 class="text-primary">@Model.OrderHeader!.OrderTotal.ToString("c")</h5>
+                            <li class="list-group-item d-flex justify-content-between py-3"
+                                style="background: rgba(0,212,255,0.05); border-color: var(--border-color);">
+                                <strong style="color: var(--text-primary);">Total</strong>
+                                <strong style="color: var(--accent-cyan); font-size: 1.1rem;">
+                                    @Model.OrderHeader?.OrderTotal.ToString("c")
+                                </strong>
                             </li>
                         </ul>
-                        <br />
-                        @if (User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
-                        {
-                            <div class="d-grid gap-2">
-                                @if (Model.OrderHeader.OrderStatus == ElectronicJova.Utilities.SD.StatusPending || Model.OrderHeader.OrderStatus == ElectronicJova.Utilities.SD.PaymentStatusApproved)
-                                {
-                                    <button type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning form-control">Update Order Details</button>
-                                }
-                                @if (Model.OrderHeader.OrderStatus == ElectronicJova.Utilities.SD.StatusPending || Model.OrderHeader.OrderStatus == ElectronicJova.Utilities.SD.StatusApproved)
-                                {
-                                    <button type="submit" asp-action="StartProcessing" class="btn btn-primary form-control">Start Processing</button>
-                                }
-                                @if (Model.OrderHeader.OrderStatus == ElectronicJova.Utilities.SD.StatusInProcess)
-                                {
-                                    <button type="submit" asp-action="ShipOrder" class="btn btn-primary form-control">Ship Order</button>
-                                }
-                                @if (Model.OrderHeader.OrderStatus != ElectronicJova.Utilities.SD.StatusCancelled && Model.OrderHeader.OrderStatus != ElectronicJova.Utilities.SD.StatusShipped)
-                                {
-                                    <button type="submit" asp-action="CancelOrder" class="btn btn-danger form-control">Cancel Order</button>
-                                }
-                            </div>
-                        }
                     </div>
                 </div>
+
+                <!-- Admin Action Buttons -->
+                @if (isAdmin)
+                {
+                    <div class="card border-0 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+                        <div class="card-header border-0 py-3" style="background: rgba(0,212,255,0.05); border-bottom: 1px solid var(--border-color) !important;">
+                            <h6 class="fw-bold mb-0 text-muted"><i class="bi bi-sliders me-2"></i>Acciones</h6>
+                        </div>
+                        <div class="card-body d-grid gap-2">
+                            @if (Model.OrderHeader?.OrderStatus == SD.StatusPending || Model.OrderHeader?.OrderStatus == SD.PaymentStatusApproved)
+                            {
+                                <button type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning">
+                                    <i class="bi bi-pencil-square me-1"></i>Actualizar Detalles
+                                </button>
+                            }
+                            @if (Model.OrderHeader?.OrderStatus == SD.StatusPending || Model.OrderHeader?.OrderStatus == SD.StatusApproved)
+                            {
+                                <button type="submit" asp-action="StartProcessing" class="btn btn-primary">
+                                    <i class="bi bi-gear me-1"></i>Iniciar Proceso
+                                </button>
+                            }
+                            @if (Model.OrderHeader?.OrderStatus == SD.StatusInProcess)
+                            {
+                                <button type="submit" asp-action="ShipOrder" class="btn btn-info text-white">
+                                    <i class="bi bi-truck me-1"></i>Marcar como Enviado
+                                </button>
+                            }
+                            @if (Model.OrderHeader?.OrderStatus != SD.StatusCancelled && Model.OrderHeader?.OrderStatus != SD.StatusShipped && Model.OrderHeader?.OrderStatus != SD.StatusDelivered)
+                            {
+                                <button type="submit" asp-action="CancelOrder" class="btn btn-outline-danger">
+                                    <i class="bi bi-x-circle me-1"></i>Cancelar Pedido
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
 @section Scripts {
     @{

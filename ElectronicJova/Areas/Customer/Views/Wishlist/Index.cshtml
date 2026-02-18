@@ -5,74 +5,95 @@
 }
 
 <div class="container py-5">
+
+    <!-- ── Header ───────────────────────────────────────── -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0 text-primary"><i class="bi bi-heart-fill me-2 text-danger"></i>Mis Favoritos</h2>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary rounded-pill">
+        <h2 class="fw-bold mb-0">
+            <i class="bi bi-heart-fill me-2 text-danger"></i>
+            Mis <span style="color: var(--accent-cyan);">Favoritos</span>
+        </h2>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill">
             <i class="bi bi-arrow-left me-1"></i>Seguir comprando
         </a>
     </div>
 
     @if (!Model.Any())
     {
-        <div class="card border-0 shadow-sm">
-            <div class="card-body text-center py-5">
-                <div class="mb-4">
-                    <i class="bi bi-heart display-1 text-muted opacity-25"></i>
-                </div>
-                <h4 class="text-muted">Aún no tienes productos en tus favoritos</h4>
-                <p class="text-secondary mb-4">¡Explora nuestra tienda y guarda lo que más te guste!</p>
-                <a asp-controller="Home" asp-action="Index" class="btn btn-primary rounded-pill px-4 btn-lg">
-                    Ir a la tienda
+        <!-- ── Empty State ───────────────────────────────── -->
+        <div class="card border-0 shadow-sm text-center py-5"
+             style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+            <div class="card-body">
+                <i class="bi bi-heart display-1 text-muted opacity-25 mb-4 d-block"></i>
+                <h4 class="text-muted">Aún no tienes productos en favoritos</h4>
+                <p class="text-muted mb-4">¡Explora nuestra tienda y guarda lo que más te guste!</p>
+                <a asp-area="" asp-controller="Home" asp-action="Index"
+                   class="btn btn-primary rounded-pill px-4 btn-lg">
+                    <i class="bi bi-shop me-2"></i>Ir a la tienda
                 </a>
             </div>
         </div>
     }
     else
     {
+        <!-- ── Wishlist Grid ──────────────────────────────── -->
         <div class="row g-4" id="wishlist-container">
             @foreach (var item in Model)
             {
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 wishlist-item" data-id="@item.Id">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow transition">
-                        <div class="position-relative">
-                            <img src="@(string.IsNullOrEmpty(item.Product.ImageUrl) ? "https://via.placeholder.com/300x400?text=No+Image" : item.Product.ImageUrl)" 
-                                 class="card-img-top" alt="@item.Product.Title" style="height: 250px; object-fit: cover;">
-                            
-                            @* Stock Badges *@
-                            @if(item.Product.Stock <= 0)
+                    <div class="card h-100 border-0 shadow-sm product-card"
+                         style="background: var(--bg-card); border: 1px solid var(--border-color) !important; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <!-- Image -->
+                        <div class="position-relative overflow-hidden" style="border-radius: 0.5rem 0.5rem 0 0;">
+                            <img src="@(string.IsNullOrEmpty(item.Product.ImageUrl) ? "https://via.placeholder.com/300x400?text=No+Image" : item.Product.ImageUrl)"
+                                 class="card-img-top" alt="@item.Product.Title"
+                                 style="height: 220px; object-fit: cover; transition: transform 0.4s ease;" />
+
+                            <!-- Stock Badges -->
+                            @if (item.Product.Stock <= 0)
                             {
                                 <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
                             }
-                            else if(item.Product.Stock < 5)
+                            else if (item.Product.Stock < 5)
                             {
                                 <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
                             }
 
-                            @* Offer Badge *@
-                            @if(item.Product.ListPrice > item.Product.Price)
+                            <!-- Discount Badge -->
+                            @if (item.Product.ListPrice > item.Product.Price)
                             {
-                                <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                                <span class="badge position-absolute top-0 end-0 m-2"
+                                      style="background: var(--accent-cyan); color: #0A0E1A; font-weight: 700;">
                                     -@(Math.Round((1 - (double)item.Product.Price / (double)item.Product.ListPrice) * 100))% OFF
                                 </span>
                             }
                         </div>
+
+                        <!-- Body -->
                         <div class="card-body">
-                            <h5 class="card-title text-dark">@item.Product.Title</h5>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="text-primary fw-bold fs-5">@item.Product.Price.ToString("c")</span>
-                                @if(item.Product.Stock > 0)
+                            <h6 class="card-title fw-semibold mb-2" style="color: var(--text-primary);">
+                                @item.Product.Title
+                            </h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold fs-5" style="color: var(--accent-cyan);">
+                                    @item.Product.Price.ToString("c")
+                                </span>
+                                @if (item.Product.Stock > 0)
                                 {
-                                    <small class="text-success"><i class="bi bi-check2"></i> En stock</small>
+                                    <small class="text-success"><i class="bi bi-check2-circle me-1"></i>En stock</small>
                                 }
                                 else
                                 {
-                                    <small class="text-danger">Agotado</small>
+                                    <small class="text-danger"><i class="bi bi-x-circle me-1"></i>Agotado</small>
                                 }
                             </div>
                         </div>
-                        <div class="card-footer bg-white border-0 pb-3">
+
+                        <!-- Footer -->
+                        <div class="card-footer border-0 pb-3" style="background: transparent;">
                             <div class="d-grid gap-2">
-                                <a asp-area="" asp-controller="Home" asp-action="Details" asp-route-productId="@item.ProductId" class="btn btn-primary rounded-pill">
+                                <a asp-area="" asp-controller="Home" asp-action="Details"
+                                   asp-route-productId="@item.ProductId"
+                                   class="btn btn-primary rounded-pill">
                                     <i class="bi bi-eye me-1"></i>Ver Detalles
                                 </a>
                                 <button class="btn btn-outline-danger rounded-pill remove-favorite" data-id="@item.Id">
@@ -89,25 +110,33 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            $('.remove-favorite').click(function() {
+        $(document).ready(function () {
+            // Card hover effect
+            $('.product-card').hover(
+                function () { $(this).css({ 'transform': 'translateY(-6px)', 'box-shadow': '0 12px 30px rgba(0,212,255,0.15)' }); },
+                function () { $(this).css({ 'transform': 'translateY(0)', 'box-shadow': '' }); }
+            );
+
+            $('.remove-favorite').click(function () {
                 const btn = $(this);
                 const id = btn.data('id');
-                
+
                 Swal.fire({
                     title: '¿Eliminar de favoritos?',
                     text: "Podrás volver a agregarlo desde la página del producto.",
                     icon: 'warning',
+                    background: '#111827',
+                    color: '#e2e8f0',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#374151',
                     confirmButtonText: 'Sí, eliminar',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $.post('/Customer/Wishlist/Remove', { id: id }, function(response) {
+                        $.post('/Customer/Wishlist/Remove', { id: id }, function (response) {
                             if (response.success) {
-                                btn.closest('.wishlist-item').fadeOut(300, function() {
+                                btn.closest('.wishlist-item').fadeOut(300, function () {
                                     $(this).remove();
                                     if ($('.wishlist-item').length === 0) {
                                         location.reload();
@@ -117,7 +146,7 @@
                             } else {
                                 toastr.error(response.message || 'Error al eliminar');
                             }
-                        }).fail(function() {
+                        }).fail(function () {
                             toastr.error('Error de conexión');
                         });
                     }
@@ -126,11 +155,3 @@
         });
     </script>
 }
-
-<style>
-    .transition { transition: all 0.3s ease; }
-    .hover-shadow:hover { 
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    }
-</style>

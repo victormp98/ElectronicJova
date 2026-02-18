@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,60 +18,69 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg navbar-dark box-shadow">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-lightning-charge-fill me-2" style="color:#00D4FF;filter:drop-shadow(0 0 6px rgba(0,212,255,0.6));"></i><b>ElectronicJova</b>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>ElectronicJova
                 </a>
-                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarMain">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["area"]?.ToString() != "Admin" ? "active fw-semibold" : "")" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["area"]?.ToString() != "Admin" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
                         @if (User.IsInRole(SD.Role_Admin))
                         {
                             <li class="nav-item">
-                                <a class="nav-link fw-bold text-primary" asp-area="Admin" asp-controller="Home" asp-action="Index">Panel Admin</a>
+                                <a class="nav-link fw-bold text-info" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-shield-lock-fill me-1"></i>Panel Admin
+                                </a>
                             </li>
                         }
                     </ul>
 
-                    <form class="d-flex flex-grow-1 mx-lg-4 my-2 my-lg-0" asp-controller="Home" asp-action="Search" method="get" style="max-width: 600px;">
-                        <div class="input-group">
-                            <input class="form-control shadow-none border-end-0" type="search" placeholder="Busca productos, marcas y más..." name="searchString">
-                            <button class="btn btn-white border border-start-0 text-muted" type="submit">
+                    <div class="d-flex flex-grow-1 mx-lg-4 my-2 my-lg-0 justify-content-center search-container" style="max-width: 500px;">
+                        <form class="input-group" asp-controller="Home" asp-action="Search" method="get">
+                            <input class="form-control" type="search" placeholder="Buscar productos..." name="searchString">
+                            <button class="btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-center">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-person-circle fs-5 me-2"></i>
-                                    <span>Hola, @User.Identity.Name</span>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                            @User.Identity.Name?.Substring(0, 1).ToUpper()
+                                        </div>
+                                        <span>@User.Identity.Name</span>
+                                    </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                                     <li><a class="dropdown-item" asp-area="Customer" asp-controller="Wishlist" asp-action="Index"><i class="bi bi-heart me-2 text-danger"></i>Mis Favoritos</a></li>
-                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index"><i class="bi bi-box-seam me-2 text-primary"></i>Mis Compras</a></li>
-                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Profile"><i class="bi bi-person me-2 text-secondary"></i>Mi Perfil</a></li>
+                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index"><i class="bi bi-box-seam me-2 text-info"></i>Mis Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Profile"><i class="bi bi-person me-2 text-warning"></i>Mi Perfil</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><partial name="_LoginPartial" /></li>
                                 </ul>
                             </li>
                             @if (!User.IsInRole(SD.Role_Admin))
                             {
-                                <li class="nav-item ms-lg-2">
-                                    <a class="nav-link position-relative" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart3 fs-5" id="cart-icon-nav"></i>
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
-                                            @(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0)
-                                        </span>
+                                <li class="nav-item ms-3 position-relative">
+                                    <a class="nav-link position-relative py-0 px-1" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        <i class="bi bi-cart3 fs-4"></i>
+                                        @if(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") > 0)
+                                        {
+                                            <span class="nav-cart-badge">
+                                                @(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0)
+                                            </span>
+                                        }
                                     </a>
                                 </li>
                             }
@@ -89,13 +98,18 @@
         @RenderBody()
     </main>
 
-    <footer class="footer">
+    <footer class="footer d-none d-md-block">
         <div class="container text-center">
-            <i class="bi bi-lightning-charge-fill me-1" style="color:#00D4FF;"></i>
-            &copy; 2026 <strong style="color:#E8EDF5;">ElectronicJova</strong> &mdash;
-            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+            <div class="mb-2">
+                 <i class="bi bi-lightning-charge-fill me-1" style="color:var(--cyan);"></i>
+                 <span class="fw-bold text-white">ElectronicJova</span>
+            </div>
+            <div class="small text-muted">
+                &copy; 2026 &mdash; Diseño Premium Dark Tech &mdash; <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

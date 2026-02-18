@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Resend;
 using ElectronicJova.Hubs;
 using Microsoft.AspNetCore.Http.Features;
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
 
 var loggerConfig = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
@@ -75,6 +77,25 @@ if (string.IsNullOrEmpty(stripeWebhookSecret))
     throw new InvalidOperationException("StripeSettings:WebhookSecret no está configurado. Sin esto, los webhooks de Stripe no se verifican.");
 StripeConfiguration.ApiKey = stripeSecretKey;
 
+
+// Add Rate Limiting (Fase 4: Seguridad)
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.Identity?.Name ?? httpContext.Request.Headers.Host.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 100, // 100 requests per minute
+                QueueLimit = 0,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+    
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -88,6 +109,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Enable Rate Limiting Middleware
+app.UseRateLimiter();
+
 app.UseSession();
 app.UseSerilogRequestLogging();
 app.UseAuthentication();

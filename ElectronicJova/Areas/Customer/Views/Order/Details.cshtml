@@ -8,22 +8,24 @@
     var statusEnum = SD.ParseOrderStatus(Model.OrderStatus);
     var isCancelled = Model.OrderStatus == SD.StatusCancelled;
 
-    // Steps for progress bar (excluding Cancelled)
     var steps = new[]
     {
-        (SD.OrderStatus.Pending,    SD.StatusPending,    "Pendiente",    "bi-clock"),
-        (SD.OrderStatus.Approved,   SD.StatusApproved,   "Pagado",       "bi-credit-card-2-front"),
-        (SD.OrderStatus.Processing, SD.StatusInProcess,  "En Proceso",   "bi-gear"),
-        (SD.OrderStatus.Shipped,    SD.StatusShipped,    "Enviado",      "bi-truck"),
-        (SD.OrderStatus.Delivered,  SD.StatusDelivered,  "Entregado",    "bi-check-circle"),
+        (SD.OrderStatus.Pending,    SD.StatusPending,    "Pendiente",  "bi-clock"),
+        (SD.OrderStatus.Approved,   SD.StatusApproved,   "Pagado",     "bi-credit-card-2-front"),
+        (SD.OrderStatus.Processing, SD.StatusInProcess,  "En Proceso", "bi-gear"),
+        (SD.OrderStatus.Shipped,    SD.StatusShipped,    "Enviado",    "bi-truck"),
+        (SD.OrderStatus.Delivered,  SD.StatusDelivered,  "Entregado",  "bi-check-circle"),
     };
 }
 
 <div class="container py-4">
-    <!-- Header -->
+
+    <!-- ── Header ───────────────────────────────────────── -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold mb-0">Pedido <span class="text-primary">#@Model.Id</span></h2>
+            <h2 class="fw-bold mb-0">
+                Pedido <span style="color: var(--accent-cyan);">#@Model.Id</span>
+            </h2>
             <small class="text-muted">@Model.OrderDate.ToString("dddd, dd MMMM yyyy HH:mm")</small>
         </div>
         <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
@@ -31,30 +33,39 @@
         </a>
     </div>
 
+    <!-- ── Cancelled Alert ──────────────────────────────── -->
     @if (isCancelled)
     {
-        <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
-            <i class="bi bi-x-circle-fill me-2 fs-4"></i>
-            <div><strong>Pedido Cancelado.</strong> Si realizaste un pago, el reembolso se procesará en 5-10 días hábiles.</div>
+        <div class="alert d-flex align-items-center mb-4 rounded-3"
+             style="background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.3); color: #f8d7da;">
+            <i class="bi bi-x-circle-fill me-3 fs-4 text-danger"></i>
+            <div>
+                <strong>Pedido Cancelado.</strong>
+                Si realizaste un pago, el reembolso se procesará en 5-10 días hábiles.
+            </div>
         </div>
     }
     else
     {
-        <!-- ── Barra de Progreso ── -->
-        <div class="card border-0 shadow-sm mb-4">
+        <!-- ── Progress Bar ──────────────────────────────── -->
+        <div class="card border-0 shadow-sm mb-4" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
             <div class="card-body py-4">
-                <h6 class="text-muted mb-4 text-uppercase fw-semibold">Estado del Pedido</h6>
+                <h6 class="text-muted mb-4 text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing: 1px;">
+                    Estado del Pedido
+                </h6>
 
-                <!-- Notificación en tiempo real -->
-                <div id="realtime-alert" class="alert alert-info d-none mb-3" role="alert">
-                    <i class="bi bi-lightning-charge-fill me-2"></i>
-                    <span id="realtime-message">Conectando...</span>
+                <!-- Real-time notification -->
+                <div id="realtime-alert" class="d-none mb-3 p-3 rounded-3 d-flex align-items-center"
+                     style="background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);">
+                    <i class="bi bi-lightning-charge-fill me-2" style="color: var(--accent-cyan);"></i>
+                    <span id="realtime-message" style="color: var(--accent-cyan);">Conectando...</span>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-start position-relative mb-2 overflow-x-auto pb-2 flex-nowrap" style="scrollbar-width: none; -ms-overflow-style: none;">
-                    <!-- Línea de fondo -->
+                <div class="d-flex justify-content-between align-items-start position-relative mb-2 overflow-x-auto pb-2 flex-nowrap"
+                     style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <!-- Background line -->
                     <div class="position-absolute top-50 start-0 end-0 translate-middle-y d-none d-md-block"
-                         style="height: 3px; background: #e9ecef; z-index: 0; margin: 0 40px;"></div>
+                         style="height: 2px; background: var(--border-color); z-index: 0; margin: 0 50px;"></div>
 
                     @for (int i = 0; i < steps.Length; i++)
                     {
@@ -62,15 +73,18 @@
                         var isCompleted = (int)statusEnum >= (int)stepEnum;
                         var isCurrent = statusEnum == stepEnum;
 
-                        var circleClass = isCompleted ? "bg-primary text-white" : "bg-light text-muted border";
-                        var textClass = isCompleted ? "text-primary fw-semibold" : "text-muted";
+                        var circleBg = isCompleted
+                            ? "background: var(--accent-cyan); color: #0A0E1A;"
+                            : "background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border-color);";
+                        var textColor = isCompleted ? "color: var(--accent-cyan);" : "color: var(--text-muted);";
+                        var glowStyle = isCurrent ? "box-shadow: 0 0 0 4px rgba(0,212,255,0.2);" : "";
 
                         <div class="d-flex flex-column align-items-center flex-shrink-0" style="z-index: 1; min-width: 100px;">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center @circleClass @(isCurrent ? "shadow" : "")"
-                                 style="width: 48px; height: 48px; font-size: 1.2rem; @(isCurrent ? "box-shadow: 0 0 0 4px rgba(13,110,253,0.2) !important;" : "")">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                 style="width: 48px; height: 48px; font-size: 1.2rem; @circleBg @glowStyle">
                                 <i class="bi @icon"></i>
                             </div>
-                            <small class="mt-2 text-center @textClass" style="font-size: 0.75rem;">@label</small>
+                            <small class="mt-2 text-center" style="font-size: 0.75rem; @textColor">@label</small>
                         </div>
                     }
                 </div>
@@ -79,29 +93,31 @@
     }
 
     <div class="row g-4">
-        <!-- Productos -->
+        <!-- ── Products ─────────────────────────────────── -->
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent border-0 pt-3">
-                    <h6 class="fw-bold mb-0"><i class="bi bi-box-seam me-2"></i>Productos</h6>
+            <div class="card border-0 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+                <div class="card-header border-0 py-3" style="background: rgba(0,212,255,0.05); border-bottom: 1px solid var(--border-color) !important;">
+                    <h6 class="fw-bold mb-0" style="color: var(--accent-cyan);">
+                        <i class="bi bi-box-seam me-2"></i>Productos
+                    </h6>
                 </div>
                 <div class="card-body">
                     @foreach (var detail in orderDetails)
                     {
-                        <div class="d-flex align-items-center py-2 border-bottom">
+                        <div class="d-flex align-items-center py-3" style="border-bottom: 1px solid var(--border-color);">
                             <img src="@(string.IsNullOrEmpty(detail.Product?.ImageUrl) ? "https://via.placeholder.com/60" : detail.Product.ImageUrl)"
-                                 width="60" height="60" class="rounded me-3" style="object-fit: cover;" />
+                                 width="60" height="60" class="rounded me-3" style="object-fit: cover; border: 1px solid var(--border-color);" />
                             <div class="flex-grow-1">
-                                <div class="fw-semibold">@detail.Product?.Title</div>
+                                <div class="fw-semibold" style="color: var(--text-primary);">@detail.Product?.Title</div>
                                 <small class="text-muted">Cantidad: @detail.Count</small>
 
                                 @if (!string.IsNullOrEmpty(detail.SelectedOptions))
                                 {
                                     var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(detail.SelectedOptions);
                                     <div class="mt-1">
-                                        @foreach (var opt in opts)
+                                        @foreach (var opt in opts!)
                                         {
-                                            <span class="badge bg-light text-primary border me-1" style="font-size: 0.7rem;">
+                                            <span class="badge me-1" style="background: rgba(0,212,255,0.15); color: var(--accent-cyan); font-size: 0.7rem;">
                                                 @opt.GetProperty("Name"): @opt.GetProperty("Value")
                                             </span>
                                         }
@@ -110,41 +126,46 @@
 
                                 @if (!string.IsNullOrEmpty(detail.SpecialNotes))
                                 {
-                                    <div class="mt-1 small text-muted">
-                                        <i class="bi bi-sticky-fill text-warning me-1"></i>Nota: @detail.SpecialNotes
+                                    <div class="mt-1 p-2 rounded" style="background: rgba(255,193,7,0.1); border-left: 3px solid #ffc107;">
+                                        <small class="text-warning-emphasis">
+                                            <i class="bi bi-sticky-fill me-1"></i>Nota: @detail.SpecialNotes
+                                        </small>
                                     </div>
                                 }
                             </div>
-                            <div class="text-end">
-                                <div class="fw-bold text-primary">@((detail.Price * detail.Count).ToString("c"))</div>
+                            <div class="text-end ms-3">
+                                <div class="fw-bold" style="color: var(--accent-cyan);">@((detail.Price * detail.Count).ToString("c"))</div>
                                 <small class="text-muted">@detail.Price.ToString("c") c/u</small>
                             </div>
                         </div>
                     }
                     <div class="d-flex justify-content-between pt-3">
-                        <strong>Total del Pedido</strong>
-                        <strong class="text-primary fs-5">@Model.OrderTotal.ToString("c")</strong>
+                        <strong style="color: var(--text-primary);">Total del Pedido</strong>
+                        <strong style="color: var(--accent-cyan); font-size: 1.1rem;">@Model.OrderTotal.ToString("c")</strong>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Info de envío -->
+        <!-- ── Shipping Info ─────────────────────────────── -->
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent border-0 pt-3">
-                    <h6 class="fw-bold mb-0"><i class="bi bi-geo-alt me-2"></i>Información de Envío</h6>
+            <div class="card border-0 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+                <div class="card-header border-0 py-3" style="background: rgba(0,212,255,0.05); border-bottom: 1px solid var(--border-color) !important;">
+                    <h6 class="fw-bold mb-0" style="color: var(--accent-cyan);">
+                        <i class="bi bi-geo-alt me-2"></i>Información de Envío
+                    </h6>
                 </div>
                 <div class="card-body">
-                    <p class="mb-1"><strong>@Model.Name</strong></p>
+                    <p class="mb-1 fw-semibold" style="color: var(--text-primary);">@Model.Name</p>
                     <p class="mb-1 text-muted">@Model.StreetAddress</p>
                     <p class="mb-1 text-muted">@Model.City, @Model.State @Model.PostalCode</p>
-                    <p class="mb-1 text-muted"><i class="bi bi-telephone me-1"></i>@Model.PhoneNumber</p>
+                    <p class="mb-0 text-muted"><i class="bi bi-telephone me-1"></i>@Model.PhoneNumber</p>
+
                     @if (!string.IsNullOrEmpty(Model.TrackingNumber))
                     {
-                        <hr />
-                        <p class="mb-1"><strong>Número de Rastreo:</strong></p>
-                        <p class="text-primary fw-semibold">@Model.TrackingNumber</p>
+                        <hr style="border-color: var(--border-color);" />
+                        <p class="mb-1 text-muted small text-uppercase fw-semibold" style="letter-spacing: 1px;">Número de Rastreo</p>
+                        <p class="fw-bold mb-1" style="color: var(--accent-cyan);">@Model.TrackingNumber</p>
                         <p class="mb-0 text-muted">Transportista: @Model.Carrier</p>
                     }
                 </div>
@@ -163,13 +184,11 @@
             .build();
 
         connection.on("OrderStatusUpdated", function (newStatus, newLabel, newIcon) {
-            // Mostrar alerta de actualización
             const alert = document.getElementById("realtime-alert");
             const msg = document.getElementById("realtime-message");
             if (alert && msg) {
                 msg.textContent = `Estado actualizado: ${newLabel}`;
                 alert.classList.remove("d-none");
-                // Recargar la página después de 2 segundos para mostrar la nueva barra
                 setTimeout(() => location.reload(), 2000);
             }
         });

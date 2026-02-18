@@ -17,138 +17,119 @@
     <div class="container py-5">
         <div class="row g-4">
 
-            <!-- ── Imagen del producto ──────────────────────── -->
+            <!-- ── Product Image ──────────────────────── -->
             <div class="col-12 col-md-7">
-                <div class="position-relative rounded-3 overflow-hidden"
-                     style="background: var(--bg-card); border: 1px solid var(--border); padding: 2rem;">
-
-                    <!-- Badges top-left -->
-                    <div class="position-absolute top-0 start-0 m-3 d-flex flex-column gap-2" style="z-index:2;">
+                <div class="card p-3 p-md-5 h-100 d-flex align-items-center justify-content-center position-relative border-0 shadow-sm" style="background: var(--bg-card);">
+                    
+                    <!-- Badges -->
+                    <div class="position-absolute top-0 start-0 m-3 d-flex flex-column gap-2 z-2">
                         @if (!inStock)
                         {
-                            <span class="badge rounded-pill px-3 py-2" style="background: var(--danger); font-size: 0.75rem;">Agotado</span>
+                            <span class="badge bg-danger rounded-pill px-3 py-2">Agotado</span>
                         }
                         else if (Model.Product.Stock < 5)
                         {
-                            <span class="badge rounded-pill px-3 py-2" style="background: var(--warning); color: #0A0E1A; font-size: 0.75rem;">
+                            <span class="badge bg-warning rounded-pill px-3 py-2 text-dark">
                                 <i class="bi bi-exclamation-triangle-fill me-1"></i>¡Últimas unidades!
                             </span>
                         }
                         @if (hasDiscount)
                         {
-                            <span class="badge rounded-pill px-3 py-2" style="background: var(--success); color: #0A0E1A; font-size: 0.75rem; font-weight: 700;">
+                            <span class="badge bg-success rounded-pill px-3 py-2">
                                 -@discountPct% OFF
                             </span>
                         }
                     </div>
 
-                    <!-- Favorite button top-right -->
+                    <!-- Favorite Button -->
                     <button type="button"
-                            class="position-absolute top-0 end-0 m-3 btn rounded-circle d-flex align-items-center justify-content-center"
+                            class="position-absolute top-0 end-0 m-3 btn btn-secondary rounded-circle d-flex align-items-center justify-content-center p-0"
                             id="favoriteBtnImage"
                             data-bs-toggle="tooltip"
                             title="@(Model.IsFavorite ? "Quitar de favoritos" : "Guardar en favoritos")"
-                            style="width:44px; height:44px; background: var(--bg-surface); border: 1px solid var(--border); transition: var(--transition); z-index:2;">
-                        <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-5"
-                           style="color: var(--danger); filter: @(Model.IsFavorite ? "drop-shadow(0 0 6px rgba(255,71,87,0.6))" : "none");"></i>
+                            style="width: 45px; height: 45px; z-index: 2;">
+                        <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-5 text-danger"></i>
                     </button>
 
-                    <!-- Main image -->
                     <img src="@(string.IsNullOrEmpty(Model.Product!.ImageUrl) ? "https://via.placeholder.com/600x600?text=No+Image" : Model.Product.ImageUrl)"
-                         class="img-fluid d-block mx-auto"
+                         class="img-fluid rounded"
                          alt="@Model.Product.Title"
                          loading="lazy"
                          id="mainProductImage"
-                         style="max-height: 480px; object-fit: contain;" />
+                         style="max-height: 500px; object-fit: contain;" />
                 </div>
             </div>
 
-            <!-- ── Info del producto ────────────────────────── -->
+            <!-- ── Product Info ────────────────────────── -->
             <div class="col-12 col-md-5">
-                <div class="h-100 d-flex flex-column">
+                <div class="h-100 d-flex flex-column gap-3">
 
-                    <!-- Category / condition badge -->
-                    <div class="mb-2">
-                        <span class="badge rounded-pill px-3 py-1"
-                              style="background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid var(--border-accent); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;">
-                            <i class="bi bi-lightning-charge-fill me-1"></i>Nuevo
+                    <!-- Condition Badge -->
+                    <div>
+                        <span class="badge bg-info bg-opacity-10 text-info border border-info rounded-pill px-3 py-1">
+                            <i class="bi bi-lightning-charge-fill me-1"></i>NUEVO
                         </span>
                     </div>
 
-                    <!-- Title -->
-                    <h1 class="fw-bold mb-1" style="color: var(--text-primary); font-size: 1.6rem; letter-spacing: -0.5px; line-height: 1.25;">
-                        @Model.Product.Title
-                    </h1>
-                    <p class="mb-3" style="color: var(--text-muted); font-size: 0.875rem;">
-                        por <span style="color: var(--cyan);">@Model.Product.Author</span>
-                    </p>
+                    <!-- Header -->
+                    <div>
+                        <h1 class="fw-bold mb-1 text-light display-6">@Model.Product.Title</h1>
+                        <p class="text-muted mb-0">
+                            por <span class="text-info fw-semibold">@Model.Product.Author</span>
+                        </p>
+                    </div>
 
-                    <!-- Price block -->
-                    <div class="mb-4 p-3 rounded-3" style="background: var(--bg-card); border: 1px solid var(--border);">
+                    <!-- Price Card -->
+                    <div class="card p-4 border-0 bg-opacity-50" style="background: rgba(0,0,0,0.2);">
                         @if (hasDiscount)
                         {
-                            <span class="text-decoration-line-through" style="color: var(--text-muted); font-size: 0.95rem;">
+                            <span class="text-decoration-line-through text-muted small">
                                 @Model.Product.ListPrice.ToString("c")
                             </span>
                         }
-                        <div class="d-flex align-items-baseline gap-3 mt-1">
-                            <span id="totalPriceDisplay" class="fw-bold"
-                                  style="font-size: 2.4rem; color: var(--cyan); text-shadow: 0 0 20px var(--cyan-glow-sm); letter-spacing: -1px;">
+                        <div class="d-flex align-items-center gap-3">
+                            <span id="totalPriceDisplay" class="display-4 fw-bold text-info" style="font-size: 2.5rem; text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);">
                                 @Model.Product.Price.ToString("c")
                             </span>
-                            @if (hasDiscount)
-                            {
-                                <span class="badge rounded-pill px-2 py-1 fw-bold" style="background: rgba(0,200,150,0.15); color: var(--success); font-size: 0.85rem;">
-                                    @discountPct% OFF
-                                </span>
-                            }
+                        </div>
+                        <div class="mt-2">
+                             <a href="#" class="small text-decoration-none text-muted"><i class="bi bi-credit-card-2-front me-1"></i>Ver métodos de pago</a>
                         </div>
                     </div>
 
-                    <!-- Stock status -->
-                    <div class="mb-3">
+                    <!-- Stock Status -->
+                    <div>
                         @if (inStock)
                         {
-                            <p class="fw-semibold mb-1" style="color: var(--success);">
+                            <p class="text-success fw-semibold mb-1">
                                 <i class="bi bi-check-circle-fill me-2"></i>Stock disponible
                             </p>
-                            <p class="small mb-0" style="color: var(--text-muted);">
-                                @Model.Product.Stock unidades disponibles
-                            </p>
+                            <small class="text-muted">@Model.Product.Stock unidades disponibles</small>
                         }
                         else
                         {
-                            <p class="fw-semibold mb-0" style="color: var(--danger);">
+                            <p class="text-danger fw-semibold mb-0">
                                 <i class="bi bi-x-circle-fill me-2"></i>Sin stock disponible
                             </p>
                         }
                     </div>
 
                     <!-- Quantity -->
-                    <div class="mb-4">
-                        <label asp-for="Count" class="form-label fw-semibold" style="color: var(--text-secondary);">Cantidad:</label>
-                        <div class="input-group" style="max-width: 140px;">
-                            <button type="button" class="btn btn-outline-secondary" id="btnMinus"
-                                    style="border-color: var(--border);">
-                                <i class="bi bi-dash"></i>
-                            </button>
-                            <input asp-for="Count" type="number" id="itemCount"
-                                   class="form-control text-center fw-bold"
-                                   value="1" min="1" max="@Model.Product.Stock"
-                                   style="border-color: var(--border); background: var(--bg-input); color: var(--text-primary);" />
-                            <button type="button" class="btn btn-outline-secondary" id="btnPlus"
-                                    style="border-color: var(--border);">
-                                <i class="bi bi-plus"></i>
-                            </button>
+                    <div class="mb-3">
+                        <label asp-for="Count" class="form-label text-muted fw-semibold">Cantidad:</label>
+                        <div class="input-group" style="width: 150px;">
+                            <button type="button" class="btn btn-outline-secondary" id="btnMinus"><i class="bi bi-dash"></i></button>
+                            <input asp-for="Count" type="number" id="itemCount" class="form-control text-center fw-bold bg-dark text-light border-secondary" value="1" min="1" max="@Model.Product.Stock" />
+                            <button type="button" class="btn btn-outline-secondary" id="btnPlus"><i class="bi bi-plus"></i></button>
                         </div>
                     </div>
 
-                    <!-- Product options -->
+                    <!-- Options -->
                     @if (Model.ProductOptions != null && Model.ProductOptions.Any())
                     {
-                        <div class="mb-4 p-3 rounded-3" style="background: var(--bg-card); border: 1px solid var(--border);">
-                            <h6 class="fw-bold mb-3" style="color: var(--text-primary);">
-                                <i class="bi bi-sliders me-2" style="color: var(--cyan);"></i>Personaliza tu producto
+                        <div class="card p-3 border-secondary mb-3">
+                            <h6 class="fw-bold mb-3 text-light">
+                                <i class="bi bi-sliders me-2 text-info"></i>Personaliza tu producto
                             </h6>
                             @foreach (var option in Model.ProductOptions.OrderBy(u => u.DisplayOrder))
                             {
@@ -156,15 +137,12 @@
                                     <input class="form-check-input option-checkbox" type="checkbox"
                                            name="selectedOptions" value="@option.Id"
                                            data-price="@(option.AdditionalPrice ?? 0)"
-                                           id="option_@option.Id"
-                                           style="border-color: var(--border); background: var(--bg-input);" />
-                                    <label class="form-check-label" for="option_@option.Id" style="color: var(--text-secondary);">
-                                        @option.Name: <span style="color: var(--text-primary);">@option.Value</span>
+                                           id="option_@option.Id" />
+                                    <label class="form-check-label text-light" for="option_@option.Id">
+                                        @option.Name: <span class="fw-bold">@option.Value</span>
                                         @if (option.AdditionalPrice > 0)
                                         {
-                                            <span class="fw-bold ms-1" style="color: var(--success); font-size: 0.85rem;">
-                                                (+@option.AdditionalPrice.Value.ToString("c"))
-                                            </span>
+                                            <span class="badge bg-success ms-2">+@option.AdditionalPrice.Value.ToString("c")</span>
                                         }
                                     </label>
                                 </div>
@@ -172,47 +150,43 @@
                         </div>
                     }
 
-                    <!-- Special notes -->
+                    <!-- Special Notes -->
                     <div class="mb-4">
-                        <label for="specialNotes" class="form-label fw-semibold" style="color: var(--text-secondary);">
-                            <i class="bi bi-pencil me-1" style="color: var(--cyan);"></i>Notas especiales:
+                        <label for="specialNotes" class="form-label text-muted small fw-semibold">
+                            <i class="bi bi-pencil me-1"></i>NOTAS ESPECIALES
                         </label>
-                        <textarea class="form-control" id="specialNotes" name="specialNotes" rows="2"
-                                  placeholder="Ej: envolver para regalo..."></textarea>
+                        <textarea class="form-control bg-dark text-light border-secondary" id="specialNotes" name="specialNotes" rows="2" placeholder="Ej: Envolver para regalo..."></textarea>
                     </div>
 
-                    <!-- CTA Button -->
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold" @(!inStock ? "disabled" : "")>
-                            <i class="bi bi-cart-plus me-2"></i>Agregar al carrito
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold text-uppercase shadow-info" @(!inStock ? "disabled" : "")>
+                            <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
 
-                    <!-- Trust badge -->
-                    <div class="p-3 rounded-3 mt-auto"
-                         style="background: rgba(0,200,150,0.06); border: 1px solid rgba(0,200,150,0.2);">
-                        <p class="fw-semibold mb-1" style="color: var(--success); font-size: 0.875rem;">
-                            <i class="bi bi-shield-check-fill me-2"></i>Compra Protegida
-                        </p>
-                        <p class="mb-0" style="color: var(--text-muted); font-size: 0.8rem;">
-                            Recibí el producto que esperabas o te devolvemos tu dinero.
-                        </p>
+                    <!-- Assurance -->
+                    <div class="d-flex align-items-center gap-3 p-3 rounded mt-3" style="background: rgba(0, 200, 150, 0.05); border: 1px solid rgba(0, 200, 150, 0.2);">
+                        <i class="bi bi-shield-check-fill fs-3 text-success"></i>
+                        <div>
+                            <div class="text-success fw-bold small">Compra Protegida</div>
+                            <div class="text-muted small" style="font-size: 0.75rem; line-height: 1.2;">Recibí el producto que esperabas o te devolvemos tu dinero.</div>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </div>
 
-        <!-- ── Divider ──────────────────────────────────────── -->
         <div class="section-divider my-5"></div>
 
-        <!-- ── Descripción ─────────────────────────────────── -->
+        <!-- ── Description ─────────────────────────────────── -->
         <div class="row">
-            <div class="col-12 col-md-8">
-                <h4 class="fw-bold mb-4" style="color: var(--text-primary);">
-                    <i class="bi bi-file-text me-2" style="color: var(--cyan);"></i>Descripción del producto
-                </h4>
-                <div style="color: var(--text-secondary); white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">
+            <div class="col-12 col-lg-8">
+                <h3 class="fw-bold mb-4 text-light">
+                    <i class="bi bi-file-text me-2 text-info"></i>Descripción
+                </h3>
+                <div class="text-secondary" style="white-space: pre-wrap; line-height: 1.8;">
                     @Model.Product.Description
                 </div>
             </div>
@@ -261,12 +235,10 @@
                     if (response.success) {
                         if (response.action === 'added') {
                             icon.removeClass('bi-heart').addClass('bi-heart-fill');
-                            icon.css('filter', 'drop-shadow(0 0 6px rgba(255,71,87,0.6))');
                             btn.attr('title', 'Quitar de favoritos');
                             toastr.success('Agregado a favoritos');
                         } else {
                             icon.removeClass('bi-heart-fill').addClass('bi-heart');
-                            icon.css('filter', 'none');
                             btn.attr('title', 'Guardar en favoritos');
                             toastr.info('Quitado de favoritos');
                         }

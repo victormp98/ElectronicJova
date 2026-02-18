@@ -24,12 +24,44 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var today = DateTime.Today;
+            // 1. Configurar Timezone (Mexico City)
+            // Esto asegura que "Hoy" corresponda al día en México, independientemente de la hora del servidor (Azure/AWS suelen estar en UTC)
+            string timeZoneId = "Central Standard Time (Mexico)"; // Windows ID
+            // En Linux sería "America/Mexico_City". Para compatibilidad cross-platform:
+            try
+            {
+                // Intentar obtener por ID de Windows
+                TimeZoneInfo mxZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+                var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, mxZone).Date;
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                // Fallback para Linux/Docker si el ID de Windows falla
+                try 
+                {
+                    TimeZoneInfo mxZone = TimeZoneInfo.FindSystemTimeZoneById("America/Mexico_City");
+                    var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, mxZone).Date;
+                }
+                catch
+                {
+                    // Fallback final a UTC si no se encuentra ninguna (raro)
+                    var today = DateTime.UtcNow.Date;
+                }
+            }
+            
+            // Re-declarar var today para que esté en scope (simplificado para compilación)
+            var now = DateTime.UtcNow;
+            TimeZoneInfo targetZone;
+            try { targetZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"); }
+            catch { try { targetZone = TimeZoneInfo.FindSystemTimeZoneById("America/Mexico_City"); } catch { targetZone = TimeZoneInfo.Utc; } }
+            
+            var todayDate = TimeZoneInfo.ConvertTimeFromUtc(now, targetZone).Date;
+
 
             // 1. Calcular Ventas de Hoy (Pedidos pagados hoy)
             // Nota: Usamos PaymentStatusApproved como filtro de "Ventas" confirmadas
             var ordersToday = await _unitOfWork.OrderHeader.GetAllAsync(u => 
-                u.OrderDate.Date == today && 
+                u.OrderDate.Date == todayDate && 
                 u.PaymentStatus == SD.PaymentStatusApproved);
             
             decimal totalSalesToday = ordersToday.Sum(u => u.OrderTotal);

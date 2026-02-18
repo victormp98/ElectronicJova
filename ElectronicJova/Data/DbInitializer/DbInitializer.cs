@@ -95,65 +95,66 @@ namespace ElectronicJova.DbInitializer
                     await _userManager.AddToRoleAsync(adminUser, SD.Role_Admin);
                 }
             }
-            // Seed Categories if they do not exist
-            if (!_db.Categories.Any())
+            // 1. Seed Categories (Electronics)
+            var categories = new List<Category>
             {
-                _db.Categories.AddRange(
-                    new Category { Name = "Action", DisplayOrder = 1 },
-                    new Category { Name = "SciFi", DisplayOrder = 2 },
-                    new Category { Name = "History", DisplayOrder = 3 }
-                );
-                _db.SaveChanges();
-            }
+                new Category { Name = "Computadoras", DisplayOrder = 1 },
+                new Category { Name = "Celulares", DisplayOrder = 2 },
+                new Category { Name = "Gaming", DisplayOrder = 3 },
+                new Category { Name = "Accesorios", DisplayOrder = 4 },
+                new Category { Name = "Audio", DisplayOrder = 5 }
+            };
 
-            // Seed Products if they do not exist
-            if (!_db.Products.Any())
+            foreach (var cat in categories)
             {
-                // Assuming Categories have been seeded (Id 1, 2, 3)
-                _db.Products.AddRange(
-                    new Product
-                    {
-                        Title = "The Lord of the Rings",
-                        Description = "Fantasy novel series by J. R. R. Tolkien.",
-                        ISBN = "978-0618260274",
-                        Author = "J. R. R. Tolkien",
-                        ListPrice = 30.00M,
-                        Price = 27.00M,
-                        Price50 = 25.00M,
-                        Price100 = 22.00M,
-                        CategoryId = 1, // Action
-                        ImageUrl = "",
-                        Stock = 10
-                    },
-                    new Product
-                    {
-                        Title = "Dune",
-                        Description = "Science fiction novel by Frank Herbert.",
-                        ISBN = "978-0441172719",
-                        Author = "Frank Herbert",
-                        ListPrice = 25.00M,
-                        Price = 22.50M,
-                        Price50 = 20.00M,
-                        Price100 = 18.00M,
-                        CategoryId = 2, // SciFi
-                        ImageUrl = "",
-                        Stock = 5
-                    }
-                );
-                _db.SaveChanges();
-
-                // Seed Product Options for LOTR (assuming Id 1)
-                var lotr = _db.Products.FirstOrDefault(p => p.Title == "The Lord of the Rings");
-                if (lotr != null)
+                if (!_db.Categories.Any(c => c.Name == cat.Name))
                 {
-                    _db.ProductOptions.AddRange(
-                        new ProductOption { ProductId = lotr.Id, Name = "Garantía", Value = "1 año extra", AdditionalPrice = 10.00M, DisplayOrder = 1 },
-                        new ProductOption { ProductId = lotr.Id, Name = "Edición", Value = "Coleccionista", AdditionalPrice = 25.00M, DisplayOrder = 2 },
-                        new ProductOption { ProductId = lotr.Id, Name = "Soporte", Value = "Digital", AdditionalPrice = 0.00M, DisplayOrder = 3 }
-                    );
-                    _db.SaveChanges();
+                    _db.Categories.Add(cat);
                 }
             }
+            await _db.SaveChangesAsync();
+
+            // 2. Get Category Ids for Products
+            var catComputadoras = _db.Categories.FirstOrDefault(c => c.Name == "Computadoras");
+            var catCelulares = _db.Categories.FirstOrDefault(c => c.Name == "Celulares");
+            var catGaming = _db.Categories.FirstOrDefault(c => c.Name == "Gaming");
+            var catAccesorios = _db.Categories.FirstOrDefault(c => c.Name == "Accesorios");
+            var catAudio = _db.Categories.FirstOrDefault(c => c.Name == "Audio");
+
+            // 3. Seed Products
+            var products = new List<Product>();
+
+            if (catComputadoras != null)
+            {
+                products.Add(new Product { Title = "Laptop Gamer Pro X15", Description = "Potencia extrema con RTX 4080 y procesador i9.", ISBN = "LAP-001", Author = "MSI", ListPrice = 2500, Price = 2300, Price50 = 2200, Price100 = 2100, CategoryId = catComputadoras.Id, Stock = 15, ImageUrl = "\\images\\products\\laptop-gamer.jpg" });
+                products.Add(new Product { Title = "Ultrabook Air 13", Description = "Ligera, potente y con batería para todo el día.", ISBN = "LAP-002", Author = "Apple", ListPrice = 1200, Price = 1100, Price50 = 1050, Price100 = 1000, CategoryId = catComputadoras.Id, Stock = 20, ImageUrl = "\\images\\products\\macbook.jpg" });
+            }
+
+            if (catCelulares != null)
+            {
+                products.Add(new Product { Title = "iPhone 15 Pro", Description = "Titanio. Tan fuerte. Tan ligero. Tan Pro.", ISBN = "CEL-001", Author = "Apple", ListPrice = 999, Price = 950, Price50 = 920, Price100 = 900, CategoryId = catCelulares.Id, Stock = 50, ImageUrl = "\\images\\products\\iphone15.jpg" });
+                products.Add(new Product { Title = "Samsung Galaxy S24", Description = "La IA llega a tu teléfono.", ISBN = "CEL-002", Author = "Samsung", ListPrice = 899, Price = 850, Price50 = 820, Price100 = 800, CategoryId = catCelulares.Id, Stock = 40, ImageUrl = "\\images\\products\\s24.jpg" });
+            }
+
+            if (catGaming != null)
+            {
+                products.Add(new Product { Title = "PlayStation 5", Description = "Juega como nunca antes.", ISBN = "GM-001", Author = "Sony", ListPrice = 499, Price = 499, Price50 = 480, Price100 = 470, CategoryId = catGaming.Id, Stock = 10, ImageUrl = "\\images\\products\\ps5.jpg" });
+                products.Add(new Product { Title = "Xbox Series X", Description = "La Xbox más rápida y potente de la historia.", ISBN = "GM-002", Author = "Microsoft", ListPrice = 499, Price = 480, Price50 = 460, Price100 = 450, CategoryId = catGaming.Id, Stock = 12, ImageUrl = "\\images\\products\\xbox.jpg" });
+            }
+
+            if (catAudio != null)
+            {
+                products.Add(new Product { Title = "Sony WH-1000XM5", Description = "Cancelación de ruido líder en la industria.", ISBN = "AUD-001", Author = "Sony", ListPrice = 350, Price = 320, Price50 = 300, Price100 = 290, CategoryId = catAudio.Id, Stock = 30, ImageUrl = "\\images\\products\\sony-headphones.jpg" });
+            }
+
+            foreach (var prod in products)
+            {
+                if (!_db.Products.Any(p => p.ISBN == prod.ISBN))
+                {
+                    _db.Products.Add(prod);
+                }
+            }
+            await _db.SaveChangesAsync();
         }
     }
 
