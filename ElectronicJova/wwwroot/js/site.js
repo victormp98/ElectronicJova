@@ -1,4 +1,21 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// Micro-interactions and animations
+function animateCart() {
+    const cartIcon = $('#cart-icon-nav');
+    cartIcon.addClass('animate-bounce');
+    setTimeout(() => cartIcon.removeClass('animate-bounce'), 500);
+}
 
-// Write your JavaScript code.
+function animateHeart(element) {
+    $(element).addClass('animate-pulse');
+    setTimeout(() => $(element).removeClass('animate-pulse'), 500);
+}
+
+$(document).ready(function () {
+    // Handle favorite heart animation
+    $('#favoriteBtn, #favoriteBtnImage').click(function () {
+        animateHeart(this);
+    });
+
+    // Check if item was just added to cart (via TempData or similar hook if needed)
+    // For now, these can be called manually or via success responses
+});

@@ -15,70 +15,99 @@
     <link rel="stylesheet" href="~/css/_AdminLayout.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="d-flex">
+    <div class="d-flex min-vh-100">
         <!-- Sidebar -->
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar-nav" style="width: 280px; height: 100vh; position: fixed;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <i class="bi bi-shop me-2"></i>
-                <span class="fs-4">ElectronicJova Admin</span>
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-white sidebar-nav border-end" style="width: 280px; position: fixed; height: 100vh;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <i class="bi bi-lightning-charge-fill text-primary me-2 fs-4"></i>
+                <span class="fs-4 fw-bold">Jova Admin</span>
             </a>
             <hr>
-            @if (User.IsInRole(SD.Role_Admin))
-            {
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link text-white active" aria-current="page">
-                            <i class="bi bi-house-door me-2"></i>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-white">
-                            <i class="bi bi-tags me-2"></i>
-                            Categories
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-white">
-                            <i class="bi bi-box-seam me-2"></i>
-                            Products
-                        </a>
-                    </li>
-                    <!-- Future Admin Menu Items -->
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item mb-1">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                        <i class="bi bi-grid-1x2 me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")">
+                        <i class="bi bi-tags me-2"></i> Categorías
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")">
+                        <i class="bi bi-box-seam me-2"></i> Productos
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Order" ? "active" : "")">
+                        <i class="bi bi-receipt me-2"></i> Pedidos
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                    <strong>Admin</strong>
+                </a>
+                <ul class="dropdown-menu shadow border-0 mt-2" aria-labelledby="dropdownUser">
+                    <li><a class="dropdown-item" href="/" data-bs-toggle="tooltip" title="Regresar al inicio"><i class="bi bi-house me-2"></i>Ver Tienda</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><partial name="_LoginPartial" /></li>
                 </ul>
-                <hr>
-            }
+            </div>
         </div>
 
         <!-- Main Content Wrapper -->
-        <div class="flex-grow-1 main-content" style="margin-left: 280px;">
-            <header>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <!-- Navbar content for top bar, like logout, user info, etc. -->
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav ms-auto">
-                                <li class="nav-item">
-                                    <partial name="_LoginPartial" />
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+        <div class="flex-grow-1 main-content bg-light" style="margin-left: 280px;">
+            <header class="d-lg-none p-3 bg-white border-bottom sticky-top">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="/" class="text-dark text-decoration-none fw-bold fs-4">
+                        <i class="bi bi-lightning-charge-fill text-primary"></i> Jova Admin
+                    </a>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileSidebar">
+                        <i class="bi bi-list"></i>
+                    </button>
+                </div>
             </header>
 
-            <main role="main" class="pb-3">
+            <main role="main" class="p-4">
                 @RenderBody()
             </main>
+        </div>
+    </div>
 
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2026 - ElectronicJova - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
-            </footer>
+    <!-- Mobile Sidebar (Offcanvas) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="adminMobileSidebar">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-primary">Menú Admin</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
+                        <i class="bi bi-grid-1x2 me-3"></i> Dashboard
+                    </a>
+                </li>
+                <!-- Copiar otros links aquí -->
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
+                        <i class="bi bi-tags me-3"></i> Categorías
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
+                        <i class="bi bi-box-seam me-3"></i> Productos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
+                        <i class="bi bi-receipt me-3"></i> Pedidos
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 

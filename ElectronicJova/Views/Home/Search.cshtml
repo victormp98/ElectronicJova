@@ -39,34 +39,46 @@
 
     @if (Model.Products != null && Model.Products.Any())
     {
-        <!-- Product Cards -->
-        <div class="row pb-3">
-            @foreach (var product in Model.Products)
-            {
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="row p-2">
-                        <div class="col-12 p-1">
-                            <div class="card border-0 p-3 shadow border-top-0 pt-2 h-100">
-                                <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://via.placeholder.com/300x200?text=No+Image" : product.ImageUrl)" class="card-img-top rounded" alt="@product!.Title" loading="lazy"/>
-                                <div class="card-body pb-0 d-flex flex-column">
-                                    <div class="pl-1">
-                                        <p class="card-title h5 text-dark opacity-75 text-center mb-0" title="@product!.Title">@product!.Title</p>
-                                        <p class="card-title text-secondary text-center">by <b>@product!.Author</b></p>
-                                    </div>
-                                    <div class="pl-1 mt-auto">
-                                        <p class="text-dark text-opacity-75 text-center mb-0">List Price: <span class="text-decoration-line-through">@product!.ListPrice.ToString("c")</span></p>
-                                        <p class="text-dark text-opacity-75 text-center">As low as: <span>@product!.Price100.ToString("c")</span></p>
-                                    </div>
-                                </div>
-                                <div class="mt-2">
-                                    <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary form-control">Details</a>
-                                </div>
-                            </div>
+    <!-- Product Cards -->
+    <div class="row pb-3">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <a asp-action="Details" asp-route-productId="@product.Id" class="product-card h-100">
+                    <div class="position-relative">
+                        <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://via.placeholder.com/300x200?text=No+Image" : product.ImageUrl)" class="card-img-top" alt="@product!.Title" loading="lazy"/>
+                        
+                        @* Stock Badges *@
+                        @if(product.Stock <= 0)
+                        {
+                             <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
+                        }
+                        else if(product.Stock < 5)
+                        {
+                             <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
+                        }
+
+                        @* Offer Badge *@
+                        @if(product.ListPrice > product.Price100)
+                        {
+                            <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                                -@(Math.Round((1 - (double)product.Price100 / (double)product.ListPrice) * 100))% OFF
+                            </span>
+                        }
+                    </div>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">@product!.Title</h5>
+                        <p class="small text-muted mb-2">@product!.Author</p>
+                        
+                        <div class="price mt-auto">
+                            @product!.Price100.ToString("c")
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                </a>
+            </div>
+        }
+    </div>
     }
     else
     {

@@ -62,7 +62,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
         // POST: Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
+        public async Task<IActionResult> Upsert(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
                     using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
-                        file.CopyTo(fileStream);
+                        await file.CopyToAsync(fileStream);
                     }
                     // FIX 7: Usar forward slash para URLs correctas en todos los OS
                     productVM.Product.ImageUrl = "/images/products/" + fileName;
@@ -117,7 +117,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 {
                     _unitOfWork.Product.Update(productVM.Product);
                 }
-                _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
                 TempData["success"] = "Product created/updated successfully";
                 return RedirectToAction("Index");
             }

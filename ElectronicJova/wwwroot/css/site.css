@@ -1,18 +1,18 @@
-/* Modern Tech Theme - ElectronicJova */
+/* MercadoLibre Style - ElectronicJova */
 :root {
-  --primary-color: #3b82f6;
-  --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  --secondary-color: #64748b;
-  --bg-dark: #0f172a;
-  --bg-card: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --accent-glow: 0 0 15px rgba(59, 130, 246, 0.5);
+  --primary: #3483FA;
+  --secondary: #F5F5F5;
+  --success: #00A650;
+  --danger: #FF4B4B;
+  --text-dark: #333333;
+  --text-muted: #666666;
+  --bg-main: #FFFFFF;
+  --bg-secondary: #ebebeb;
+  --border-color: #e0e0e0;
 }
 
 html {
   font-size: 14px;
-  height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -22,12 +22,13 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-dark);
-  color: var(--text-main);
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-dark);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 main {
@@ -36,94 +37,179 @@ main {
 
 /* Navbar Customization */
 .navbar {
-  background: rgba(15, 23, 42, 0.95) !important;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #334155;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-main) !important;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
 }
 
 .navbar-brand {
   font-weight: 700;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--primary) !important;
   font-size: 1.5rem;
 }
 
 .nav-link {
-  color: var(--text-muted) !important;
-  transition: color 0.3s ease;
+  color: var(--text-dark) !important;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: #fff !important;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+.nav-link:hover {
+  color: var(--primary) !important;
 }
 
-/* Card Styling */
-.card {
-  background-color: var(--bg-card);
-  border: 1px solid #334155;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Product Card - MercadoLibre Style */
+.product-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+  background: white;
+  height: 100%;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--accent-glow);
-  border-color: var(--primary-color);
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
-.card-title {
-  color: var(--text-main);
+.product-card img {
+  height: 200px;
+  object-fit: contain;
+  width: 100%;
+  background: #fff;
+  padding: 1rem;
 }
 
-.text-muted {
-  color: var(--text-muted) !important;
+.product-card .card-body {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card .card-title {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
+}
+
+.product-card .price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-top: auto;
 }
 
 /* Buttons */
 .btn-primary {
-  background: var(--primary-gradient);
-  border: none;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 6px;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  filter: brightness(1.1);
-  box-shadow: var(--accent-glow);
-  transform: translateY(-1px);
+  background-color: #2968c8;
+  border-color: #2968c8;
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 6px;
 }
 
 /* Footer */
 .footer {
-  background-color: var(--bg-card);
-  border-top: 1px solid #334155 !important;
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-color) !important;
+  padding: 2rem 0;
   color: var(--text-muted);
 }
 
-/* Inputs */
-.form-control {
-  background-color: #0f172a;
-  border: 1px solid #334155;
-  color: white;
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .product-card img {
+    height: 150px;
+  }
+
+  .product-card .price {
+    font-size: 1.25rem;
+  }
 }
 
-.form-control:focus {
-  background-color: #0f172a;
-  color: white;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-/* Hero Section Utilities */
-.hero-gradient-text {
-  background: var(--primary-gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Animations & Micro-interactions */
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce {
+  display: inline-block;
+  animation: bounce 0.3s ease-in-out;
+}
+
+.animate-pulse {
+  display: inline-block;
+  animation: pulse 0.4s ease-in-out;
+}
+
+/* Tooltip Customization */
+.tooltip-inner {
+  background-color: var(--text-dark) !important;
+  color: #fff !important;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: var(--text-dark) !important;
+}
+
+/* Badge specific positioning */
+.badge-oferta {
+  background-color: var(--success);
+  font-weight: 700;
+}
+
+.badge-stock {
+  font-weight: 600;
 }

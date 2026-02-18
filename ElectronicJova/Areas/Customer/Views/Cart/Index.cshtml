@@ -3,18 +3,18 @@
 
 <form method="post">
     <br />
-    <div class="card shadow border-0">
-        <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
+    <div class="card border-0 bg-white">
+        <div class="card-header bg-white border-bottom py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white">Shopping Cart</h3>
+                    <h2 class="text-dark fw-bold mb-0">Carrito de compras</h2>
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <div class="container rounded p-2">
+        <div class="card-body bg-white">
+            <div class="container rounded">
                 <div class="row">
-                    <div class="col-12 col-lg-6 offset-lg-3">
+                    <div class="col-12 col-lg-8 offset-lg-2">
                         <partial name="_Notification" />
                     </div>
                 </div>
@@ -22,85 +22,80 @@
                 {
                     @foreach (var item in Model.ShoppingCartList)
                     {
-                        <div class="row px-2 pb-4 pt-4 border-bottom align-items-center">
+                        <div class="row px-2 py-4 border-bottom align-items-center">
                             <div class="col-4 col-md-2 text-center mb-3 mb-md-0">
-                                <img src="@item.Product!.ImageUrl" class="rounded shadow-sm" width="100%" />
+                                <img src="@item.Product!.ImageUrl" class="rounded" style="width: 100%; max-height: 120px; object-fit: contain;" />
                             </div>
-                            <div class="col-8 col-md-10">
-                                <div class="row align-items-center">
-                                    <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                        <h5 class="text-primary mb-1">@item.Product!.Title</h5>
-                                        <p class="text-secondary small mb-2">by @item.Product!.Author</p>
-                                        
-                                        @if (!string.IsNullOrEmpty(item.SelectedOptions))
+                            <div class="col-8 col-md-6">
+                                <h5 class="text-dark fw-bold mb-1">@item.Product!.Title</h5>
+                                <p class="text-secondary small mb-2">por @item.Product!.Author</p>
+                                
+                                @if (!string.IsNullOrEmpty(item.SelectedOptions))
+                                {
+                                    var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(item.SelectedOptions);
+                                    <div class="mb-2">
+                                        @foreach (var opt in opts)
                                         {
-                                            var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(item.SelectedOptions);
-                                            <div class="mb-2">
-                                                @foreach (var opt in opts)
-                                                {
-                                                    <span class="badge bg-info text-dark me-1 mb-1 shadow-sm" style="font-size: 0.7rem;">
-                                                        <i class="bi bi-gear-fill me-1"></i>@opt.GetProperty("Name"): @opt.GetProperty("Value")
-                                                    </span>
-                                                }
-                                            </div>
+                                            <span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 0.7rem;">
+                                                @opt.GetProperty("Name"): @opt.GetProperty("Value")
+                                            </span>
                                         }
+                                    </div>
+                                }
 
-                                        @if (!string.IsNullOrEmpty(item.SpecialNotes))
-                                        {
-                                            <div class="mt-2 p-2 bg-light rounded border-start border-warning border-3 shadow-sm">
-                                                <small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">NOTAS:</small>
-                                                <small class="text-dark" style="font-size: 0.8rem;">@item.SpecialNotes</small>
-                                            </div>
-                                        }
+                                @if (!string.IsNullOrEmpty(item.SpecialNotes))
+                                {
+                                    <div class="mt-2 p-2 bg-light rounded border-start border-primary border-3">
+                                        <small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">NOTAS:</small>
+                                        <small class="text-secondary" style="font-size: 0.8rem;">@item.SpecialNotes</small>
                                     </div>
-                                    <div class="col-6 col-md-3 text-md-center">
-                                        <h5 class="fw-bold text-primary mb-0">@item.Price.ToString("c") <span class="text-muted small fw-normal">/ unit</span></h5>
-                                    </div>
-                                    <div class="col-6 col-md-3 text-end">
-                                        <div class="d-flex align-items-center justify-content-end mb-2">
-                                            <a asp-action="Minus" asp-route-cartId="@item.Id" class="btn btn-outline-primary py-2 px-3 border shadow-sm">
-                                                <i class="bi bi-dash-lg"></i>
-                                            </a>
-                                            <span class="mx-3 fw-bold h5 mb-0">@item.Count</span>
-                                            <a asp-action="Plus" asp-route-cartId="@item.Id" class="btn btn-outline-primary py-2 px-3 border shadow-sm">
-                                                <i class="bi bi-plus-lg"></i>
-                                            </a>
-                                        </div>
-                                        <a asp-action="Remove" asp-route-cartId="@item.Id" class="btn btn-link text-danger p-0" style="text-decoration: none;">
-                                            <i class="bi bi-trash3 me-1"></i>Remove
-                                        </a>
-                                    </div>
+                                }
+                            </div>
+                            <div class="col-6 col-md-2 text-md-center">
+                                <h5 class="fw-bold text-dark mb-0">@item.Price.ToString("c")</h5>
+                            </div>
+                            <div class="col-6 col-md-2 text-end">
+                                <div class="d-flex align-items-center justify-content-end mb-2">
+                                    <a asp-action="Minus" asp-route-cartId="@item.Id" class="btn btn-outline-secondary btn-sm rounded-circle" data-bs-toggle="tooltip" title="Disminuir cantidad">
+                                        <i class="bi bi-dash-lg"></i>
+                                    </a>
+                                    <span class="mx-3 fw-bold">@item.Count</span>
+                                    <a asp-action="Plus" asp-route-cartId="@item.Id" class="btn btn-outline-secondary btn-sm rounded-circle" data-bs-toggle="tooltip" title="Aumentar cantidad">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </a>
                                 </div>
+                                <a asp-action="Remove" asp-route-cartId="@item.Id" class="btn btn-link text-primary small p-0" style="text-decoration: none;" data-bs-toggle="tooltip" title="Quitar de la bolsa">
+                                    <i class="bi bi-trash3 me-1"></i>Eliminar
+                                </a>
                             </div>
                         </div>
                     }
-                    <div class="row">
-                        <div class="col-md-9 text-end">
-                            <p class="text-primary h4">Total:</p>
-                        </div>
-                        <div class="col-md-3 text-start">
-                            <p class="text-primary h4">@Model.OrderHeader!.OrderTotal.ToString("c")</p>
+                    <div class="row py-4">
+                        <div class="col-12 text-end">
+                            <span class="text-secondary fs-5 me-3">Subtotal:</span>
+                            <span class="text-dark fw-bold fs-3">@Model.OrderHeader!.OrderTotal.ToString("c")</span>
                         </div>
                     </div>
                 }
                 else
                 {
-                    <div class="row pt-3">
+                    <div class="row py-5">
                         <div class="col-12 text-center">
-                            <p class="lead">Your shopping cart is empty.</p>
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Continue Shopping</a>
+                            <i class="bi bi-cart-x fs-1 text-muted mb-3 d-block"></i>
+                            <p class="lead text-secondary">Tu carrito está vacío.</p>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-5 py-2">Completar compra</a>
                         </div>
                     </div>
                 }
             </div>
         </div>
-        <div class="card-footer bg-white border-0 py-3">
+        <div class="card-footer bg-white border-0 py-4">
             <div class="row">
-                <div class="col-12 col-md-6 mb-2 mb-md-0">
-                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary btn-lg w-100 rounded-pill py-3">Continue Shopping</a>
-                </div>
-                <div class="col-12 col-md-6">
-                    <button type="submit" asp-action="Summary" asp-area="Customer" class="btn btn-primary btn-lg w-100 rounded-pill py-3 shadow">Proceed to Checkout</button>
+                <div class="col-12 col-md-6 mb-2 mb-md-0 offset-md-6">
+                    <button type="submit" asp-action="Summary" asp-area="Customer" class="btn btn-primary btn-lg w-100 py-3 shadow-sm">Continuar compra</button>
+                    <div class="text-center mt-3">
+                        <a asp-action="Index" asp-controller="Home" class="text-primary text-decoration-none small">Seguir comprando</a>
+                    </div>
                 </div>
             </div>
         </div>

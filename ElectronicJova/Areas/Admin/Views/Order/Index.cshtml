@@ -38,11 +38,13 @@
                             <td class="small">@orderHeader.Email</td>
                             <td class="fw-bold text-primary">@orderHeader.OrderTotal.ToString("c")</td>
                             <td>
-                                <span class="badge rounded-pill bg-info text-dark">@orderHeader.OrderStatus</span>
+                                <span class="badge rounded-pill bg-info text-dark" data-bs-toggle="tooltip" title="Estado actual del procesamiento del pedido">
+                                    <i class="bi bi-info-circle me-1"></i>@orderHeader.OrderStatus
+                                </span>
                             </td>
                             <td class="text-center">
-                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary btn-sm rounded-pill px-3">
-                                    <i class="bi bi-pencil-square me-1"></i>Details
+                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+                                    <i class="bi bi-eye me-1"></i>Ver Detalles
                                 </a>
                             </td>
                         </tr>
@@ -54,8 +56,9 @@
     else
     {
         <div class="row pt-3">
-            <div class="col-12 text-center">
-                <p class="lead">No orders found.</p>
+            <div class="col-12 text-center text-muted py-5">
+                <i class="bi bi-folder-x display-4 mb-3 d-block"></i>
+                <p class="lead">No se encontraron pedidos.</p>
             </div>
         </div>
     }
@@ -72,22 +75,22 @@
                     }
                     
                     <li class="page-item @prevDisabled">
-                        <a class="page-link" asp-action="Index"
+                        <a class="page-link shadow-sm" asp-action="Index"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"
                            aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span> Previous
+                            <i class="bi bi-chevron-left"></i> Anterior
                         </a>
                     </li>
 
                     <li class="page-item active" aria-current="page">
-                        <span class="page-link">Page @Model.PageIndex of @Model.TotalPages</span>
+                        <span class="page-link">Página @Model.PageIndex de @Model.TotalPages</span>
                     </li>
 
                     <li class="page-item @nextDisabled">
-                        <a class="page-link" asp-action="Index"
+                        <a class="page-link shadow-sm" asp-action="Index"
                            asp-route-pageNumber="@(Model.PageIndex + 1)"
                            aria-label="Next">
-                            Next <span aria-hidden="true">&raquo;</span>
+                            Siguiente <i class="bi bi-chevron-right"></i>
                         </a>
                     </li>
                 </ul>

@@ -18,50 +18,68 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-shop"></i> ElectronicJova
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-lightning-charge-fill me-2"></i><b>ElectronicJova</b>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav me-auto">
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        @* Admin Area Link *@
-                        @if (User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
+                        @if (User.IsInRole(SD.Role_Admin))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
-                            </li>
-                        }
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Wishlist" asp-action="Index">Favoritos</a>
-                            </li>
-                        }
-                        @if (User.Identity.IsAuthenticated && !User.IsInRole(ElectronicJova.Utilities.SD.Role_Admin))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    <i class="bi bi-cart"></i> &nbsp;
-                                    (@(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0))
-                                </a>
+                                <a class="nav-link fw-bold text-primary" asp-area="Admin" asp-controller="Home" asp-action="Index">Panel Admin</a>
                             </li>
                         }
                     </ul>
-                    <form class="d-flex my-2 my-lg-0" asp-controller="Home" asp-action="Search" method="get">
-                        <input class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search" name="searchString">
-                        <button class="btn btn-secondary" type="submit">Search</button>
+
+                    <form class="d-flex flex-grow-1 mx-lg-4 my-2 my-lg-0" asp-controller="Home" asp-action="Search" method="get" style="max-width: 600px;">
+                        <div class="input-group">
+                            <input class="form-control shadow-none border-end-0" type="search" placeholder="Busca productos, marcas y más..." name="searchString">
+                            <button class="btn btn-white border border-start-0 text-muted" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </form>
-                    <partial name="_LoginPartial" /> @* Login/Logout/Register links *@
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle fs-5 me-2"></i>
+                                    <span>Hola, @User.Identity.Name</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Wishlist" asp-action="Index"><i class="bi bi-heart me-2 text-danger"></i>Mis Favoritos</a></li>
+                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index"><i class="bi bi-box-seam me-2 text-primary"></i>Mis Compras</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><partial name="_LoginPartial" /></li>
+                                </ul>
+                            </li>
+                            @if (!User.IsInRole(SD.Role_Admin))
+                            {
+                                <li class="nav-item ms-lg-2">
+                                    <a class="nav-link position-relative" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        <i class="bi bi-cart3 fs-5" id="cart-icon-nav"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                            @(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0)
+                                        </span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <partial name="_LoginPartial" />
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -72,17 +90,28 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ElectronicJova - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer border-top text-muted">
+        <div class="container text-center">
+            &copy; 2026 - ElectronicJova - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-primary">Privacidad</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    
+    @* Initializing Bootstrap Tooltips *@
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

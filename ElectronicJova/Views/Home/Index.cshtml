@@ -4,12 +4,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container-fluid p-0 mb-5">
-    <div class="row m-0" style="background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; min-height: 400px; display: flex; align-items: center;">
-        <div class="col-12 text-center text-white py-5">
-            <h1 class="display-3 fw-bold hero-gradient-text">Welcome to the Future</h1>
-            <p class="lead fs-4 mb-4">Discover next-gen electronics at unbeatable prices.</p>
-            <a href="#products" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">Shop Now</a>
+<div class="p-0 mb-5">
+    <div class="row m-0" style="background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; min-height: 350px; display: flex; align-items: center; border-bottom: 1px solid var(--border-color);">
+        <div class="col-12 text-center py-5">
+            <h1 class="display-3 fw-bold text-dark">ElectronicJova</h1>
+            <p class="lead fs-4 mb-4 text-secondary">Tecnología de última generación a precios increíbles.</p>
+            <a href="#products" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">Ver Productos</a>
         </div>
     </div>
 </div>
@@ -19,32 +19,38 @@
         @foreach (var product in Model)
         {
             <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm overflow-hidden" style="animation: fadeIn 0.5s ease-in-out;">
-                    <div style="height: 200px; overflow: hidden; position: relative;">
-                        <img src="@product.ImageUrl" class="card-img-top w-100 h-100" style="object-fit: cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" loading="lazy"/>
-                        @if(product.Stock > 0)
+                <a asp-action="Details" asp-route-productId="@product.Id" class="product-card h-100">
+                    <div class="position-relative">
+                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.Title" loading="lazy"/>
+                        
+                        @* Stock Badges *@
+                        @if(product.Stock <= 0)
                         {
-                             <span class="badge bg-success position-absolute top-0 end-0 m-2">In Stock: @product.Stock</span>
+                             <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
                         }
-                        else
+                        else if(product.Stock < 5)
                         {
-                             <span class="badge bg-danger position-absolute top-0 end-0 m-2">Out of Stock</span>
+                             <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
+                        }
+
+                        @* Offer Badge *@
+                        @if(product.ListPrice > product.Price100)
+                        {
+                            <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                                -@(Math.Round((1 - (double)product.Price100 / (double)product.ListPrice) * 100))% OFF
+                            </span>
                         }
                     </div>
                     
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-truncate">@product.Title</h5>
-                        <p class="card-text text-muted mb-auto">by @product.Author</p>
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Title</h5>
+                        <p class="small text-muted mb-2">@product.Author</p>
                         
-                        <div class="mt-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="text-decoration-line-through text-muted small">@product.ListPrice.ToString("c")</span>
-                                <span class="h5 mb-0 text-primary">@product.Price100.ToString("c")</span>
-                            </div>
-                            <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary w-100 rounded-pill">View Details</a>
+                        <div class="price mt-auto">
+                            @product.Price100.ToString("c")
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         }
     </div>

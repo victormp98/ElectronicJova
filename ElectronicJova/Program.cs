@@ -10,6 +10,7 @@ using Stripe;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Resend;
 using ElectronicJova.Hubs;
+using Microsoft.AspNetCore.Http.Features;
 
 var loggerConfig = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
@@ -24,6 +25,11 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue;
+});
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR(); // Fase 3: Notificaciones en tiempo real
 

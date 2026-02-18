@@ -711,3 +711,71 @@ ALTER TABLE `OrderDetail` DROP COLUMN `OrderHeaderId1`;
 2026-02-18 03:51:19.590 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
 VALUES ('20260218095045_FixOrderDetailRelationship', '8.0.0');
+2026-02-18 04:52:02.556 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-18 04:52:04.217 -06:00 [INF] Executed DbCommand (77ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 04:52:04.253 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 04:52:04.487 -06:00 [INF] Executed DbCommand (25ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-18 04:52:04.548 -06:00 [INF] Executed DbCommand (8ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`AccessFailedCount`, `a`.`City`, `a`.`ConcurrencyStamp`, `a`.`Email`, `a`.`EmailConfirmed`, `a`.`LockoutEnabled`, `a`.`LockoutEnd`, `a`.`Name`, `a`.`NormalizedEmail`, `a`.`NormalizedUserName`, `a`.`PasswordHash`, `a`.`PhoneNumber`, `a`.`PhoneNumberConfirmed`, `a`.`PostalCode`, `a`.`SecurityStamp`, `a`.`State`, `a`.`StreetAddress`, `a`.`TwoFactorEnabled`, `a`.`UserName`
+FROM `AspNetUsers` AS `a`
+WHERE `a`.`NormalizedEmail` = @__normalizedEmail_0
+LIMIT 2
+2026-02-18 04:52:04.596 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedRoleName_0
+LIMIT 2
+2026-02-18 04:52:04.625 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (Size = 255), @__p_1='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`UserId`, `a`.`RoleId`
+FROM `AspNetUserRoles` AS `a`
+WHERE (`a`.`UserId` = @__p_0) AND (`a`.`RoleId` = @__p_1)
+LIMIT 1
+2026-02-18 04:52:04.648 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-18 04:52:04.658 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-18 04:52:04.768 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-18 04:52:04.771 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-18 04:52:04.773 -06:00 [INF] Hosting environment: Development
+2026-02-18 04:52:04.774 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-18 04:52:28.734 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5136/ - null null
+2026-02-18 04:52:28.742 -06:00 [WRN] Failed to determine the https port for redirect.
+2026-02-18 04:52:28.789 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 04:52:28.814 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 04:52:28.881 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 04:52:28.896 -06:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-02-18 04:52:28.898 -06:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-02-18 04:52:28.954 -06:00 [INF] Executed DbCommand (13ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 04:52:28.969 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 04:52:29.089 -06:00 [INF] Executed ViewResult - view Index executed in 123.7618ms.
+2026-02-18 04:52:29.092 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 275.9447ms
+2026-02-18 04:52:29.094 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 04:52:29.099 -06:00 [INF] HTTP GET / responded 200 in 319.6469 ms
+2026-02-18 04:52:29.109 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5136/ - 200 null text/html; charset=utf-8 377.4907ms
+2026-02-18 04:52:29.155 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5136/css/site.css?v=Bn1icqvkn8Pd-lt8MvACOuHIlT4o583-98xRxBrrFKA - null null
+2026-02-18 04:52:29.155 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5136/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - null null
+2026-02-18 04:52:29.164 -06:00 [INF] The file /css/site.css was not modified
+2026-02-18 04:52:29.166 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5136/css/site.css?v=Bn1icqvkn8Pd-lt8MvACOuHIlT4o583-98xRxBrrFKA - 304 null text/css 10.8568ms
+2026-02-18 04:52:29.174 -06:00 [INF] Sending file. Request path: '/ElectronicJova.styles.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\obj\Debug\net8.0\scopedcss\bundle\ElectronicJova.styles.css'
+2026-02-18 04:52:29.175 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5136/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - 200 1109 text/css 20.1126ms

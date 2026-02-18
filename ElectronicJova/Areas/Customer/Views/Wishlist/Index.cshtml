@@ -37,7 +37,24 @@
                         <div class="position-relative">
                             <img src="@(string.IsNullOrEmpty(item.Product.ImageUrl) ? "https://via.placeholder.com/300x400?text=No+Image" : item.Product.ImageUrl)" 
                                  class="card-img-top" alt="@item.Product.Title" style="height: 250px; object-fit: cover;">
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2">@item.Product.Category?.Name</span>
+                            
+                            @* Stock Badges *@
+                            @if(item.Product.Stock <= 0)
+                            {
+                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
+                            }
+                            else if(item.Product.Stock < 5)
+                            {
+                                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
+                            }
+
+                            @* Offer Badge *@
+                            @if(item.Product.ListPrice > item.Product.Price)
+                            {
+                                <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                                    -@(Math.Round((1 - (double)item.Product.Price / (double)item.Product.ListPrice) * 100))% OFF
+                                </span>
+                            }
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-dark">@item.Product.Title</h5>
