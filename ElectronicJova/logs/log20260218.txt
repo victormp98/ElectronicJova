@@ -221,3 +221,55 @@ VALUES ('20260218081350_AddWishlistTable', '8.0.0');
 DROP PROCEDURE `POMELO_BEFORE_DROP_PRIMARY_KEY`;
 2026-02-18 02:14:01.008 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 DROP PROCEDURE `POMELO_AFTER_ADD_PRIMARY_KEY`;
+2026-02-18 02:43:20.202 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-18 02:43:21.329 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:43:21.866 -06:00 [INF] Executed DbCommand (80ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 02:43:21.901 -06:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 02:43:22.205 -06:00 [INF] Executed DbCommand (46ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-18 02:43:22.278 -06:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-18 02:43:22.343 -06:00 [INF] Executed DbCommand (57ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-18 02:43:22.466 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-18 02:43:22.468 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-18 02:43:22.470 -06:00 [INF] Hosting environment: Development
+2026-02-18 02:43:22.471 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-18 02:43:35.169 -06:00 [INF] Application is shutting down...
+2026-02-18 02:44:01.065 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-18 02:44:01.647 -06:00 [WRN] The foreign key property 'OrderDetail.OrderHeaderId1' was created in shadow state because a conflicting property with the simple name 'OrderHeaderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2026-02-18 02:44:01.956 -06:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 02:44:01.984 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 02:44:02.220 -06:00 [INF] Executed DbCommand (27ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-18 02:44:02.266 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-18 02:44:02.272 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-18 02:44:02.328 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-18 02:44:02.331 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-18 02:44:02.332 -06:00 [INF] Hosting environment: Development
+2026-02-18 02:44:02.333 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-18 02:54:05.684 -06:00 [INF] Application is shutting down...

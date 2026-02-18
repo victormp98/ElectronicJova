@@ -17,7 +17,7 @@ namespace ElectronicJova.UnitTests
 
         [InlineData(101, 10.00, 9.00, 8.00, 8.00)] // Count > 100, should use Price100
         [InlineData(200, 10.00, 9.00, 8.00, 8.00)]
-        public void GetPriceBasedOnQuantity_ShouldReturnCorrectPrice(int count, decimal price, decimal price50, decimal price100, decimal expectedPrice)
+        public void GetPriceBasedOnQuantity_ShouldReturnCorrectBasePrice(int count, decimal price, decimal price50, decimal price100, decimal expectedPrice)
         {
             // Arrange
             var product = new Product
@@ -39,6 +39,60 @@ namespace ElectronicJova.UnitTests
 
             // Assert
             Assert.Equal(expectedPrice, result);
+        }
+
+        [Fact]
+        public void GetPriceBasedOnQuantity_ShouldIncludeOptionPrices()
+        {
+            // Arrange
+            var product = new Product
+            {
+                Title = "Test Product",
+                Price = 10.00M,
+                Price50 = 9.00M,
+                Price100 = 8.00M
+            };
+
+            // JSON representativo de las opciones seleccionadas
+            string optionsJson = "[{\"Name\":\"Garantía\",\"Value\":\"1 año\",\"AdditionalPrice\":5.00},{\"Name\":\"Edición\",\"Value\":\"Metal\",\"AdditionalPrice\":15.00}]";
+
+            var shoppingCart = new ShoppingCart
+            {
+                Count = 1,
+                Product = product,
+                SelectedOptions = optionsJson
+            };
+
+            // Act
+            var result = PricingCalculator.GetPriceBasedOnQuantity(shoppingCart);
+
+            // Assert
+            // Base price (10.00) + Options (5.00 + 15.00) = 30.00
+            Assert.Equal(30.00M, result);
+        }
+
+        [Fact]
+        public void GetPriceBasedOnQuantity_WithInvalidJson_ShouldReturnBasePrice()
+        {
+            // Arrange
+            var product = new Product
+            {
+                Title = "Test Product",
+                Price = 10.00M
+            };
+
+            var shoppingCart = new ShoppingCart
+            {
+                Count = 1,
+                Product = product,
+                SelectedOptions = "Invalid JSON {{"
+            };
+
+            // Act
+            var result = PricingCalculator.GetPriceBasedOnQuantity(shoppingCart);
+
+            // Assert
+            Assert.Equal(10.00M, result);
         }
     }
 }

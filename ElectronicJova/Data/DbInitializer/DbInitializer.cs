@@ -96,7 +96,8 @@ namespace ElectronicJova.DbInitializer
                         Price50 = 25.00M,
                         Price100 = 22.00M,
                         CategoryId = 1, // Action
-                        ImageUrl = "" // Placeholder, actual images would be added via UI
+                        ImageUrl = "",
+                        Stock = 10
                     },
                     new Product
                     {
@@ -109,10 +110,23 @@ namespace ElectronicJova.DbInitializer
                         Price50 = 20.00M,
                         Price100 = 18.00M,
                         CategoryId = 2, // SciFi
-                        ImageUrl = ""
+                        ImageUrl = "",
+                        Stock = 5
                     }
                 );
                 _db.SaveChanges();
+
+                // Seed Product Options for LOTR (assuming Id 1)
+                var lotr = _db.Products.FirstOrDefault(p => p.Title == "The Lord of the Rings");
+                if (lotr != null)
+                {
+                    _db.ProductOptions.AddRange(
+                        new ProductOption { ProductId = lotr.Id, Name = "Garantía", Value = "1 año extra", AdditionalPrice = 10.00M, DisplayOrder = 1 },
+                        new ProductOption { ProductId = lotr.Id, Name = "Edición", Value = "Coleccionista", AdditionalPrice = 25.00M, DisplayOrder = 2 },
+                        new ProductOption { ProductId = lotr.Id, Name = "Soporte", Value = "Digital", AdditionalPrice = 0.00M, DisplayOrder = 3 }
+                    );
+                    _db.SaveChanges();
+                }
             }
         }
     }
