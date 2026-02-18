@@ -1,7 +1,7 @@
 @using ElectronicJova.Utilities
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,57 +16,72 @@
 </head>
 <body>
     <div class="d-flex min-vh-100">
-        <!-- Sidebar -->
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-white sidebar-nav border-end" style="width: 280px; position: fixed; height: 100vh;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <i class="bi bi-lightning-charge-fill text-primary me-2 fs-4"></i>
-                <span class="fs-4 fw-bold">Jova Admin</span>
+
+        <!-- ── Sidebar Desktop ─────────────────────────────────── -->
+        <div class="d-none d-lg-flex flex-column flex-shrink-0 sidebar-nav" style="width: 260px;">
+
+            <!-- Brand -->
+            <a href="/" class="sidebar-brand">
+                <i class="bi bi-lightning-charge-fill brand-icon"></i>
+                <span class="brand-text">Jova Admin</span>
             </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item mb-1">
-                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
-                        <i class="bi bi-grid-1x2 me-2"></i> Dashboard
+
+            <!-- Nav -->
+            <p class="sidebar-section-label">Menú principal</p>
+            <ul class="nav nav-pills flex-column mb-auto px-1">
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index"
+                       class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                        <i class="bi bi-grid-1x2-fill"></i> Dashboard
                     </a>
                 </li>
-                <li class="nav-item mb-1">
-                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")">
-                        <i class="bi bi-tags me-2"></i> Categorías
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index"
+                       class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")">
+                        <i class="bi bi-tags-fill"></i> Categorías
                     </a>
                 </li>
-                <li class="nav-item mb-1">
-                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")">
-                        <i class="bi bi-box-seam me-2"></i> Productos
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index"
+                       class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")">
+                        <i class="bi bi-box-seam-fill"></i> Productos
                     </a>
                 </li>
-                <li class="nav-item mb-1">
-                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-dark py-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Order" ? "active" : "")">
-                        <i class="bi bi-receipt me-2"></i> Pedidos
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index"
+                       class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Order" ? "active" : "")">
+                        <i class="bi bi-receipt-cutoff"></i> Pedidos
                     </a>
                 </li>
             </ul>
-            <hr>
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle fs-4 me-2"></i>
-                    <strong>Admin</strong>
-                </a>
-                <ul class="dropdown-menu shadow border-0 mt-2" aria-labelledby="dropdownUser">
-                    <li><a class="dropdown-item" href="/" data-bs-toggle="tooltip" title="Regresar al inicio"><i class="bi bi-house me-2"></i>Ver Tienda</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><partial name="_LoginPartial" /></li>
-                </ul>
+
+            <!-- User footer -->
+            <div class="sidebar-footer">
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Admin</span>
+                    </a>
+                    <ul class="dropdown-menu shadow border-0 mb-2" aria-labelledby="dropdownUser" style="bottom: 100%; top: auto;">
+                        <li><a class="dropdown-item" href="/"><i class="bi bi-shop me-2 text-cyan"></i>Ver Tienda</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><partial name="_LoginPartial" /></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Main Content Wrapper -->
-        <div class="flex-grow-1 main-content bg-light" style="margin-left: 280px;">
-            <header class="d-lg-none p-3 bg-white border-bottom sticky-top">
+        <!-- ── Main Content ────────────────────────────────────── -->
+        <div class="flex-grow-1 main-content" style="margin-left: 260px;">
+
+            <!-- Mobile Header -->
+            <header class="d-lg-none admin-mobile-header sticky-top">
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="/" class="text-dark text-decoration-none fw-bold fs-4">
-                        <i class="bi bi-lightning-charge-fill text-primary"></i> Jova Admin
+                    <a href="/" class="text-decoration-none d-flex align-items-center gap-2">
+                        <i class="bi bi-lightning-charge-fill" style="color: #00D4FF; filter: drop-shadow(0 0 6px rgba(0,212,255,0.5));"></i>
+                        <span class="brand-text">Jova Admin</span>
                     </a>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileSidebar">
+                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileSidebar">
                         <i class="bi bi-list"></i>
                     </button>
                 </div>
@@ -78,33 +93,34 @@
         </div>
     </div>
 
-    <!-- Mobile Sidebar (Offcanvas) -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="adminMobileSidebar">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title fw-bold text-primary">Menú Admin</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    <!-- ── Mobile Sidebar (Offcanvas) ─────────────────────────── -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="adminMobileSidebar" style="width: 260px;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">
+                <i class="bi bi-lightning-charge-fill me-2" style="color: #00D4FF;"></i>Jova Admin
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body p-0">
-            <ul class="nav nav-pills flex-column">
+            <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
-                        <i class="bi bi-grid-1x2 me-3"></i> Dashboard
-                    </a>
-                </li>
-                <!-- Copiar otros links aquí -->
-                <li class="nav-item">
-                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
-                        <i class="bi bi-tags me-3"></i> Categorías
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link">
+                        <i class="bi bi-grid-1x2-fill"></i> Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
-                        <i class="bi bi-box-seam me-3"></i> Productos
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
+                        <i class="bi bi-tags-fill"></i> Categorías
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-dark rounded-0 py-3 border-bottom">
-                        <i class="bi bi-receipt me-3"></i> Pedidos
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
+                        <i class="bi bi-box-seam-fill"></i> Productos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link">
+                        <i class="bi bi-receipt-cutoff"></i> Pedidos
                     </a>
                 </li>
             </ul>

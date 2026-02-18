@@ -1,15 +1,20 @@
 ﻿@model PaginatedList<Product>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "ElectronicJova — Tecnología de última generación";
 }
 
 <div class="p-0 mb-5">
     <div class="row m-0 hero-section">
-        <div class="col-12 text-center py-5">
-            <h1 class="display-3 fw-bold text-dark">ElectronicJova</h1>
-            <p class="lead fs-4 mb-4 text-secondary">Tecnología de última generación a precios increíbles.</p>
-            <a href="#products" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">Ver Productos</a>
+        <div class="col-12 text-center py-5 position-relative" style="z-index:1;">
+            <span class="badge rounded-pill mb-3 px-3 py-2" style="background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid var(--border-accent); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;">
+                <i class="bi bi-lightning-charge-fill me-1"></i>Tecnología de última generación
+            </span>
+            <h1 class="display-2 fw-bold mb-3" style="background: linear-gradient(135deg, #E8EDF5 30%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -2px;">ElectronicJova</h1>
+            <p class="lead mb-4" style="color: var(--text-secondary); font-size: 1.15rem; max-width: 480px; margin: 0 auto 1.5rem;">Los mejores productos tech a precios increíbles. Envío rápido y garantía total.</p>
+            <a href="#products" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
+                <i class="bi bi-grid me-2"></i>Ver Productos
+            </a>
         </div>
     </div>
 </div>

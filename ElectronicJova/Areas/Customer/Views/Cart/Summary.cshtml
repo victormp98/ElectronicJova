@@ -2,12 +2,14 @@
 @model OrderVM
 
 <form method="post" asp-action="Summary">
-    <div class="container">
-        <div class="card shadow border-0">
-            <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
+    <div class="container py-4">
+        <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border) !important; border-radius: 14px; overflow: hidden;">
+            <div class="card-header py-4" style="background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(91,141,239,0.1)); border-bottom: 1px solid var(--border);">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h3 class="text-white">Resumen del pedido</h3>
+                        <h3 class="fw-bold mb-0" style="color: var(--text-primary);">
+                            <i class="bi bi-bag-check-fill me-2" style="color: var(--cyan);"></i>Resumen del pedido
+                        </h3>
                     </div>
                 </div>
             </div>
