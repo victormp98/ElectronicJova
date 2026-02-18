@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ElectronicJova.Models
 {
@@ -41,6 +42,7 @@ namespace ElectronicJova.Models
         public int CategoryId { get; set; } // Foreign Key to Category
 
         [ForeignKey("CategoryId")]
+        [ValidateNever]  // FIX: Prevent model binding from validating this navigation property on POST
         public Category Category { get; set; } = null!; // Navigation property
     }
 }

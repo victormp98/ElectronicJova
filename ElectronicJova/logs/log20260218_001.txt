@@ -1282,3 +1282,263 @@ WHERE `p`.`ProductId` = @__id_0
 2026-02-18 06:11:50.720 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
 2026-02-18 06:11:50.726 -06:00 [INF] HTTP GET /Home/Details/1 responded 200 in 319.7181 ms
 2026-02-18 06:11:50.732 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5136/Home/Details/1 - 200 null text/html; charset=utf-8 367.5047ms
+2026-02-18 07:59:09.339 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-18 07:59:10.598 -06:00 [INF] Executed DbCommand (61ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 07:59:10.637 -06:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 07:59:10.867 -06:00 [INF] Executed DbCommand (26ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-18 07:59:10.927 -06:00 [INF] Executed DbCommand (5ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`AccessFailedCount`, `a`.`City`, `a`.`ConcurrencyStamp`, `a`.`Email`, `a`.`EmailConfirmed`, `a`.`LockoutEnabled`, `a`.`LockoutEnd`, `a`.`Name`, `a`.`NormalizedEmail`, `a`.`NormalizedUserName`, `a`.`PasswordHash`, `a`.`PhoneNumber`, `a`.`PhoneNumberConfirmed`, `a`.`PostalCode`, `a`.`SecurityStamp`, `a`.`State`, `a`.`StreetAddress`, `a`.`TwoFactorEnabled`, `a`.`UserName`
+FROM `AspNetUsers` AS `a`
+WHERE `a`.`NormalizedEmail` = @__normalizedEmail_0
+LIMIT 2
+2026-02-18 07:59:10.983 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedRoleName_0
+LIMIT 2
+2026-02-18 07:59:11.025 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (Size = 255), @__p_1='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`UserId`, `a`.`RoleId`
+FROM `AspNetUserRoles` AS `a`
+WHERE (`a`.`UserId` = @__p_0) AND (`a`.`RoleId` = @__p_1)
+LIMIT 1
+2026-02-18 07:59:11.056 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-18 07:59:11.066 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-18 07:59:11.173 -06:00 [INF] Now listening on: http://localhost:5000
+2026-02-18 07:59:11.177 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-18 07:59:11.179 -06:00 [INF] Hosting environment: Development
+2026-02-18 07:59:11.180 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-18 07:59:28.988 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2026-02-18 07:59:28.998 -06:00 [WRN] Failed to determine the https port for redirect.
+2026-02-18 07:59:29.054 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:29.083 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:29.164 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 07:59:29.182 -06:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-02-18 07:59:29.183 -06:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-02-18 07:59:29.238 -06:00 [INF] Executed DbCommand (13ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 07:59:29.257 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 07:59:29.398 -06:00 [INF] Executed ViewResult - view Index executed in 144.5149ms.
+2026-02-18 07:59:29.403 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 316.0717ms
+2026-02-18 07:59:29.404 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2026-02-18 07:59:29.404 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:29.411 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:29.413 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:29.412 -06:00 [INF] HTTP GET / responded 200 in 370.3537 ms
+2026-02-18 07:59:29.424 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/html; charset=utf-8 438.4398ms
+2026-02-18 07:59:29.503 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 07:59:29.509 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 07:59:29.512 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 07:59:29.523 -06:00 [INF] Executed ViewResult - view Index executed in 10.6984ms.
+2026-02-18 07:59:29.525 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 109.3153ms
+2026-02-18 07:59:29.527 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:29.528 -06:00 [INF] HTTP GET / responded 200 in 120.5743 ms
+2026-02-18 07:59:29.530 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/html; charset=utf-8 125.9435ms
+2026-02-18 07:59:29.564 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/lib/bootstrap/dist/css/bootstrap.min.css - null null
+2026-02-18 07:59:29.581 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/css/site.css?v=U3fAIrqySoxXDOqupcN8UJIQXPjUmI53LZwZ_JtxqqY - null null
+2026-02-18 07:59:29.582 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - null null
+2026-02-18 07:59:29.594 -06:00 [INF] Sending file. Request path: '/ElectronicJova.styles.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\obj\Debug\net8.0\scopedcss\bundle\ElectronicJova.styles.css'
+2026-02-18 07:59:29.594 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2026-02-18 07:59:29.594 -06:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\css\site.css'
+2026-02-18 07:59:29.596 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ElectronicJova.styles.css?v=ah6I243CtPlUEmB34mmkJosQmVm7zuOGyRq1bKWVhog - 200 1109 text/css 13.4118ms
+2026-02-18 07:59:29.597 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/lib/bootstrap/dist/css/bootstrap.min.css - 200 162720 text/css 33.2249ms
+2026-02-18 07:59:29.598 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/css/site.css?v=U3fAIrqySoxXDOqupcN8UJIQXPjUmI53LZwZ_JtxqqY - 200 26881 text/css 16.5353ms
+2026-02-18 07:59:29.612 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/lib/jquery/dist/jquery.min.js - null null
+2026-02-18 07:59:29.612 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/lib/bootstrap/dist/js/bootstrap.bundle.min.js - null null
+2026-02-18 07:59:29.612 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/js/site.js?v=bwKsJp03xpKK-jU0X8srRC9prUnhabAhqWhS4-4QUyo - null null
+2026-02-18 07:59:29.619 -06:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery\dist\jquery.min.js'
+2026-02-18 07:59:29.621 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2026-02-18 07:59:29.621 -06:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\js\site.js'
+2026-02-18 07:59:29.622 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/lib/jquery/dist/jquery.min.js - 200 89501 text/javascript 9.7387ms
+2026-02-18 07:59:29.623 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/lib/bootstrap/dist/js/bootstrap.bundle.min.js - 200 78468 text/javascript 11.0509ms
+2026-02-18 07:59:29.625 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/js/site.js?v=bwKsJp03xpKK-jU0X8srRC9prUnhabAhqWhS4-4QUyo - 200 713 text/javascript 12.156ms
+2026-02-18 07:59:30.426 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.ico - null null
+2026-02-18 07:59:30.429 -06:00 [INF] Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\favicon.ico'
+2026-02-18 07:59:30.431 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.ico - 200 5430 image/x-icon 4.9266ms
+2026-02-18 07:59:35.545 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2026-02-18 07:59:35.551 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:35.552 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:35.560 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 07:59:35.564 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 07:59:35.566 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 07:59:35.580 -06:00 [INF] Executed ViewResult - view Index executed in 14.0731ms.
+2026-02-18 07:59:35.581 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 27.9592ms
+2026-02-18 07:59:35.583 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:35.584 -06:00 [INF] HTTP GET / responded 200 in 36.1434 ms
+2026-02-18 07:59:35.585 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/html; charset=utf-8 40.3187ms
+2026-02-18 07:59:38.893 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2026-02-18 07:59:38.895 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:38.896 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:38.902 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 07:59:38.907 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 07:59:38.909 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 07:59:38.912 -06:00 [INF] Executed ViewResult - view Index executed in 2.687ms.
+2026-02-18 07:59:38.913 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 14.3992ms
+2026-02-18 07:59:38.914 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:38.915 -06:00 [INF] HTTP GET / responded 200 in 19.8553 ms
+2026-02-18 07:59:38.917 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/html; charset=utf-8 23.8337ms
+2026-02-18 07:59:41.946 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2026-02-18 07:59:41.948 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:41.949 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:41.953 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 07:59:41.958 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 07:59:41.960 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 07:59:41.963 -06:00 [INF] Executed ViewResult - view Index executed in 3.1119ms.
+2026-02-18 07:59:41.965 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 14.258ms
+2026-02-18 07:59:41.968 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:41.969 -06:00 [INF] HTTP GET / responded 200 in 20.6200 ms
+2026-02-18 07:59:41.971 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/html; charset=utf-8 25.4059ms
+2026-02-18 07:59:50.749 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/Home/Details/2 - null null
+2026-02-18 07:59:50.753 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
+2026-02-18 07:59:50.761 -06:00 [INF] Route matched with {action = "Details", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:50.786 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM `Products` AS `p`
+INNER JOIN `Categories` AS `c` ON `p`.`CategoryId` = `c`.`Id`
+WHERE `p`.`Id` = @__id_0
+LIMIT 1
+2026-02-18 07:59:50.855 -06:00 [INF] Executed DbCommand (22ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`AdditionalPrice`, `p`.`DisplayOrder`, `p`.`Name`, `p`.`ProductId`, `p`.`Value`
+FROM `ProductOptions` AS `p`
+WHERE `p`.`ProductId` = @__id_0
+2026-02-18 07:59:50.858 -06:00 [INF] Executing ViewResult, running view Details.
+2026-02-18 07:59:50.920 -06:00 [INF] Executed ViewResult - view Details executed in 62.4349ms.
+2026-02-18 07:59:50.921 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Details (ElectronicJova) in 159.1035ms
+2026-02-18 07:59:50.922 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Details (ElectronicJova)'
+2026-02-18 07:59:50.923 -06:00 [INF] HTTP GET /Home/Details/2 responded 200 in 170.4748 ms
+2026-02-18 07:59:50.924 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/Home/Details/2 - 200 null text/html; charset=utf-8 175.4522ms
+2026-02-18 07:59:54.093 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2026-02-18 07:59:54.096 -06:00 [INF] Executing endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:54.097 -06:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller ElectronicJova.Controllers.HomeController (ElectronicJova).
+2026-02-18 07:59:54.102 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Products` AS `p`
+2026-02-18 07:59:54.106 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`Author`, `t`.`CategoryId`, `t`.`Description`, `t`.`ISBN`, `t`.`ImageUrl`, `t`.`ListPrice`, `t`.`Price`, `t`.`Price100`, `t`.`Price50`, `t`.`Stock`, `t`.`Title`, `c`.`Id`, `c`.`DisplayOrder`, `c`.`Name`
+FROM (
+    SELECT `p`.`Id`, `p`.`Author`, `p`.`CategoryId`, `p`.`Description`, `p`.`ISBN`, `p`.`ImageUrl`, `p`.`ListPrice`, `p`.`Price`, `p`.`Price100`, `p`.`Price50`, `p`.`Stock`, `p`.`Title`
+    FROM `Products` AS `p`
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `t`
+INNER JOIN `Categories` AS `c` ON `t`.`CategoryId` = `c`.`Id`
+2026-02-18 07:59:54.109 -06:00 [INF] Executing ViewResult, running view Index.
+2026-02-18 07:59:54.111 -06:00 [INF] Executed ViewResult - view Index executed in 2.5893ms.
+2026-02-18 07:59:54.112 -06:00 [INF] Executed action ElectronicJova.Controllers.HomeController.Index (ElectronicJova) in 13.6624ms
+2026-02-18 07:59:54.113 -06:00 [INF] Executed endpoint 'ElectronicJova.Controllers.HomeController.Index (ElectronicJova)'
+2026-02-18 07:59:54.114 -06:00 [INF] HTTP GET / responded 200 in 18.1134 ms
+2026-02-18 07:59:54.115 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/html; charset=utf-8 21.7644ms
+2026-02-18 07:59:55.635 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/Identity/Account/Register - null null
+2026-02-18 07:59:55.639 -06:00 [INF] Executing endpoint '/Account/Register'
+2026-02-18 07:59:55.656 -06:00 [INF] Route matched with {page = "/Account/Register", area = "Identity", action = "", controller = ""}. Executing page /Account/Register
+2026-02-18 07:59:55.685 -06:00 [INF] Executing handler method ElectronicJova.Areas.Identity.Pages.Account.RegisterModel.OnGetAsync - ModelState is "Valid"
+2026-02-18 07:59:55.690 -06:00 [INF] Executed handler method OnGetAsync, returned result .
+2026-02-18 07:59:55.694 -06:00 [INF] Executing an implicit handler method - ModelState is "Valid"
+2026-02-18 07:59:55.695 -06:00 [INF] Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+2026-02-18 07:59:55.729 -06:00 [INF] Executed page /Account/Register in 71.6788ms
+2026-02-18 07:59:55.731 -06:00 [INF] Executed endpoint '/Account/Register'
+2026-02-18 07:59:55.731 -06:00 [INF] HTTP GET /Identity/Account/Register responded 200 in 92.0391 ms
+2026-02-18 07:59:55.733 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/Identity/Account/Register - 200 null text/html; charset=utf-8 97.1894ms
+2026-02-18 07:59:55.766 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/lib/jquery-validation/dist/jquery.validate.js - null null
+2026-02-18 07:59:55.766 -06:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js - null null
+2026-02-18 07:59:55.771 -06:00 [INF] Sending file. Request path: '/lib/jquery-validation/dist/jquery.validate.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery-validation\dist\jquery.validate.js'
+2026-02-18 07:59:55.772 -06:00 [INF] Sending file. Request path: '/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js'. Physical path: 'C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js'
+2026-02-18 07:59:55.772 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/lib/jquery-validation/dist/jquery.validate.js - 200 51171 text/javascript 6.1922ms
+2026-02-18 07:59:55.774 -06:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js - 200 19385 text/javascript 7.4141ms
+2026-02-18 08:02:43.261 -06:00 [INF] Application is shutting down...
+2026-02-18 08:03:09.092 -06:00 [INF] User profile is available. Using 'C:\Users\victo\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-18 08:03:10.360 -06:00 [INF] Executed DbCommand (94ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='ElectronicJova_DB' AND TABLE_NAME='__EFMigrationsHistory';
+2026-02-18 08:03:10.395 -06:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-02-18 08:03:10.618 -06:00 [INF] Executed DbCommand (21ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedName_0
+LIMIT 1
+2026-02-18 08:03:10.674 -06:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`AccessFailedCount`, `a`.`City`, `a`.`ConcurrencyStamp`, `a`.`Email`, `a`.`EmailConfirmed`, `a`.`LockoutEnabled`, `a`.`LockoutEnd`, `a`.`Name`, `a`.`NormalizedEmail`, `a`.`NormalizedUserName`, `a`.`PasswordHash`, `a`.`PhoneNumber`, `a`.`PhoneNumberConfirmed`, `a`.`PostalCode`, `a`.`SecurityStamp`, `a`.`State`, `a`.`StreetAddress`, `a`.`TwoFactorEnabled`, `a`.`UserName`
+FROM `AspNetUsers` AS `a`
+WHERE `a`.`NormalizedEmail` = @__normalizedEmail_0
+LIMIT 2
+2026-02-18 08:03:10.723 -06:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`Id`, `a`.`ConcurrencyStamp`, `a`.`Name`, `a`.`NormalizedName`
+FROM `AspNetRoles` AS `a`
+WHERE `a`.`NormalizedName` = @__normalizedRoleName_0
+LIMIT 2
+2026-02-18 08:03:10.745 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (Size = 255), @__p_1='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT `a`.`UserId`, `a`.`RoleId`
+FROM `AspNetUserRoles` AS `a`
+WHERE (`a`.`UserId` = @__p_0) AND (`a`.`RoleId` = @__p_1)
+LIMIT 1
+2026-02-18 08:03:10.771 -06:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Categories` AS `c`)
+2026-02-18 08:03:10.779 -06:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Products` AS `p`)
+2026-02-18 08:03:10.838 -06:00 [INF] Now listening on: http://localhost:5136
+2026-02-18 08:03:10.841 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-18 08:03:10.843 -06:00 [INF] Hosting environment: Development
+2026-02-18 08:03:10.845 -06:00 [INF] Content root path: C:\Users\victo\Documents\Proyecto Jovan\ElectronicJova\ElectronicJova
+2026-02-18 08:03:25.689 -06:00 [INF] Application is shutting down...
