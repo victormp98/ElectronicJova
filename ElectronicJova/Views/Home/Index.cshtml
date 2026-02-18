@@ -24,38 +24,40 @@
         @foreach (var product in Model)
         {
             <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <a asp-action="Details" asp-route-id="@product.Id" class="product-card h-100">
-                    <div class="position-relative">
-                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.Title" loading="lazy"/>
-                        
-                        @* Stock Badges *@
-                        @if(product.Stock <= 0)
-                        {
-                             <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
-                        }
-                        else if(product.Stock < 5)
-                        {
-                             <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
-                        }
+                <div class="card h-100 product-card border-0 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@product.Id" class="text-decoration-none h-100 d-flex flex-column">
+                        <div class="position-relative">
+                            <img src="@product.ImageUrl" class="card-img-top" alt="@product.Title" loading="lazy"/>
+                            
+                            @* Stock Badges *@
+                            @if(product.Stock <= 0)
+                            {
+                                 <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
+                            }
+                            else if(product.Stock < 5)
+                            {
+                                 <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
+                            }
 
-                        @* Offer Badge *@
-                        @if(product.ListPrice > product.Price100)
-                        {
-                            <span class="badge bg-success position-absolute top-0 end-0 m-2">
-                                -@(Math.Round((1 - (double)product.Price100 / (double)product.ListPrice) * 100))% OFF
-                            </span>
-                        }
-                    </div>
-                    
-                    <div class="card-body">
-                        <h5 class="card-title">@product.Title</h5>
-                        <p class="small text-muted mb-2">@product.Author</p>
-                        
-                        <div class="price mt-auto">
-                            @product.Price100.ToString("c")
+                            @* Offer Badge *@
+                            @if(product.ListPrice > product.Price100)
+                            {
+                                <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                                    -@(Math.Round((1 - (double)product.Price100 / (double)product.ListPrice) * 100))% OFF
+                                </span>
+                            }
                         </div>
-                    </div>
-                </a>
+                        
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="product-title" style="color: var(--text-primary);">@product.Title</h5>
+                            <p class="small text-muted mb-2">@product.Author</p>
+                            
+                            <div class="price mt-auto product-price">
+                                @product.Price100.ToString("c")
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         }
     </div>
