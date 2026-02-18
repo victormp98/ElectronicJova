@@ -193,36 +193,48 @@
 
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <!-- Name -->
-            <div class="input-icon-group">
-                <i class="bi bi-person input-icon"></i>
-                <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="Nombre completo" />
+            <div class="mb-3">
+                <label asp-for="Input.Name" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Nombre Completo</label>
+                <div class="input-icon-group">
+                    <i class="bi bi-person input-icon"></i>
+                    <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="Ej. Juan Pérez" />
+                </div>
                 <span asp-validation-for="Input.Name" class="text-danger small d-block mt-1"></span>
             </div>
 
             <!-- Email -->
-            <div class="input-icon-group">
-                <i class="bi bi-envelope input-icon"></i>
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Correo electrónico" />
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Correo Electrónico</label>
+                <div class="input-icon-group">
+                    <i class="bi bi-envelope input-icon"></i>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
+                </div>
                 <span asp-validation-for="Input.Email" class="text-danger small d-block mt-1"></span>
             </div>
 
             <!-- Password -->
-            <div class="input-icon-group">
-                <i class="bi bi-lock input-icon"></i>
-                <input asp-for="Input.Password" class="form-control" id="passwordInput" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
-                <button type="button" class="toggle-password" onclick="togglePassword('passwordInput', 'toggleIcon1')" title="Mostrar/ocultar">
-                    <i class="bi bi-eye" id="toggleIcon1"></i>
-                </button>
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Contraseña</label>
+                <div class="input-icon-group">
+                    <i class="bi bi-lock input-icon"></i>
+                    <input asp-for="Input.Password" class="form-control" id="passwordInput" autocomplete="new-password" aria-required="true" placeholder="Mínimo 6 caracteres" />
+                    <button type="button" class="toggle-password" onclick="togglePassword('passwordInput', 'toggleIcon1')" title="Mostrar/ocultar">
+                        <i class="bi bi-eye" id="toggleIcon1"></i>
+                    </button>
+                </div>
                 <span asp-validation-for="Input.Password" class="text-danger small d-block mt-1"></span>
             </div>
 
             <!-- Confirm Password -->
-            <div class="input-icon-group">
-                <i class="bi bi-lock-fill input-icon"></i>
-                <input asp-for="Input.ConfirmPassword" class="form-control" id="confirmPasswordInput" autocomplete="new-password" aria-required="true" placeholder="Confirmar contraseña" />
-                <button type="button" class="toggle-password" onclick="togglePassword('confirmPasswordInput', 'toggleIcon2')" title="Mostrar/ocultar">
-                    <i class="bi bi-eye" id="toggleIcon2"></i>
-                </button>
+            <div class="mb-3">
+                <label asp-for="Input.ConfirmPassword" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Confirmar Contraseña</label>
+                <div class="input-icon-group">
+                    <i class="bi bi-lock-fill input-icon"></i>
+                    <input asp-for="Input.ConfirmPassword" class="form-control" id="confirmPasswordInput" autocomplete="new-password" aria-required="true" placeholder="Repite tu contraseña" />
+                    <button type="button" class="toggle-password" onclick="togglePassword('confirmPasswordInput', 'toggleIcon2')" title="Mostrar/ocultar">
+                        <i class="bi bi-eye" id="toggleIcon2"></i>
+                    </button>
+                </div>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger small d-block mt-1"></span>
             </div>
 

@@ -17,18 +17,22 @@
     </div>
     <br /><br />
 
-    <table id="tblData" class="table table-bordered table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>ISBN</th>
-                <th>List Price</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th></th>
-            </tr>
-        </thead>
-    </table>
+    <div class="card border-0 shadow-sm overflow-hidden" style="background: var(--bg-card); border: 1px solid var(--border) !important;">
+        <div class="card-body p-0">
+            <table id="tblData" class="table table-dark table-hover align-middle mb-0" style="width:100%">
+                <thead style="background: var(--bg-surface);">
+                    <tr>
+                        <th class="py-3 ps-4 text-secondary text-uppercase small fw-bold">Title</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold">ISBN</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold">List Price</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold">Author</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold">Category</th>
+                        <th class="text-end py-3 pe-4"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
