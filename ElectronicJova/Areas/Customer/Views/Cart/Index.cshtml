@@ -3,15 +3,15 @@
 
 <form method="post">
     <br />
-    <div class="card border-0 bg-white">
-        <div class="card-header bg-white border-bottom py-4">
+    <div class="card border-secondary bg-card shadow-sm">
+        <div class="card-header bg-transparent border-bottom border-secondary py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="text-dark fw-bold mb-0">Carrito de compras</h2>
+                    <h2 class="text-light fw-bold mb-0">Carrito de compras</h2>
                 </div>
             </div>
         </div>
-        <div class="card-body bg-white">
+        <div class="card-body bg-transparent">
             <div class="container rounded">
                 <div class="row">
                     <div class="col-12 col-lg-8 offset-lg-2">
@@ -22,13 +22,13 @@
                 {
                     @foreach (var item in Model.ShoppingCartList)
                     {
-                        <div class="row px-2 py-4 border-bottom align-items-center">
+                        <div class="row px-2 py-4 border-bottom border-secondary align-items-center">
                             <div class="col-4 col-md-2 text-center mb-3 mb-md-0">
                                 <img src="@item.Product!.ImageUrl" class="rounded" style="width: 100%; max-height: 120px; object-fit: contain;" />
                             </div>
                             <div class="col-8 col-md-6">
-                                <h5 class="text-dark fw-bold mb-1">@item.Product!.Title</h5>
-                                <p class="text-secondary small mb-2">por @item.Product!.Author</p>
+                                <h5 class="text-light fw-bold mb-1">@item.Product!.Title</h5>
+                                <p class="text-muted small mb-2">por @item.Product!.Author</p>
                                 
                                 @if (!string.IsNullOrEmpty(item.SelectedOptions))
                                 {
@@ -36,7 +36,7 @@
                                     <div class="mb-2">
                                         @foreach (var opt in opts)
                                         {
-                                            <span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 0.7rem;">
+                                            <span class="badge bg-dark text-light border border-secondary me-1 mb-1" style="font-size: 0.7rem;">
                                                 @opt.GetProperty("Name"): @opt.GetProperty("Value")
                                             </span>
                                         }
@@ -45,26 +45,26 @@
 
                                 @if (!string.IsNullOrEmpty(item.SpecialNotes))
                                 {
-                                    <div class="mt-2 p-2 bg-light rounded border-start border-primary border-3">
+                                    <div class="mt-2 p-2 bg-dark rounded border-start border-primary border-3">
                                         <small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">NOTAS:</small>
                                         <small class="text-secondary" style="font-size: 0.8rem;">@item.SpecialNotes</small>
                                     </div>
                                 }
                             </div>
                             <div class="col-6 col-md-2 text-md-center">
-                                <h5 class="fw-bold text-dark mb-0">@item.Price.ToString("c")</h5>
+                                <h5 class="fw-bold text-light mb-0">@item.Price.ToString("c")</h5>
                             </div>
                             <div class="col-6 col-md-2 text-end">
                                 <div class="d-flex align-items-center justify-content-end mb-2">
                                     <a asp-action="Minus" asp-route-cartId="@item.Id" class="btn btn-outline-secondary btn-sm rounded-circle" data-bs-toggle="tooltip" title="Disminuir cantidad">
                                         <i class="bi bi-dash-lg"></i>
                                     </a>
-                                    <span class="mx-3 fw-bold">@item.Count</span>
+                                    <span class="mx-3 fw-bold text-light">@item.Count</span>
                                     <a asp-action="Plus" asp-route-cartId="@item.Id" class="btn btn-outline-secondary btn-sm rounded-circle" data-bs-toggle="tooltip" title="Aumentar cantidad">
                                         <i class="bi bi-plus-lg"></i>
                                     </a>
                                 </div>
-                                <a asp-action="Remove" asp-route-cartId="@item.Id" class="btn btn-link text-primary small p-0" style="text-decoration: none;" data-bs-toggle="tooltip" title="Quitar de la bolsa">
+                                <a asp-action="Remove" asp-route-cartId="@item.Id" class="btn btn-link text-danger small p-0 fw-semibold" style="text-decoration: none;" data-bs-toggle="tooltip" title="Quitar de la bolsa">
                                     <i class="bi bi-trash3 me-1"></i>Eliminar
                                 </a>
                             </div>
@@ -72,8 +72,8 @@
                     }
                     <div class="row py-4">
                         <div class="col-12 text-end">
-                            <span class="text-secondary fs-5 me-3">Subtotal:</span>
-                            <span class="text-dark fw-bold fs-3">@Model.OrderHeader!.OrderTotal.ToString("c")</span>
+                            <span class="text-muted fs-5 me-3">Subtotal:</span>
+                            <span class="text-info fw-bold fs-3">@Model.OrderHeader!.OrderTotal.ToString("c")</span>
                         </div>
                     </div>
                 }
@@ -81,18 +81,18 @@
                 {
                     <div class="row py-5">
                         <div class="col-12 text-center">
-                            <i class="bi bi-cart-x fs-1 text-muted mb-3 d-block"></i>
-                            <p class="lead text-secondary">Tu carrito está vacío.</p>
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-5 py-2">Explorar productos</a>
+                            <i class="bi bi-cart-x fs-1 text-muted mb-3 d-block opacity-50"></i>
+                            <p class="lead text-muted">Tu carrito está vacío.</p>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-5 py-2 shadow-primary">Explorar productos</a>
                         </div>
                     </div>
                 }
             </div>
         </div>
-        <div class="card-footer bg-white border-0 py-4">
+        <div class="card-footer bg-transparent border-0 py-4">
             <div class="row">
                 <div class="col-12 col-md-6 mb-2 mb-md-0 offset-md-6">
-                    <button type="submit" asp-action="Summary" asp-area="Customer" class="btn btn-primary btn-lg w-100 py-3 shadow-sm">Continuar compra</button>
+                    <button type="submit" asp-action="Summary" asp-area="Customer" class="btn btn-primary btn-lg w-100 py-3 shadow-info fw-bold">Continuar compra</button>
                     <div class="text-center mt-3">
                         <a asp-action="Index" asp-controller="Home" class="text-primary text-decoration-none small">Seguir comprando</a>
                     </div>

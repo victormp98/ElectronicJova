@@ -7,7 +7,7 @@
 
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">
+        <h2 class="fw-bold text-light">
             <i class="bi bi-bag-check me-2 text-primary"></i>Mis Pedidos
         </h2>
         <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary rounded-pill">
@@ -15,12 +15,12 @@
         </a>
     </div>
 
-    if (!Model.Any())
+    @if (!Model.Any())
     {
         <div class="text-center py-5">
-            <i class="bi bi-bag-x display-1 text-muted"></i>
+            <i class="bi bi-bag-x display-1 text-muted opacity-50"></i>
             <h4 class="mt-3 text-muted">Aún no tienes pedidos</h4>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3 rounded-pill px-4">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3 rounded-pill px-4 shadow-primary">
                 Explorar Productos
             </a>
         </div>
@@ -34,22 +34,23 @@
                 var isCancelled = order.OrderStatus == SD.StatusCancelled;
 
                 <div class="col-12">
-                    <div class="card border-0 shadow-sm">
+                    <div class="card border-secondary bg-card shadow-sm">
                         <div class="card-body">
+                            <div class="row align-items-center">
                                 <div class="col-6 col-md-2 mb-3 mb-md-0">
-                                    <small class="text-muted d-block">Pedido #</small>
-                                    <strong class="fs-5">@order.Id</strong>
+                                    <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Pedido #</small>
+                                    <strong class="fs-5 text-light">@order.Id</strong>
                                 </div>
                                 <div class="col-6 col-md-3 mb-3 mb-md-0 text-end text-md-start">
-                                    <small class="text-muted d-block">Fecha</small>
-                                    <span class="small">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
+                                    <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Fecha</small>
+                                    <span class="small text-light">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
                                 </div>
                                 <div class="col-6 col-md-2">
-                                    <small class="text-muted d-block">Total</small>
-                                    <strong class="text-primary h5 mb-0">@order.OrderTotal.ToString("c")</strong>
+                                    <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Total</small>
+                                    <strong class="text-info h5 mb-0">@order.OrderTotal.ToString("c")</strong>
                                 </div>
                                 <div class="col-6 col-md-3 text-end text-md-start">
-                                    <small class="text-muted d-block text-md-start">Estado</small>
+                                    <small class="text-muted d-block text-md-start text-uppercase fw-bold" style="font-size: 0.7rem;">Estado</small>
                                     @{
                                         var badgeClass = isCancelled ? "bg-danger" :
                                             order.OrderStatus == SD.StatusDelivered ? "bg-success" :
@@ -60,12 +61,13 @@
                                         @SD.GetOrderStatusLabel(order.OrderStatus)
                                     </span>
                                 </div>
-                                <div class="col-12 col-md-2 text-md-end mt-3 mt-md-0 pt-2 border-top border-md-0 pt-md-0">
+                                <div class="col-12 col-md-2 text-md-end mt-3 mt-md-0 pt-2 border-top border-secondary border-md-0 pt-md-0">
                                     <a asp-action="Details" asp-route-orderId="@order.Id"
                                        class="btn btn-outline-primary btn-lg w-100 btn-md-sm rounded-pill py-2">
                                         <i class="bi bi-eye me-1"></i>Ver Detalle
                                     </a>
                                 </div>
+                            </div>
 
                             @if (!isCancelled)
                             {
@@ -75,7 +77,7 @@
 
                                 <!-- Mini barra de progreso -->
                                 <div class="mt-3">
-                                    <div class="progress" style="height: 6px;">
+                                    <div class="progress bg-dark" style="height: 6px;">
                                         <div class="progress-bar bg-primary" style="width: @pct%"></div>
                                     </div>
                                 </div>

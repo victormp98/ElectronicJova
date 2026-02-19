@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 @inject IHttpContextAccessor HttpContextAccessor
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark box-shadow">
             <div class="container">
@@ -62,11 +62,11 @@
                                         <span>@User.Identity.Name</span>
                                     </div>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-secondary mt-2">
                                     <li><a class="dropdown-item" asp-area="Customer" asp-controller="Wishlist" asp-action="Index"><i class="bi bi-heart me-2 text-danger"></i>Mis Favoritos</a></li>
                                     <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index"><i class="bi bi-box-seam me-2 text-info"></i>Mis Pedidos</a></li>
                                     <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Profile"><i class="bi bi-person me-2 text-warning"></i>Mi Perfil</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li><hr class="dropdown-divider border-secondary"></li>
                                     <li><partial name="_LoginPartial" /></li>
                                 </ul>
                             </li>
@@ -99,7 +99,7 @@
     </main>
 
 
-    <footer class="footer fixed-bottom bg-surface border-top border-dark py-1 text-center" style="z-index: 1030;">
+    <footer class="footer mt-auto bg-surface border-top border-dark py-3 text-center" style="z-index: 1030;">
         <div class="container">
             <small class="text-muted" style="font-size: 0.75rem;">
                 &copy; 2026 <span class="fw-bold text-light">ElectronicJova</span> &mdash; <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-secondary text-decoration-none">Privacidad</a>

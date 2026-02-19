@@ -187,67 +187,70 @@
             </div>
             <span class="logo-text">ElectronicJova</span>
         </div>
-        <p class="login-subtitle">Únete a nuestra comunidad tecnológica</p>
+        <p class="login-subtitle mb-4">Únete a nuestra comunidad tecnológica</p>
 
         <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3" role="alert" style="display: none;"></div>
 
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <!-- Name -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label asp-for="Input.Name" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Nombre Completo</label>
-                <div class="input-icon-group">
+                <div class="input-icon-group mb-1">
                     <i class="bi bi-person input-icon"></i>
                     <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="Ej. Juan Pérez" />
                 </div>
-                <span asp-validation-for="Input.Name" class="text-danger small d-block mt-1"></span>
+                <span asp-validation-for="Input.Name" class="text-danger small d-block"></span>
             </div>
 
             <!-- Email -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label asp-for="Input.Email" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Correo Electrónico</label>
-                <div class="input-icon-group">
+                <div class="input-icon-group mb-1">
                     <i class="bi bi-envelope input-icon"></i>
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
                 </div>
-                <span asp-validation-for="Input.Email" class="text-danger small d-block mt-1"></span>
+                <span asp-validation-for="Input.Email" class="text-danger small d-block"></span>
             </div>
 
             <!-- Password -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label asp-for="Input.Password" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Contraseña</label>
-                <div class="input-icon-group">
+                <div class="input-icon-group mb-1">
                     <i class="bi bi-lock input-icon"></i>
                     <input asp-for="Input.Password" class="form-control" id="passwordInput" autocomplete="new-password" aria-required="true" placeholder="Mínimo 6 caracteres" />
                     <button type="button" class="toggle-password" onclick="togglePassword('passwordInput', 'toggleIcon1')" title="Mostrar/ocultar">
                         <i class="bi bi-eye" id="toggleIcon1"></i>
                     </button>
                 </div>
-                <span asp-validation-for="Input.Password" class="text-danger small d-block mt-1"></span>
+                <span asp-validation-for="Input.Password" class="text-danger small d-block"></span>
             </div>
 
             <!-- Confirm Password -->
             <div class="mb-3">
                 <label asp-for="Input.ConfirmPassword" class="form-label ms-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Confirmar Contraseña</label>
-                <div class="input-icon-group">
+                <div class="input-icon-group mb-1">
                     <i class="bi bi-lock-fill input-icon"></i>
                     <input asp-for="Input.ConfirmPassword" class="form-control" id="confirmPasswordInput" autocomplete="new-password" aria-required="true" placeholder="Repite tu contraseña" />
                     <button type="button" class="toggle-password" onclick="togglePassword('confirmPasswordInput', 'toggleIcon2')" title="Mostrar/ocultar">
                         <i class="bi bi-eye" id="toggleIcon2"></i>
                     </button>
                 </div>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger small d-block mt-1"></span>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger small d-block"></span>
             </div>
 
-            <button id="registerSubmit" type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3" style="font-size: 1rem;">
+            <button id="registerSubmit" type="submit" class="btn btn-primary w-100 py-2 fw-bold mb-3 shadow-info">
                 <i class="bi bi-rocket-takeoff me-2"></i>Crear Cuenta
             </button>
 
-            <div class="login-divider">o</div>
-
-            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl"
-               class="btn btn-outline-secondary w-100 py-2 fw-semibold" style="font-size: 0.9rem;">
-                <i class="bi bi-box-arrow-in-right me-2"></i>Ya tengo cuenta
-            </a>
+            <div class="d-flex gap-2">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-50 py-2 fw-semibold" style="font-size: 0.9rem;">
+                    <i class="bi bi-house me-2"></i>Inicio
+                </a>
+                <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl"
+                   class="btn btn-outline-primary w-50 py-2 fw-semibold" style="font-size: 0.9rem;">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </a>
+            </div>
 
             <!-- External Logins -->
             @{
