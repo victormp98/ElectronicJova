@@ -83,7 +83,7 @@
                         <div class="col-12 text-center">
                             <i class="bi bi-cart-x fs-1 text-muted mb-3 d-block opacity-50"></i>
                             <p class="lead text-muted">Tu carrito está vacío.</p>
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-5 py-2 shadow-primary">Explorar productos</a>
+                            <a asp-controller="Home" asp-action="Index" asp-area="" class="btn btn-primary px-5 py-2 shadow-primary">Explorar productos</a>
                         </div>
                     </div>
                 }
@@ -92,9 +92,9 @@
         <div class="card-footer bg-transparent border-0 py-4">
             <div class="row">
                 <div class="col-12 col-md-6 mb-2 mb-md-0 offset-md-6">
-                    <button type="submit" asp-action="Summary" asp-area="Customer" class="btn btn-primary btn-lg w-100 py-3 shadow-info fw-bold">Continuar compra</button>
+                    <button type="submit" asp-action="Summary" asp-area="Customer" asp-controller="Cart" class="btn btn-primary btn-lg w-100 py-3 shadow-info fw-bold">Continuar compra</button>
                     <div class="text-center mt-3">
-                        <a asp-action="Index" asp-controller="Home" class="text-primary text-decoration-none small">Seguir comprando</a>
+                        <a asp-action="Index" asp-controller="Home" asp-area="" class="text-primary text-decoration-none small">Seguir comprando</a>
                     </div>
                 </div>
             </div>

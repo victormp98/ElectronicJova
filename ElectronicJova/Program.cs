@@ -1,3 +1,4 @@
+
 using ElectronicJova.Data;
 using ElectronicJova.Data.Repository;
 using ElectronicJova.Models;
@@ -13,6 +14,7 @@ using ElectronicJova.Hubs;
 using Microsoft.AspNetCore.Http.Features;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
+using CloudinaryDotNet;
 
 var loggerConfig = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
@@ -56,6 +58,16 @@ builder.Services.Configure<ResendClientOptions>(o =>
 });
 builder.Services.AddHttpClient<ResendClient>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, ResendEmailSender>();
+
+// Configure Cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddSingleton<Cloudinary>(sp =>
+{
+    var config = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<CloudinarySettings>>().Value;
+    if (config == null) throw new InvalidOperationException("Cloudinary settings are missing.");
+    var account = new CloudinaryDotNet.Account(config.CloudName, config.ApiKey, config.ApiSecret);
+    return new Cloudinary(account);
+});
 
 
 // Configure Session

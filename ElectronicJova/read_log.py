@@ -1,7 +1,5 @@
-
 try:
-    with open('build_utf8.log', 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        print(''.join(lines[-50:]))
+    with open('build_log.txt', 'r', encoding='utf-16') as f:
+        print(f.read())
 except Exception as e:
-    print(f"Error reading file: {e}")
+    print(e)

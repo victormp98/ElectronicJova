@@ -1,3 +1,4 @@
+
 using ElectronicJova.Data.Repository;
 using ElectronicJova.Models;
 using ElectronicJova.Models.ViewModels;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering; // For SelectListItem
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace ElectronicJova.Areas.Admin.Controllers
 {
@@ -17,11 +20,13 @@ namespace ElectronicJova.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly Cloudinary _cloudinary;
 
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, Cloudinary cloudinary)
         {
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
+            _cloudinary = cloudinary;
         }
 
         public IActionResult Index()
@@ -71,7 +76,6 @@ namespace ElectronicJova.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath = _hostEnvironment.WebRootPath;
                 if (file != null)
                 {
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
@@ -87,28 +91,31 @@ namespace ElectronicJova.Areas.Admin.Controllers
                         return View(productVM);
                     }
 
-                    string fileName = Guid.NewGuid().ToString() + ext;
-                    string productPath = Path.Combine(wwwRootPath, "images", "products");
-
-                    if (!Directory.Exists(productPath))
+                    using var stream = file.OpenReadStream();
+                    var uploadParams = new ImageUploadParams
                     {
-                        Directory.CreateDirectory(productPath);
-                    }
-
-                    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                        File = new FileDescription(file.FileName, stream),
+                        PublicId = Guid.NewGuid().ToString(),
+                        Overwrite = true
+                    };
+                    
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                    
+                    if (uploadResult.Error != null)
                     {
-                        var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('/', '\\'));
-                        if (System.IO.File.Exists(oldImagePath))
+                        ModelState.AddModelError("", $"Error al subir imagen: {uploadResult.Error.Message}");
+                        productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                         {
-                            System.IO.File.Delete(oldImagePath);
-                        }
+                            Text = u.Name,
+                            Value = u.Id.ToString()
+                        });
+                        return View(productVM);
                     }
 
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-                    productVM.Product.ImageUrl = "/images/products/" + fileName;
+                    // Delete old image if it exists and is local (optional logic, skipping for now to prioritize Cloudinary)
+                    // If moving from local to cloud, we just overwrite the URL.
+                    
+                    productVM.Product.ImageUrl = uploadResult.SecureUrl.ToString();
                 }
 
                 if (productVM.Product.Id == 0)
@@ -195,12 +202,19 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
+            // Optional: Delete from Cloudinary using Public ID derived from URL if needed.
+            // For now, we just remove the record.
+            
             if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
             {
-            var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart('/', '\\'));
-            if (System.IO.File.Exists(oldImagePath))
+                // Check if it's a local file and delete it to keep server clean
+                if (productToDelete.ImageUrl.StartsWith("/") || productToDelete.ImageUrl.StartsWith("\\"))
                 {
-                    System.IO.File.Delete(oldImagePath);
+                     var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart('/', '\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
                 }
             }
 

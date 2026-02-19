@@ -6,6 +6,7 @@
     <UserSecretsId>efc87398-2d11-433b-9ab7-22c9da4dff28</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.28.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />

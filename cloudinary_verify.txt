@@ -1,0 +1,4 @@
+# Cloudinary Integration Checks
+1. Verify `Program.cs` has `using CloudinaryDotNet;`.
+2. Verify `ProductController.cs` has `using CloudinaryDotNet;`.
+3. Verify `appsettings.json` or `UserSecrets` has valid keys.
