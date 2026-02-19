@@ -57,7 +57,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 2.5rem;
+            padding: 1.5rem 2rem;
             box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.05);
             animation: fadeInUp 0.45s ease both;
         }
@@ -97,13 +97,13 @@
             text-align: center;
             color: var(--text-muted);
             font-size: 0.875rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
 
         /* Input with icon */
         .input-icon-group {
             position: relative;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .input-icon-group .input-icon {
@@ -120,7 +120,7 @@
 
         .input-icon-group input {
             padding-left: 2.75rem;
-            height: 48px;
+            height: 42px;
             font-size: 0.9rem;
         }
 
@@ -243,7 +243,7 @@
             </button>
 
             <div class="d-flex gap-2">
-                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-50 py-2 fw-semibold" style="font-size: 0.9rem;">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-50 py-2 fw-semibold" style="font-size: 0.9rem;">
                     <i class="bi bi-house me-2"></i>Inicio
                 </a>
                 <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl"
