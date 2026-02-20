@@ -19,12 +19,14 @@ namespace ElectronicJova.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger<CartController> _logger;
         public CartVM CartVM { get; set; } = new();
 
-        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender, ILogger<CartController> logger)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         // ─── Helper: obtiene el userId de forma segura ───────────────────────
