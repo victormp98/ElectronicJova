@@ -21,12 +21,14 @@ namespace ElectronicJova.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly Cloudinary _cloudinary;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, Cloudinary cloudinary)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, Cloudinary cloudinary, ILogger<ProductController> logger)
         {
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
             _cloudinary = cloudinary;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -140,10 +142,12 @@ namespace ElectronicJova.Areas.Admin.Controllers
                         if (option.Id == 0)
                         {
                             _unitOfWork.ProductOption.Add(option);
+                            _logger.LogInformation("Admin {User} added option {Option} to Product {ProductId}", User.Identity?.Name, option.Name, productVM.Product.Id);
                         }
                         else
                         {
                             _unitOfWork.ProductOption.Update(option);
+                            // _logger.LogInformation("Admin updated option {OptionId}", option.Id); // Too verbose?
                         }
                     }
 
@@ -169,6 +173,11 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 }
 
                 await _unitOfWork.SaveAsync();
+                
+                string actionType = productVM.Product.Id == 0 ? "Created" : "Updated";
+                _logger.LogInformation("Admin {User} {Action} Product: {Title} (ID: {Id})", 
+                    User.Identity?.Name, actionType, productVM.Product.Title, productVM.Product.Id);
+
                 TempData["success"] = "Product created/updated successfully";
                 return RedirectToAction("Index");
             }
@@ -228,6 +237,9 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
             _unitOfWork.Product.Remove(productToDelete);
             _unitOfWork.Save();
+            
+            _logger.LogWarning("Admin {User} DELETED Product: {Title} (ID: {Id})", User.Identity?.Name, productToDelete.Title, id);
+
             return Json(new { success = true, message = "Delete Successful" });
         }
 

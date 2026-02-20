@@ -11,10 +11,12 @@ namespace ElectronicJova.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork, ILogger<CategoryController> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -56,14 +58,19 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 if (obj.Id == 0)
                 {
                     _unitOfWork.Category.Add(obj);
+                    _unitOfWork.Save();
+                    _logger.LogInformation("Admin {User} CREATED Category: {Name} (ID: {Id})", User.Identity?.Name, obj.Name, obj.Id);
+                    TempData["success"] = "Category created successfully";
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    _unitOfWork.Category.Update(obj); // Now this method exists
+                    _unitOfWork.Category.Update(obj);
+                    _unitOfWork.Save();
+                    _logger.LogInformation("Admin {User} UPDATED Category: {Name} (ID: {Id})", User.Identity?.Name, obj.Name, obj.Id);
+                    TempData["success"] = "Category updated successfully";
+                    return RedirectToAction("Index");
                 }
-                _unitOfWork.Save();
-                TempData["success"] = "Category created/updated successfully";
-                return RedirectToAction("Index");
             }
             return View(obj);
         }
@@ -82,6 +89,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
             _unitOfWork.Category.Remove(obj);
             _unitOfWork.Save();
+            _logger.LogWarning("Admin {User} DELETED Category: {Name} (ID: {Id})", User.Identity?.Name, obj.Name, id);
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
