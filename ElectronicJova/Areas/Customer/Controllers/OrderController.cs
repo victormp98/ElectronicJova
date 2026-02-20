@@ -4,6 +4,7 @@ using ElectronicJova.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ElectronicJova.Models.ViewModels;
 using System.Security.Claims;
 
 namespace ElectronicJova.Areas.Customer.Controllers
@@ -15,12 +16,18 @@ namespace ElectronicJova.Areas.Customer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public OrderController(
+            IUnitOfWork unitOfWork,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<OrderController> logger)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         // GET: /Customer/Order — Historial de pedidos del cliente
@@ -69,7 +76,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
-            var vm = new ElectronicJova.Models.ViewModels.ProfileVM
+            var vm = new ProfileVM
             {
                 Name = user.Name,
                 Email = user.Email,
@@ -86,13 +93,49 @@ namespace ElectronicJova.Areas.Customer.Controllers
         // POST: /Customer/Order/Profile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile(ElectronicJova.Models.ViewModels.ProfileVM model)
+        public async Task<IActionResult> Profile(ProfileVM model)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
+            if (string.IsNullOrWhiteSpace(model.Name) && Request.HasFormContentType)
+            {
+                model.Name = Request.Form["Name"].ToString();
+                model.PhoneNumber = Request.Form["PhoneNumber"].ToString();
+                model.StreetAddress = Request.Form["StreetAddress"].ToString();
+                model.City = Request.Form["City"].ToString();
+                model.State = Request.Form["State"].ToString();
+                model.PostalCode = Request.Form["PostalCode"].ToString();
+            }
+
+            model.Name = (model.Name ?? string.Empty).Trim();
+            model.PhoneNumber = NormalizeOptional(model.PhoneNumber);
+            model.StreetAddress = NormalizeOptional(model.StreetAddress);
+            model.City = NormalizeOptional(model.City);
+            model.State = NormalizeOptional(model.State);
+            model.PostalCode = NormalizeOptional(model.PostalCode);
+
+            _logger.LogInformation(
+                "Profile update attempt. UserId={UserId}, NameLen={NameLen}, ModelStateValid={ModelStateValid}",
+                user.Id,
+                model.Name.Length,
+                ModelState.IsValid);
+
             if (!ModelState.IsValid)
             {
+                model.Email = user.Email;
+                foreach (var kv in ModelState.Where(m => m.Value?.Errors.Count > 0))
+                {
+                    _logger.LogWarning("Profile validation error field={Field} errors={Errors}",
+                        kv.Key,
+                        string.Join(" | ", kv.Value!.Errors.Select(e => e.ErrorMessage)));
+                }
+                return View(model);
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Name))
+            {
+                ModelState.AddModelError(nameof(model.Name), "El nombre es obligatorio.");
                 model.Email = user.Email;
                 return View(model);
             }
@@ -113,12 +156,25 @@ namespace ElectronicJova.Areas.Customer.Controllers
             else
             {
                 foreach (var error in result.Errors)
+                {
                     ModelState.AddModelError(string.Empty, error.Description);
+                    _logger.LogWarning("Profile update failed. UserId={UserId}, Error={Error}", user.Id, error.Description);
+                }
                 model.Email = user.Email;
                 return View(model);
             }
 
             return RedirectToAction(nameof(Profile));
+        }
+
+        private static string? NormalizeOptional(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return value.Trim();
         }
     }
 }

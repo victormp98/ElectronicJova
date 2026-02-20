@@ -32,6 +32,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mb-4 border-danger bg-opacity-10" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
 
             <form method="post" asp-action="Profile">
                 @Html.AntiForgeryToken()
