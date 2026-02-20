@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using CloudinaryDotNet;
 
 var loggerConfig = new LoggerConfiguration()
-    .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build())
+    .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build())
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
