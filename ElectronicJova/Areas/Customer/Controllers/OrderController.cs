@@ -68,20 +68,33 @@ namespace ElectronicJova.Areas.Customer.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
-            return View(user);
+
+            var vm = new ElectronicJova.Models.ViewModels.ProfileVM
+            {
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                StreetAddress = user.StreetAddress,
+                City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode
+            };
+
+            return View(vm);
         }
 
         // POST: /Customer/Order/Profile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile(ApplicationUser model)
+        public async Task<IActionResult> Profile(ElectronicJova.Models.ViewModels.ProfileVM model)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
             if (!ModelState.IsValid)
             {
-                return View(user);
+                model.Email = user.Email;
+                return View(model);
             }
 
             user.Name = model.Name;
@@ -101,7 +114,8 @@ namespace ElectronicJova.Areas.Customer.Controllers
             {
                 foreach (var error in result.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
-                return View(user);
+                model.Email = user.Email;
+                return View(model);
             }
 
             return RedirectToAction(nameof(Profile));
