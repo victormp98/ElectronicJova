@@ -14,7 +14,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+@using Microsoft.AspNetCore.Identity
+@using ElectronicJova.Models
 @inject IHttpContextAccessor HttpContextAccessor
+@inject UserManager<ApplicationUser> UserManager
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
@@ -59,7 +62,7 @@
                                         <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
                                             @User.Identity.Name?.Substring(0, 1).ToUpper()
                                         </div>
-                                        <span>@User.Identity.Name</span>
+                                        <span>@( (await UserManager.GetUserAsync(User))?.Name ?? User.Identity.Name )</span>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-secondary mt-2">
