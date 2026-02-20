@@ -36,14 +36,14 @@ namespace ElectronicJova.Areas.Customer.Controllers
             return View(orders.OrderByDescending(o => o.OrderDate));
         }
 
-        // GET: /Customer/Order/Details/{orderId}
-        public async Task<IActionResult> Details(int orderId)
+        // GET: /Customer/Order/Details/{id}
+        public async Task<IActionResult> Details(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
 
             var orderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(
-                u => u.Id == orderId,
+                u => u.Id == id,
                 includeProperties: "ApplicationUser");
 
             if (orderHeader == null) return NotFound();
@@ -53,7 +53,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 return Forbid();
 
             var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(
-                u => u.OrderHeaderId == orderId,
+                u => u.OrderHeaderId == id,
                 includeProperties: "Product");
 
             ViewBag.OrderDetails = orderDetails;
