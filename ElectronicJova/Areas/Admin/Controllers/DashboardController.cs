@@ -24,44 +24,39 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // 1. Configurar Timezone (Mexico City)
-            // Esto asegura que "Hoy" corresponda al día en México, independientemente de la hora del servidor (Azure/AWS suelen estar en UTC)
-            string timeZoneId = "Central Standard Time (Mexico)"; // Windows ID
-            // En Linux sería "America/Mexico_City". Para compatibilidad cross-platform:
+            try {
+            // 1. Configurar Timezone (Mexico City) con Fallback robusto
+            DateTime todayDate = DateTime.UtcNow.Date;
             try
             {
-                // Intentar obtener por ID de Windows
-                TimeZoneInfo mxZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
-                var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, mxZone).Date;
+                // Intentar Windows ID
+                TimeZoneInfo mxZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"); 
+                todayDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, mxZone).Date;
             }
-            catch (TimeZoneNotFoundException)
+            catch 
             {
-                // Fallback para Linux/Docker si el ID de Windows falla
                 try 
                 {
+                    // Intentar IANA ID (Linux/Docker)
                     TimeZoneInfo mxZone = TimeZoneInfo.FindSystemTimeZoneById("America/Mexico_City");
-                    var today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, mxZone).Date;
+                    todayDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, mxZone).Date;
                 }
                 catch
                 {
-                    // Fallback final a UTC si no se encuentra ninguna (raro)
-                    var today = DateTime.UtcNow.Date;
+                    // Fallback a UTC si falla todo (no debería ocurrir en entornos modernos)
+                    todayDate = DateTime.UtcNow.Date;
                 }
             }
-            
-            // Re-declarar var today para que esté en scope (simplificado para compilación)
-            var now = DateTime.UtcNow;
-            TimeZoneInfo targetZone;
-            try { targetZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"); }
-            catch { try { targetZone = TimeZoneInfo.FindSystemTimeZoneById("America/Mexico_City"); } catch { targetZone = TimeZoneInfo.Utc; } }
-            
-            var todayDate = TimeZoneInfo.ConvertTimeFromUtc(now, targetZone).Date;
 
 
             // 1. Calcular Ventas de Hoy (Pedidos pagados hoy)
-            // Nota: Usamos PaymentStatusApproved como filtro de "Ventas" confirmadas
+            // Usamos rango de fechas para evitar problemas de traducción de .Date en EF Core con algunos proveedores
+            DateTime startOfDay = todayDate;
+            DateTime endOfDay = todayDate.AddDays(1);
+
             var ordersToday = await _unitOfWork.OrderHeader.GetAllAsync(u => 
-                u.OrderDate.Date == todayDate && 
+                u.OrderDate >= startOfDay && 
+                u.OrderDate < endOfDay &&
                 u.PaymentStatus == SD.PaymentStatusApproved);
             
             decimal totalSalesToday = ordersToday.Sum(u => u.OrderTotal);
@@ -94,7 +89,16 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 TopProducts = topProducts
             };
 
-            return View(dashboardVM);
+                return View(dashboardVM);
+            }
+            catch (Exception ex)
+            {
+                // Loguear error (aunque no tengamos ILogger inyectado aquí, prevenimos el crash)
+                Console.WriteLine($"Error en Dashboard: {ex.Message}");
+                
+                // Retornar vista vacía o con datos en cero para no romper la experiencia
+                return View(new DashboardVM());
+            }
         }
     }
 }
