@@ -80,6 +80,9 @@ namespace ElectronicJova.Areas.Admin.Controllers
             {
                 if (file != null)
                 {
+                    _logger.LogInformation("Uploading image to Cloudinary for ProductId={ProductId}, FileName={FileName}, Size={Size}",
+                        productVM.Product.Id, file.FileName, file.Length);
+
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
                     var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
                     if (!allowedExtensions.Contains(ext))
@@ -105,7 +108,6 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     
                     if (uploadResult.Error != null)
                     {
-                        Console.WriteLine($"CLOUDINARY ERROR: {uploadResult.Error.Message}"); // Quick debug
                         _logger.LogError("Cloudinary Upload Error: {Error}", uploadResult.Error.Message);
                         ModelState.AddModelError("", $"Error al subir imagen: {uploadResult.Error.Message}");
                         productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
@@ -118,8 +120,20 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
                     // Delete old image if it exists and is local (optional logic, skipping for now to prioritize Cloudinary)
                     // If moving from local to cloud, we just overwrite the URL.
-                    
-                    string newUrl = uploadResult.SecureUrl.ToString();
+
+                    string newUrl = uploadResult.SecureUrl?.AbsoluteUri ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(newUrl))
+                    {
+                        _logger.LogError("Cloudinary upload returned empty SecureUrl for ProductId={ProductId}", productVM.Product.Id);
+                        ModelState.AddModelError("", "Error al subir imagen: Cloudinary no devolvió una URL válida.");
+                        productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                        {
+                            Text = u.Name,
+                            Value = u.Id.ToString()
+                        });
+                        return View(productVM);
+                    }
+
                     productVM.Product.ImageUrl = newUrl;
                     _logger.LogInformation("Image Uploaded Successfully. New URL: {Url}", newUrl);
                 }
