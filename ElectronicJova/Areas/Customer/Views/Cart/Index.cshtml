@@ -24,7 +24,7 @@
                     {
                         <div class="row px-2 py-4 border-bottom border-secondary align-items-center">
                             <div class="col-4 col-md-2 text-center mb-3 mb-md-0">
-                                <img src="@item.Product!.ImageUrl" class="rounded" style="width: 100%; max-height: 120px; object-fit: contain;" />
+                                <img src="@ImageUrlHelper.GetDisplayUrl(item.Product!.ImageUrl, "https://via.placeholder.com/200x200?text=No+Image")" class="rounded" style="width: 100%; max-height: 120px; object-fit: contain;" />
                             </div>
                             <div class="col-8 col-md-6">
                                 <h5 class="text-light fw-bold mb-1">@item.Product!.Title</h5>

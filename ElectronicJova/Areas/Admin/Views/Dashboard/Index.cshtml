@@ -101,7 +101,7 @@
                                                 <div class="d-flex align-items-center">
                                                     @if (!string.IsNullOrEmpty(product.ImageUrl))
                                                     {
-                                                        <img src="@product.ImageUrl" width="45" height="45" class="rounded shadow-sm me-3 object-fit-cover" alt="@product.Title">
+                                                        <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/45?text=No+Image")" width="45" height="45" class="rounded shadow-sm me-3 object-fit-cover" alt="@product.Title">
                                                     }
                                                     else
                                                     {

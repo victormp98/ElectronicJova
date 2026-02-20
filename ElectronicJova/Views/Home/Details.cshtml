@@ -51,7 +51,7 @@
                         <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-5 text-danger"></i>
                     </button>
 
-                    <img src="@(string.IsNullOrEmpty(Model.Product!.ImageUrl) ? "https://via.placeholder.com/600x600?text=No+Image" : Model.Product.ImageUrl)"
+                    <img src="@ImageUrlHelper.GetDisplayUrl(Model.Product!.ImageUrl, "https://via.placeholder.com/600x600?text=No+Image")"
                          class="img-fluid rounded"
                          alt="@Model.Product.Title"
                          loading="lazy"

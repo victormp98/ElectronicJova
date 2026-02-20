@@ -137,7 +137,7 @@
                     @foreach (var detail in orderDetails)
                     {
                         <div class="d-flex align-items-center py-3" style="border-bottom: 1px solid var(--border-color);">
-                            <img src="@(string.IsNullOrEmpty(detail.Product?.ImageUrl) ? "https://via.placeholder.com/60" : detail.Product.ImageUrl)"
+                            <img src="@ImageUrlHelper.GetDisplayUrl(detail.Product?.ImageUrl, "https://via.placeholder.com/60")"
                                  width="60" height="60" class="rounded me-3" style="object-fit: cover; border: 1px solid var(--border-color);" />
                             <div class="flex-grow-1">
                                 <div class="fw-semibold" style="color: var(--text-primary);">@detail.Product?.Title</div>
