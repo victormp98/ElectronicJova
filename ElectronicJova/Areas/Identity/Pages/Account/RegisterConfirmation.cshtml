@@ -1,23 +1,70 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = "Confirma tu cuenta";
+    Layout = null;
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
-    }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
-</p>
-    }
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ElectronicJova</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: var(--bg-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6 text-center">
+                
+                <div class="mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 position-relative"
+                         style="width: 100px; height: 100px; background: rgba(0, 212, 255, 0.05); border: 2px solid var(--border-accent);">
+                        <i class="bi bi-envelope-check display-4 text-info"></i>
+                    </div>
+                </div>
 
+                <h1 class="fw-bold mb-3 text-light">¡Revisa tu correo!</h1>
+                
+                <div class="card border-secondary bg-card shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <p class="lead mb-3 text-light">Hemos enviado un enlace de confirmación a tu dirección de email.</p>
+                        <p class="text-muted small mb-0">
+                            Por favor verifica tu bandeja de entrada (y la carpeta de spam) para activar tu cuenta.
+                        </p>
+                    </div>
+                </div>
+
+                @{
+                    if (@Model.DisplayConfirmAccountLink)
+                    {
+                        <div class="alert alert-warning text-dark border-0 shadow-sm mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i><strong>Modo Desarrollo:</strong> 
+                            <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="alert-link">Haz clic aquí para confirmar tu cuenta</a>
+                        </div>
+                    }
+                }
+
+                <a asp-page="./Login" class="btn btn-primary px-5 py-2 fw-bold shadow-info">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
