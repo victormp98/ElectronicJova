@@ -47,3 +47,10 @@ npm-debug.log
 # Dotnet tool
 .config/
 .dotnet/
+
+# Security (Sensitive Files)
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+*.pfx
+secrets.json
