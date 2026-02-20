@@ -105,6 +105,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     
                     if (uploadResult.Error != null)
                     {
+                        Console.WriteLine($"CLOUDINARY ERROR: {uploadResult.Error.Message}"); // Quick debug
+                        _logger.LogError("Cloudinary Upload Error: {Error}", uploadResult.Error.Message);
                         ModelState.AddModelError("", $"Error al subir imagen: {uploadResult.Error.Message}");
                         productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                         {
@@ -117,7 +119,15 @@ namespace ElectronicJova.Areas.Admin.Controllers
                     // Delete old image if it exists and is local (optional logic, skipping for now to prioritize Cloudinary)
                     // If moving from local to cloud, we just overwrite the URL.
                     
-                    productVM.Product.ImageUrl = uploadResult.SecureUrl.ToString();
+                    string newUrl = uploadResult.SecureUrl.ToString();
+                    productVM.Product.ImageUrl = newUrl;
+                    _logger.LogInformation("Image Uploaded Successfully. New URL: {Url}", newUrl);
+                }
+                else
+                {
+                     // Ensure we don't lose the existing image URL if no file is uploaded
+                     // This is handled by asp-for="Product.ImageUrl" hidden input, but logging helps verify.
+                     _logger.LogInformation("No new file uploaded. Keeping existing ImageUrl: {Url}", productVM.Product.ImageUrl);
                 }
 
                 if (productVM.Product.Id == 0)
