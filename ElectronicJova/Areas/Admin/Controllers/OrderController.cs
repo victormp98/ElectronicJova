@@ -16,6 +16,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHubContext<OrderStatusHub> _hubContext; // Restored
         private readonly IEmailSender _emailSender; // Added Email Sender
 
         [BindProperty]
@@ -108,6 +109,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
 
+            // SignalR: notificar al cliente en tiempo real
+            await _hubContext.Clients.Group($"order-{orderHEaderFromDb.Id}")
                 .SendAsync("OrderStatusUpdated", SD.StatusShipped,
                     SD.GetOrderStatusLabel(SD.StatusShipped),
                     SD.GetOrderStatusIcon(SD.StatusShipped));
