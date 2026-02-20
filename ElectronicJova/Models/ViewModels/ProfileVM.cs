@@ -1,10 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace ElectronicJova.Models.ViewModels
 {
     public class ProfileVM
     {
-        [Required]
         public string Name { get; set; } = string.Empty;
 
         public string? Email { get; set; }

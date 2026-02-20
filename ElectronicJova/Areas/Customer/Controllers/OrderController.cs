@@ -78,7 +78,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
             var vm = new ProfileVM
             {
-                Name = user.Name,
+                Name = string.IsNullOrWhiteSpace(user.Name) ? DeriveFallbackName(user) : user.Name,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 StreetAddress = user.StreetAddress,
@@ -115,6 +115,13 @@ namespace ElectronicJova.Areas.Customer.Controllers
             model.State = NormalizeOptional(model.State);
             model.PostalCode = NormalizeOptional(model.PostalCode);
 
+            if (string.IsNullOrWhiteSpace(model.Name))
+            {
+                model.Name = string.IsNullOrWhiteSpace(user.Name) ? DeriveFallbackName(user) : user.Name;
+                ModelState.Remove(nameof(ProfileVM.Name));
+                _logger.LogWarning("Profile name was empty on POST. Applied fallback name for UserId={UserId}", user.Id);
+            }
+
             _logger.LogInformation(
                 "Profile update attempt. UserId={UserId}, NameLen={NameLen}, ModelStateValid={ModelStateValid}",
                 user.Id,
@@ -130,13 +137,6 @@ namespace ElectronicJova.Areas.Customer.Controllers
                         kv.Key,
                         string.Join(" | ", kv.Value!.Errors.Select(e => e.ErrorMessage)));
                 }
-                return View(model);
-            }
-
-            if (string.IsNullOrWhiteSpace(model.Name))
-            {
-                ModelState.AddModelError(nameof(model.Name), "El nombre es obligatorio.");
-                model.Email = user.Email;
                 return View(model);
             }
 
@@ -175,6 +175,29 @@ namespace ElectronicJova.Areas.Customer.Controllers
             }
 
             return value.Trim();
+        }
+
+        private static string DeriveFallbackName(ApplicationUser user)
+        {
+            if (!string.IsNullOrWhiteSpace(user.UserName))
+            {
+                var userNamePart = user.UserName.Split('@')[0].Trim();
+                if (!string.IsNullOrWhiteSpace(userNamePart))
+                {
+                    return userNamePart;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.Email))
+            {
+                var emailPart = user.Email.Split('@')[0].Trim();
+                if (!string.IsNullOrWhiteSpace(emailPart))
+                {
+                    return emailPart;
+                }
+            }
+
+            return "Usuario";
         }
     }
 }
