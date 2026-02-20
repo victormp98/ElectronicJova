@@ -79,6 +79,11 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
             user.Name = model.Name;
             user.PhoneNumber = model.PhoneNumber;
             user.StreetAddress = model.StreetAddress;
