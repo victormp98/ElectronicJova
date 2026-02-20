@@ -98,17 +98,29 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
-            if (string.IsNullOrWhiteSpace(model.Name) && Request.HasFormContentType)
-            {
-                model.Name = Request.Form["Name"].ToString();
-                model.PhoneNumber = Request.Form["PhoneNumber"].ToString();
-                model.StreetAddress = Request.Form["StreetAddress"].ToString();
-                model.City = Request.Form["City"].ToString();
-                model.State = Request.Form["State"].ToString();
-                model.PostalCode = Request.Form["PostalCode"].ToString();
-            }
+            string? incomingName = ReadPostedValue("Name", model.Name);
+            string? incomingPhone = ReadPostedValue("PhoneNumber", model.PhoneNumber);
+            string? incomingStreet = ReadPostedValue("StreetAddress", model.StreetAddress);
+            string? incomingCity = ReadPostedValue("City", model.City);
+            string? incomingState = ReadPostedValue("State", model.State);
+            string? incomingPostal = ReadPostedValue("PostalCode", model.PostalCode);
 
-            model.Name = (model.Name ?? string.Empty).Trim();
+            model.Name = (incomingName ?? string.Empty).Trim();
+            model.PhoneNumber = incomingPhone;
+            model.StreetAddress = incomingStreet;
+            model.City = incomingCity;
+            model.State = incomingState;
+            model.PostalCode = incomingPostal;
+
+            _logger.LogInformation(
+                "Profile form payload lengths UserId={UserId} Name={NameLen} Phone={PhoneLen} Street={StreetLen} City={CityLen} State={StateLen} Postal={PostalLen}",
+                user.Id,
+                model.Name.Length,
+                model.PhoneNumber?.Length ?? 0,
+                model.StreetAddress?.Length ?? 0,
+                model.City?.Length ?? 0,
+                model.State?.Length ?? 0,
+                model.PostalCode?.Length ?? 0);
 
             if (string.IsNullOrWhiteSpace(model.Name))
             {
@@ -193,6 +205,16 @@ namespace ElectronicJova.Areas.Customer.Controllers
             }
 
             return "Usuario";
+        }
+
+        private string? ReadPostedValue(string key, string? fallback)
+        {
+            if (Request.HasFormContentType && Request.Form.ContainsKey(key))
+            {
+                return Request.Form[key].ToString();
+            }
+
+            return fallback;
         }
     }
 }
