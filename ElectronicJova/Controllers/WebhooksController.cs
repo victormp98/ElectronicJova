@@ -49,7 +49,7 @@ namespace ElectronicJova.Controllers
                         // Fulfill the purchase
                         if (session != null && session.PaymentStatus == "paid")
                         {
-                            var orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.SessionId == session.Id);
+                            var orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.SessionId == session.Id, includeProperties: "ApplicationUser");
 
                             if (orderHeader != null && orderHeader.PaymentStatus != SD.PaymentStatusApproved)
                             {
@@ -79,6 +79,34 @@ namespace ElectronicJova.Controllers
                                     .SendAsync("OrderStatusUpdated", SD.StatusApproved,
                                         SD.GetOrderStatusLabel(SD.StatusApproved),
                                         SD.GetOrderStatusIcon(SD.StatusApproved));
+
+                                // EMAIL NOTIFICATION: Confirmación de Pedido
+                                try 
+                                {
+                                    string emailSubject = $"Confirmación de Pedido #{orderHeader.Id} - ElectronicJova";
+                                    string emailBody = $@"
+                                        <div style='font-family: Arial, sans-serif; color: #333;'>
+                                            <h2 style='color: #00d4ff;'>¡Gracias por tu compra!</h2>
+                                            <p>Hola <strong>{orderHeader.Name}</strong>,</p>
+                                            <p>Hemos recibido tu pago correctamente. Tu pedido <strong>#{orderHeader.Id}</strong> está siendo procesado.</p>
+                                            <hr style='border: 1px solid #eee;' />
+                                            <p><strong>Total:</strong> {orderHeader.OrderTotal:C}</p>
+                                            <p>Puedes ver el estado de tu pedido en tiempo real entrando a tu cuenta.</p>
+                                            <br/>
+                                            <p style='font-size: 12px; color: #999;'>ElectronicJova Inc.</p>
+                                        </div>";
+                                    
+                                    await _emailSender.SendEmailAsync(
+                                        session.CustomerDetails?.Email ?? orderHeader.ApplicationUser?.Email ?? session.CustomerEmail, 
+                                        emailSubject, 
+                                        emailBody
+                                    );
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Log error but don't fail the webhook
+                                    Console.WriteLine($"Error sending email: {ex.Message}");
+                                }
                             }
                         }
                     }

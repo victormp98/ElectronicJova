@@ -1,0 +1,85 @@
+@{
+    ViewData["Title"] = "Quiénes Somos";
+}
+
+<div class="container py-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0,212,255,0.3);">
+                El Futuro de la Electrónica
+            </h1>
+            <p class="lead text-light mb-4">
+                En <strong>ElectronicJova</strong>, no solo vendemos dispositivos; conectamos a las personas con la tecnología del mañana. 
+                Nacimos con la misión de democratizar el acceso a la alta gama, ofreciendo lo último en hardware con una experiencia de compra premium y segura.
+            </p>
+            <div class="d-flex gap-3">
+                <div class="p-3 rounded-3 border border-secondary bg-card">
+                    <h3 class="fw-bold text-light mb-0">10k+</h3>
+                    <small class="text-muted text-uppercase">Clientes Felices</small>
+                </div>
+                <div class="p-3 rounded-3 border border-secondary bg-card">
+                    <h3 class="fw-bold text-light mb-0">24/7</h3>
+                    <small class="text-muted text-uppercase">Soporte Tech</small>
+                </div>
+                <div class="p-3 rounded-3 border border-secondary bg-card">
+                    <h3 class="fw-bold text-light mb-0">100%</h3>
+                    <small class="text-muted text-uppercase">Garantizado</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="position-relative">
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary blur-3 rounded-circle opacity-25" style="filter: blur(80px); z-index: -1;"></div>
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" 
+                     class="img-fluid rounded-4 shadow-lg border border-secondary" alt="Tech Future" style="transform: rotate(2deg);">
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 py-5">
+        <div class="col-md-4">
+            <div class="card h-100 bg-transparent border-secondary hover-effect">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-cpu fs-1" style="color: var(--accent-purple);"></i>
+                    </div>
+                    <h4 class="text-light">Innovación</h4>
+                    <p class="text-muted">Seleccionamos cuidadosamente cada producto para asegurar que estás comprando tecnología de punta.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 bg-transparent border-secondary hover-effect">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check fs-1" style="color: var(--accent-cyan);"></i>
+                    </div>
+                    <h4 class="text-light">Seguridad</h4>
+                    <p class="text-muted">Tus datos y transacciones están protegidos con los estándares más altos de la industria.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 bg-transparent border-secondary hover-effect">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-lightning-charge fs-1 text-warning"></i>
+                    </div>
+                    <h4 class="text-light">Velocidad</h4>
+                    <p class="text-muted">Despachos rápidos y eficientes para que disfrutes de tu compra lo antes posible.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-effect {
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .hover-effect:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-cyan) !important;
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.1);
+    }
+</style>

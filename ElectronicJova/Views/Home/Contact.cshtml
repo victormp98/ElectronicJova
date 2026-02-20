@@ -1,0 +1,106 @@
+@{
+    ViewData["Title"] = "Contacto";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center mb-5">
+            <h1 class="fw-bold display-5 mb-3" style="color: var(--text-primary);">Hablemos</h1>
+            <p class="lead text-muted">¿Tienes alguna pregunta sobre nuestros productos o tu pedido? Estamos aquí para ayudarte.</p>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <!-- Info Column -->
+        <div class="col-lg-5 order-lg-2">
+            <div class="p-4 rounded-4 border border-secondary bg-card h-100">
+                <h3 class="fw-bold text-light mb-4">Información Directa</h3>
+                
+                <div class="d-flex align-items-start mb-4">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                        <i class="bi bi-geo-alt fs-4 text-primary"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-light mb-1">Ubicación</h6>
+                        <p class="text-muted mb-0">123 Tech Street, Silicon Valley<br>CA 94025, USA</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                        <i class="bi bi-whatsapp fs-4 text-success"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-light mb-1">WhatsApp</h6>
+                        <p class="text-muted mb-0">+1 (555) 123-4567<br><small>Lun-Vie: 9am - 6pm</small></p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="bg-info bg-opacity-10 p-3 rounded-circle me-3">
+                        <i class="bi bi-envelope fs-4 text-info"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-light mb-1">Email</h6>
+                        <p class="text-muted mb-0">soporte@electronicjova.com<br><small>Respuesta en -24hrs</small></p>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-4">
+
+                <div class="text-center">
+                    <h6 class="text-muted mb-3">Síguenos</h6>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Column -->
+        <div class="col-lg-7 order-lg-1">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body p-0">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-light">Nombre</label>
+                                <input type="text" class="form-control bg-dark border-secondary text-light" placeholder="Tu nombre">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-light">Apellido</label>
+                                <input type="text" class="form-control bg-dark border-secondary text-light" placeholder="Tu apellido">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-light">Email</label>
+                                <input type="email" class="form-control bg-dark border-secondary text-light" placeholder="nombre@ejemplo.com">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-light">Asunto</label>
+                                <select class="form-select bg-dark border-secondary text-light">
+                                    <option selected>Elige un asunto...</option>
+                                    <option value="1">Soporte Técnico</option>
+                                    <option value="2">Estado de Pedido</option>
+                                    <option value="3">Garantías</option>
+                                    <option value="4">Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-light">Mensaje</label>
+                                <textarea class="form-control bg-dark border-secondary text-light" rows="5" placeholder="¿En qué podemos ayudarte?"></textarea>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="button" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-primary" onclick="Swal.fire('Enviado', 'Gracias por contactarnos. Te responderemos pronto.', 'success')">
+                                    <i class="bi bi-send-fill me-2"></i>Enviar Mensaje
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

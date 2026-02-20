@@ -1,7 +1,55 @@
 ﻿@{
     ViewData["Title"] = "Política de Privacidad";
 }
+
 <div class="container py-5">
-    <h1 class="fw-bold mb-4" style="color: var(--text-primary);">@ViewData["Title"]</h1>
-    <p style="color: var(--text-secondary);">Usa esta página para detallar la política de privacidad del sitio.</p>
+    <h1 class="fw-bold mb-5 text-center" style="color: var(--text-primary);">Política de Privacidad</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card bg-card border-secondary shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <div class="alert alert-info border-info d-flex align-items-center mb-4" role="alert" style="background: rgba(13, 202, 240, 0.1);">
+                        <i class="bi bi-shield-lock-fill fs-4 me-3"></i>
+                        <div>
+                            ElectronicJova cumple con los estándares globales de protección de datos. Tu seguridad es nuestra prioridad.
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold text-light mb-3">1. Recolección de Datos</h4>
+                    <p class="text-muted mb-4">
+                        Recopilamos información cuando te registras, realizas una compra o te suscribes a nuestro boletín. Los datos incluyen: Nombre, Email, Dirección de Envío y Número Telefónico. **No almacenamos información de tarjetas de crédito**; estas son procesadas directamente por Stripe.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">2. Uso de la Información</h4>
+                    <p class="text-muted mb-4">
+                        Utilizamos tus datos para:
+                        <ul class="list-unstyled mt-2 ms-3">
+                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i>Procesar y enviar tus pedidos.</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i>Enviar notificaciones sobre el estado de tu compra.</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i>Mejorar nuestro sitio web y servicio al cliente.</li>
+                        </ul>
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">3. Cookies</h4>
+                    <p class="text-muted mb-4">
+                        Usamos cookies para recordar tu carrito de compras y preferencias. Puedes desactivarlas en tu navegador, pero algunas funciones de la tienda podrían no funcionar correctamente.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">4. Derechos del Usuario</h4>
+                    <p class="text-muted mb-4">
+                        Tienes derecho a acceder, rectificar o eliminar tus datos personales en cualquier momento. Puedes hacerlo desde tu perfil de usuario o contactándonos directamente.
+                    </p>
+
+                    <hr class="border-secondary my-4">
+
+                    <p class="text-muted mb-0 text-center">
+                        Si tienes preguntas sobre nuestra política, contáctanos en <a href="mailto:privacy@electronicjova.com" class="text-info text-decoration-none">privacy@electronicjova.com</a>.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

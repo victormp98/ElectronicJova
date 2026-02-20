@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Términos y Condiciones";
+}
+
+<div class="container py-5">
+    <h1 class="fw-bold mb-5 text-center" style="color: var(--text-primary);">Términos y Condiciones</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card bg-card border-secondary shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <h4 class="fw-bold text-light mb-3">1. Introducción</h4>
+                    <p class="text-muted mb-4">
+                        Bienvenido a <strong>ElectronicJova</strong>. Al acceder a nuestro sitio web y realizar compras, aceptas los términos y condiciones descritos aquí. Nos reservamos el derecho de actualizar estas políticas en cualquier momento.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">2. Compras y Pagos</h4>
+                    <p class="text-muted mb-4">
+                        Aceptamos pagos a través de tarjetas de crédito y débito mediante la plataforma segura <strong>Stripe</strong>. Todos los precios están en dólares estadounidenses (USD) e incluyen impuestos aplicables, salvo que se indique lo contrario. Nos reservamos el derecho de cancelar órdenes por errores de precio o stock.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">3. Envíos y Entregas</h4>
+                    <p class="text-muted mb-4">
+                        Los tiempos de envío son estimados. ElectronicJova no se hace responsable por retrasos causados por las empresas de transporte o aduanas. Una vez que el pedido sale de nuestras bodegas, recibirás un número de rastreo.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">4. Devoluciones y Garantía</h4>
+                    <p class="text-muted mb-4">
+                        Ofrecemos una garantía de satisfacción de 30 días. Si el producto presenta fallas de fábrica, puedes solicitar un cambio o reembolso. El producto debe estar en su empaque original y sin daños por mal uso.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">5. Privacidad</h4>
+                    <p class="text-muted mb-4">
+                        Tus datos personales son sagrados para nosotros. No vendemos ni compartimos tu información con terceros, excepto para procesar envíos y pagos. Consulta nuestra <a asp-action="Privacy" class="text-info text-decoration-none">Política de Privacidad</a> para más detalles.
+                    </p>
+
+                    <h4 class="fw-bold text-light mb-3">6. Contacto</h4>
+                    <p class="text-muted mb-0">
+                        Para cualquier duda legal o comercial, contáctanos en <a href="mailto:legal@electronicjova.com" class="text-info text-decoration-none">legal@electronicjova.com</a>.
+                    </p>
+
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="small text-muted">Última actualización: @DateTime.Now.ToString("MMMM yyyy")</p>
+            </div>
+        </div>
+    </div>
+</div>

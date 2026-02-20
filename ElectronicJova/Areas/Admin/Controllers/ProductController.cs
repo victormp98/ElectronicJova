@@ -202,6 +202,14 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
+            // ── CRITICAL FIX: INTEGRITY CHECK ──
+            // Prevent deletion if the product has associated active orders
+            var associatedOrders = _unitOfWork.OrderDetail.GetAll(u => u.ProductId == id);
+            if (associatedOrders.Any())
+            {
+                return Json(new { success = false, message = "No se puede eliminar: El producto tiene histórico de ventas. Desactívalo en su lugar." });
+            }
+
             // Optional: Delete from Cloudinary using Public ID derived from URL if needed.
             // For now, we just remove the record.
             

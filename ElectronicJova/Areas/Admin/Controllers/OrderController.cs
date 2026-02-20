@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Stripe;
 using ElectronicJova.Hubs;
+using Microsoft.AspNetCore.Identity.UI.Services; // Added for IEmailSender
 
 namespace ElectronicJova.Areas.Admin.Controllers
 {
@@ -15,15 +16,16 @@ namespace ElectronicJova.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHubContext<OrderStatusHub> _hubContext;
+        private readonly IEmailSender _emailSender; // Added Email Sender
 
         [BindProperty]
         public OrderDetailsVM OrderDetailsVM { get; set; } = new();
 
-        public OrderController(IUnitOfWork unitOfWork, IHubContext<OrderStatusHub> hubContext)
+        public OrderController(IUnitOfWork unitOfWork, IHubContext<OrderStatusHub> hubContext, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _hubContext = hubContext;
+            _emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index(int? pageNumber)
@@ -106,11 +108,31 @@ namespace ElectronicJova.Areas.Admin.Controllers
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
 
-            // SignalR: notificar al cliente en tiempo real
-            await _hubContext.Clients.Group($"order-{orderHEaderFromDb.Id}")
                 .SendAsync("OrderStatusUpdated", SD.StatusShipped,
                     SD.GetOrderStatusLabel(SD.StatusShipped),
                     SD.GetOrderStatusIcon(SD.StatusShipped));
+
+            // EMAIL NOTIFICATION: Pedido Enviado
+            try 
+            {
+                string emailSubject = $"Tu pedido #{orderHEaderFromDb.Id} está en camino - ElectronicJova";
+                string emailBody = $@"
+                    <div style='font-family: Arial, sans-serif; color: #333;'>
+                        <h2 style='color: #00d4ff;'>¡Tu pedido ha sido enviado!</h2>
+                        <p>Hola <strong>{orderHEaderFromDb.Name}</strong>,</p>
+                        <p>Hemos enviado tus productos. Aquí están los detalles:</p>
+                        <p><strong>Transportista:</strong> {orderHEaderFromDb.Carrier}</p>
+                        <p><strong>Número de Rastreo:</strong> {orderHEaderFromDb.TrackingNumber}</p>
+                        <hr style='border: 1px solid #eee;' />
+                        <p>Gracias por confiar en nosotros.</p>
+                    </div>";
+                
+                await _emailSender.SendEmailAsync(orderHEaderFromDb.ApplicationUser.Email, emailSubject, emailBody);
+            }
+            catch (Exception ex)
+            {
+                // Log but don't break flow
+            }
 
             TempData["success"] = "Pedido marcado como enviado.";
             return RedirectToAction(nameof(Details), new { orderId = orderHEaderFromDb.Id });
@@ -174,6 +196,37 @@ namespace ElectronicJova.Areas.Admin.Controllers
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Cancelled;
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
+
+            // ── CRITICAL FIX: STOCK REVERSAL ──
+            // Al cancelar, devolvemos los productos al inventario
+            var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == orderHEaderFromDb.Id, includeProperties: "Product");
+            foreach (var detail in orderDetails)
+            {
+                if (detail.Product != null)
+                {
+                    detail.Product.Stock += detail.Count;
+                    _unitOfWork.Product.Update(detail.Product);
+                }
+            }
+            await _unitOfWork.SaveAsync();
+
+            // EMAIL NOTIFICATION: Pedido Cancelado
+            try 
+            {
+                string emailSubject = $"Pedido #{orderHEaderFromDb.Id} Cancelado - ElectronicJova";
+                string emailBody = $@"
+                    <div style='font-family: Arial, sans-serif; color: #333;'>
+                        <h2 style='color: #dc3545;'>Pedido Cancelado</h2>
+                        <p>Hola <strong>{orderHEaderFromDb.Name}</strong>,</p>
+                        <p>Tu pedido <strong>#{orderHEaderFromDb.Id}</strong> ha sido cancelado.</p>
+                        <p>Si ya habías realizado el pago, el reembolso ha sido procesado automáticamente.</p>
+                        <hr style='border: 1px solid #eee;' />
+                        <p>Lamentamos los inconvenientes.</p>
+                    </div>";
+                
+                await _emailSender.SendEmailAsync(orderHEaderFromDb.ApplicationUser.Email, emailSubject, emailBody);
+            }
+            catch (Exception) { /* Ignore email errors */ }
 
             // SignalR: notificar al cliente en tiempo real
             await _hubContext.Clients.Group($"order-{orderHEaderFromDb.Id}")

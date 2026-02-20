@@ -1,25 +1,95 @@
 ﻿@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
+    var isNotFound = Model.StatusCode == 404;
+    var errorTitle = isNotFound ? "404 - Not Found" : "System Failure";
+    var errorMessage = isNotFound ? "La página que buscas se ha perdido en el ciberespacio." : "Ha ocurrido un error inesperado en la matriz.";
+    var icon = isNotFound ? "bi-search" : "bi-bug-fill";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="container d-flex flex-column justify-content-center align-items-center min-vh-75 py-5 text-center">
+    
+    <div class="position-relative mb-4">
+        <h1 class="display-1 fw-bold glitch-text" data-text="@errorTitle" style="color: var(--accent-danger); font-size: 6rem;">
+            @errorTitle
+        </h1>
+    </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    <div class="mb-4">
+        <i class="bi @icon display-4 text-muted opacity-50"></i>
+    </div>
+
+    <p class="lead text-light mb-5" style="max-width: 600px;">
+        @errorMessage
     </p>
-}
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+    <div class="d-flex gap-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-5 shadow-primary">
+            <i class="bi bi-house-door me-2"></i>Volver al Inicio
+        </a>
+        <a href="javascript:history.back()" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+            <i class="bi bi-arrow-left me-2"></i>Regresar
+        </a>
+    </div>
+
+    @if (Model.ShowRequestId && !isNotFound)
+    {
+        <div class="mt-5 p-3 rounded border border-danger bg-danger bg-opacity-10 text-danger small">
+            <p class="mb-1 fw-bold">Detalles Técnicos:</p>
+            <code>Request ID: @Model.RequestId</code>
+        </div>
+    }
+
+</div>
+
+<style>
+    .glitch-text {
+        position: relative;
+    }
+    
+    .glitch-text::before,
+    .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .glitch-text::before {
+        left: 2px;
+        text-shadow: -1px 0 #ff00c1;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+
+    .glitch-text::after {
+        left: -2px;
+        text-shadow: -1px 0 #00fff9;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+
+    @@keyframes glitch-anim {
+        0% { clip: rect(30px, 9999px, 10px, 0); }
+        5% { clip: rect(80px, 9999px, 5px, 0); }
+        10% { clip: rect(40px, 9999px, 90px, 0); }
+        15% { clip: rect(10px, 9999px, 60px, 0); }
+        20% { clip: rect(50px, 9999px, 30px, 0); }
+        25% { clip: rect(90px, 9999px, 20px, 0); }
+        30% { clip: rect(20px, 9999px, 40px, 0); }
+        100% { clip: rect(70px, 9999px, 80px, 0); }
+    }
+
+    @@keyframes glitch-anim2 {
+        0% { clip: rect(10px, 9999px, 80px, 0); }
+        5% { clip: rect(60px, 9999px, 40px, 0); }
+        10% { clip: rect(90px, 9999px, 10px, 0); }
+        15% { clip: rect(20px, 9999px, 50px, 0); }
+        20% { clip: rect(50px, 9999px, 90px, 0); }
+        25% { clip: rect(30px, 9999px, 20px, 0); }
+        30% { clip: rect(40px, 9999px, 60px, 0); }
+        100% { clip: rect(80px, 9999px, 30px, 0); }
+    }
+</style>
