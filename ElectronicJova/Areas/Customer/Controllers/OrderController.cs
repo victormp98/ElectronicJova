@@ -96,7 +96,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
             {
                 foreach (var error in result.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
-                return View(model);
+                return View(user);
             }
 
             return RedirectToAction(nameof(Profile));
