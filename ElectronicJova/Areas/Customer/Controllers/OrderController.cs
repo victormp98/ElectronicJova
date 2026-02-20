@@ -14,11 +14,13 @@ namespace ElectronicJova.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public OrderController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public OrderController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: /Customer/Order — Historial de pedidos del cliente
@@ -84,6 +86,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
+                await _signInManager.RefreshSignInAsync(user); // Force cookie refresh to update visible data
                 TempData["success"] = "Perfil actualizado correctamente.";
             }
             else
