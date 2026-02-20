@@ -137,6 +137,14 @@ namespace ElectronicJova.Areas.Customer.Controllers
             _unitOfWork.OrderHeader.Add(cartVM.OrderHeader);
             await _unitOfWork.SaveAsync();
 
+            await OrderStatusLogger.LogAsync(
+                _unitOfWork,
+                cartVM.OrderHeader.Id,
+                null,
+                SD.StatusPending,
+                userId,
+                "Orden creada");
+
             foreach (var cart in cartVM.ShoppingCartList)
             {
                 OrderDetail orderDetail = new()
@@ -242,10 +250,18 @@ namespace ElectronicJova.Areas.Customer.Controllers
             if (orderHeader != null && orderHeader.ApplicationUserId == userId
                 && orderHeader.OrderStatus == SD.StatusPending)
             {
+                var previousStatus = orderHeader.OrderStatus;
                 orderHeader.OrderStatus = SD.StatusCancelled;
                 orderHeader.OrderStatusValue = (int)SD.OrderStatus.Cancelled;
                 orderHeader.PaymentStatus = SD.PaymentStatusPending; // pago no completado
                 orderHeader.PaymentStatusValue = (int)SD.PaymentStatus.Pending;
+                await OrderStatusLogger.LogAsync(
+                    _unitOfWork,
+                    orderHeader.Id,
+                    previousStatus,
+                    orderHeader.OrderStatus,
+                    userId,
+                    "Pago cancelado por el cliente");
                 _unitOfWork.OrderHeader.Update(orderHeader);
                 await _unitOfWork.SaveAsync();
             }

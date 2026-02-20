@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,16 @@ namespace ElectronicJova.UnitTests
     {
         private Mock<IUnitOfWork> _mockUnitOfWork;
         private Mock<IEmailSender> _mockEmailSender;
+        private Mock<ILogger<CartController>> _mockLogger;
         private CartController _controller;
 
         public CartControllerTests()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockEmailSender = new Mock<IEmailSender>();
+            _mockLogger = new Mock<ILogger<CartController>>();
             
-            _controller = new CartController(_mockUnitOfWork.Object, _mockEmailSender.Object);
+            _controller = new CartController(_mockUnitOfWork.Object, _mockEmailSender.Object, _mockLogger.Object);
 
             // Mock User (Identity)
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]

@@ -53,11 +53,19 @@ namespace ElectronicJova.Controllers
 
                             if (orderHeader != null && orderHeader.PaymentStatus != SD.PaymentStatusApproved)
                             {
+                                var previousStatus = orderHeader.OrderStatus;
                                 orderHeader.PaymentStatus = SD.PaymentStatusApproved;
                                 orderHeader.PaymentStatusValue = (int)SD.PaymentStatus.Approved;
                                 orderHeader.OrderStatus = SD.StatusApproved;
                                 orderHeader.OrderStatusValue = (int)SD.OrderStatus.Approved;
                                 orderHeader.PaymentIntentId = session.PaymentIntentId;
+                                await OrderStatusLogger.LogAsync(
+                                    _unitOfWork,
+                                    orderHeader.Id,
+                                    previousStatus,
+                                    orderHeader.OrderStatus,
+                                    "system:webhook",
+                                    "Pago confirmado por Stripe");
                                 _unitOfWork.OrderHeader.Update(orderHeader);
                                 await _unitOfWork.SaveAsync();
 

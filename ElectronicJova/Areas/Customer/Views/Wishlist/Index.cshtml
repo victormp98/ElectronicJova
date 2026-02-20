@@ -90,7 +90,7 @@
                         <div class="card-footer border-0 pb-3" style="background: transparent;">
                             <div class="d-grid gap-2">
                                 <a asp-area="" asp-controller="Home" asp-action="Details"
-                                   asp-route-productId="@item.ProductId"
+                                   asp-route-id="@item.ProductId"
                                    class="btn btn-primary rounded-pill">
                                     <i class="bi bi-eye me-1"></i>Ver Detalles
                                 </a>
@@ -109,6 +109,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            const removeUrl = '@Url.Action("Remove", "Wishlist", new { area = "Customer" })';
             // Card hover effect
             $('.product-card').hover(
                 function () { $(this).css({ 'transform': 'translateY(-6px)', 'box-shadow': '0 12px 30px rgba(0,212,255,0.15)' }); },
@@ -132,7 +133,7 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $.post('/Customer/Wishlist/Remove', { id: id }, function (response) {
+                        $.post(removeUrl, { id: id }, function (response) {
                             if (response.success) {
                                 btn.closest('.wishlist-item').fadeOut(300, function () {
                                     $(this).remove();

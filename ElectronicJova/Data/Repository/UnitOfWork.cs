@@ -11,6 +11,7 @@ namespace ElectronicJova.Data.Repository
         public IRepository<ShoppingCart> ShoppingCart { get; private set; }
         public IRepository<OrderHeader> OrderHeader { get; private set; }
         public IRepository<OrderDetail> OrderDetail { get; private set; }
+        public IRepository<OrderStatusLog> OrderStatusLog { get; private set; }
         public IRepository<ApplicationUser> ApplicationUser { get; private set; }
         public IRepository<ProductOption> ProductOption { get; private set; }
         public IRepository<Wishlist> Wishlist { get; private set; }
@@ -24,6 +25,7 @@ namespace ElectronicJova.Data.Repository
             ShoppingCart = new Repository<ShoppingCart>(_db);
             OrderHeader = new Repository<OrderHeader>(_db);
             OrderDetail = new Repository<OrderDetail>(_db);
+            OrderStatusLog = new Repository<OrderStatusLog>(_db);
             ApplicationUser = new Repository<ApplicationUser>(_db);
             ProductOption = new Repository<ProductOption>(_db);
             Wishlist = new Repository<Wishlist>(_db);

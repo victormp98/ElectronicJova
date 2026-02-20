@@ -39,5 +39,6 @@ namespace ElectronicJova.Models
         public string? PostalCode { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; } = new(); // Navigation property
+        public List<OrderStatusLog> StatusLogs { get; set; } = new();
     }
 }

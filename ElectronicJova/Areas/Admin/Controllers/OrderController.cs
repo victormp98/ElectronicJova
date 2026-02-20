@@ -44,7 +44,9 @@ namespace ElectronicJova.Areas.Admin.Controllers
             OrderDetailsVM = new OrderDetailsVM()
             {
                 OrderHeader = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == orderId, includeProperties: "ApplicationUser"),
-                OrderDetail = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == orderId, includeProperties: "Product")
+                OrderDetail = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == orderId, includeProperties: "Product"),
+                StatusLogs = (await _unitOfWork.OrderStatusLog.GetAllAsync(u => u.OrderHeaderId == orderId))
+                    .OrderByDescending(l => l.ChangedAt)
             };
             return View(OrderDetailsVM);
         }
@@ -78,8 +80,16 @@ namespace ElectronicJova.Areas.Admin.Controllers
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
             if (orderHEaderFromDb == null) return NotFound();
 
+            var previousStatus = orderHEaderFromDb.OrderStatus;
             orderHEaderFromDb.OrderStatus = SD.StatusInProcess;
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Processing;
+            await OrderStatusLogger.LogAsync(
+                _unitOfWork,
+                orderHEaderFromDb.Id,
+                previousStatus,
+                orderHEaderFromDb.OrderStatus,
+                User.Identity?.Name,
+                "Pedido en proceso");
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
 
@@ -101,11 +111,19 @@ namespace ElectronicJova.Areas.Admin.Controllers
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
             if (orderHEaderFromDb == null) return NotFound();
 
+            var previousStatus = orderHEaderFromDb.OrderStatus;
             orderHEaderFromDb.TrackingNumber = OrderDetailsVM.OrderHeader.TrackingNumber;
             orderHEaderFromDb.Carrier = OrderDetailsVM.OrderHeader.Carrier;
             orderHEaderFromDb.OrderStatus = SD.StatusShipped;
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Shipped;
             orderHEaderFromDb.ShippingDate = DateTime.Now;
+            await OrderStatusLogger.LogAsync(
+                _unitOfWork,
+                orderHEaderFromDb.Id,
+                previousStatus,
+                orderHEaderFromDb.OrderStatus,
+                User.Identity?.Name,
+                "Pedido enviado");
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
 
@@ -149,8 +167,16 @@ namespace ElectronicJova.Areas.Admin.Controllers
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
             if (orderHEaderFromDb == null) return NotFound();
 
+            var previousStatus = orderHEaderFromDb.OrderStatus;
             orderHEaderFromDb.OrderStatus = SD.StatusDelivered;
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Delivered;
+            await OrderStatusLogger.LogAsync(
+                _unitOfWork,
+                orderHEaderFromDb.Id,
+                previousStatus,
+                orderHEaderFromDb.OrderStatus,
+                User.Identity?.Name,
+                "Pedido entregado");
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
 
@@ -172,6 +198,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
             var orderHEaderFromDb = await _unitOfWork.OrderHeader.GetFirstOrDefaultAsync(u => u.Id == OrderDetailsVM.OrderHeader.Id);
             if (orderHEaderFromDb == null) return NotFound();
 
+            var previousStatus = orderHEaderFromDb.OrderStatus;
             // Si el pago fue aprobado, emitir reembolso en Stripe antes de cancelar
             if (orderHEaderFromDb.PaymentStatus == SD.PaymentStatusApproved
                 && !string.IsNullOrEmpty(orderHEaderFromDb.PaymentIntentId))
@@ -197,6 +224,13 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
             orderHEaderFromDb.OrderStatus = SD.StatusCancelled;
             orderHEaderFromDb.OrderStatusValue = (int)SD.OrderStatus.Cancelled;
+            await OrderStatusLogger.LogAsync(
+                _unitOfWork,
+                orderHEaderFromDb.Id,
+                previousStatus,
+                orderHEaderFromDb.OrderStatus,
+                User.Identity?.Name,
+                "Pedido cancelado por el admin");
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
 

@@ -8,5 +8,6 @@ namespace ElectronicJova.Models.ViewModels
     {
         public OrderHeader OrderHeader { get; set; } = new();
         public IEnumerable<OrderDetail> OrderDetail { get; set; } = new List<OrderDetail>();
+        public IEnumerable<OrderStatusLog> StatusLogs { get; set; } = new List<OrderStatusLog>();
     }
 }

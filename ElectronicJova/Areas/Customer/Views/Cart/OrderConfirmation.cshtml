@@ -41,7 +41,7 @@
             </div>
 
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a asp-area="Customer" asp-controller="Order" asp-action="Details" asp-route-orderId="@Model.Id"
+                <a asp-area="Customer" asp-controller="Order" asp-action="Details" asp-route-id="@Model.Id"
                    class="btn btn-outline-secondary px-4">
                     <i class="bi bi-receipt me-2"></i>Ver detalle del pedido
                 </a>
@@ -104,7 +104,7 @@
 
             connection.start()
                 .then(function () {
-                    return connection.invoke("JoinOrderGroup", orderId);
+                    return connection.invoke("SubscribeToOrder", orderId.toString());
                 })
                 .catch(function (err) {
                     console.error("SignalR connection error:", err);

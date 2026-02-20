@@ -55,8 +55,11 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(
                 u => u.OrderHeaderId == id,
                 includeProperties: "Product");
+            var statusLogs = await _unitOfWork.OrderStatusLog.GetAllAsync(
+                u => u.OrderHeaderId == id);
 
             ViewBag.OrderDetails = orderDetails;
+            ViewBag.StatusLogs = statusLogs.OrderByDescending(l => l.ChangedAt);
             return View(orderHeader);
         }
 

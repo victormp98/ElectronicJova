@@ -20,6 +20,7 @@ namespace ElectronicJova.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!; // Model for ShoppingCarts
         public DbSet<OrderHeader> OrderHeaders { get; set; } = null!; // Model for OrderHeaders
         public DbSet<OrderDetail> OrderDetails { get; set; } = null!; // Model for OrderDetails
+        public DbSet<OrderStatusLog> OrderStatusLogs { get; set; } = null!;
         public DbSet<ProductOption> ProductOptions { get; set; } = null!; // Model for ProductOptions
         public DbSet<Wishlist> Wishlists { get; set; } = null!; // Model for Wishlist
 
@@ -45,6 +46,7 @@ namespace ElectronicJova.Data
             modelBuilder.Entity<OrderHeader>().HasIndex(o => o.ApplicationUserId);
             modelBuilder.Entity<OrderDetail>().HasIndex(od => od.OrderHeaderId);
             modelBuilder.Entity<OrderDetail>().HasIndex(od => od.ProductId);
+            modelBuilder.Entity<OrderStatusLog>().HasIndex(ol => ol.OrderHeaderId);
             modelBuilder.Entity<ProductOption>().HasIndex(po => po.ProductId);
             modelBuilder.Entity<Wishlist>().HasIndex(w => w.ApplicationUserId);
             modelBuilder.Entity<Wishlist>().HasIndex(w => w.ProductId);
@@ -72,6 +74,12 @@ namespace ElectronicJova.Data
                 .HasOne(od => od.OrderHeader)
                 .WithMany(o => o.OrderDetails)
                 .HasForeignKey(od => od.OrderHeaderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderStatusLog>()
+                .HasOne(ol => ol.OrderHeader)
+                .WithMany(o => o.StatusLogs)
+                .HasForeignKey(ol => ol.OrderHeaderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProductOption>()

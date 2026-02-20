@@ -198,6 +198,7 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function () {
+            const toggleFavoriteUrl = '@Url.Action("Toggle", "Wishlist", new { area = "Customer" })';
             const basePrice = @Model.Product.Price;
             const priceDisplay = $('#totalPriceDisplay');
             const checkboxes = $('.option-checkbox');
@@ -231,7 +232,7 @@
                 const icon = btn.find('i');
                 const productId = @Model.Product.Id;
 
-                $.post('/Customer/Wishlist/Toggle', { productId: productId }, function (response) {
+                $.post(toggleFavoriteUrl, { productId: productId }, function (response) {
                     if (response.success) {
                         if (response.action === 'added') {
                             icon.removeClass('bi-heart').addClass('bi-heart-fill');

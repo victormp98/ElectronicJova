@@ -11,6 +11,7 @@ namespace ElectronicJova.Data.Repository
         IRepository<ShoppingCart> ShoppingCart { get; }
         IRepository<OrderHeader> OrderHeader { get; }
         IRepository<OrderDetail> OrderDetail { get; }
+        IRepository<OrderStatusLog> OrderStatusLog { get; }
         IRepository<ApplicationUser> ApplicationUser { get; }
         IRepository<ProductOption> ProductOption { get; }
         IRepository<Wishlist> Wishlist { get; }
