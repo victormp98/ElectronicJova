@@ -90,6 +90,13 @@ namespace ElectronicJova.DbInitializer
                     await _userManager.UpdateAsync(adminUser);
                 }
 
+                // Asegurar que tenga EmailConfirmed = true (Fix para bloqueo de login)
+                if (!adminUser.EmailConfirmed)
+                {
+                    adminUser.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(adminUser);
+                }
+
                 // Asegurar que tenga el rol Admin
                 if (!await _userManager.IsInRoleAsync(adminUser, SD.Role_Admin))
                 {
