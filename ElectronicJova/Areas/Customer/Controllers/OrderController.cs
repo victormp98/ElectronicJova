@@ -109,11 +109,6 @@ namespace ElectronicJova.Areas.Customer.Controllers
             }
 
             model.Name = (model.Name ?? string.Empty).Trim();
-            model.PhoneNumber = NormalizeOptional(model.PhoneNumber);
-            model.StreetAddress = NormalizeOptional(model.StreetAddress);
-            model.City = NormalizeOptional(model.City);
-            model.State = NormalizeOptional(model.State);
-            model.PostalCode = NormalizeOptional(model.PostalCode);
 
             if (string.IsNullOrWhiteSpace(model.Name))
             {
@@ -140,12 +135,12 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 return View(model);
             }
 
-            user.Name = model.Name;
-            user.PhoneNumber = model.PhoneNumber;
-            user.StreetAddress = model.StreetAddress;
-            user.City = model.City;
-            user.State = model.State;
-            user.PostalCode = model.PostalCode;
+            user.Name = MergeOrKeep(user.Name, model.Name);
+            user.PhoneNumber = MergeOrKeep(user.PhoneNumber, model.PhoneNumber);
+            user.StreetAddress = MergeOrKeep(user.StreetAddress, model.StreetAddress);
+            user.City = MergeOrKeep(user.City, model.City);
+            user.State = MergeOrKeep(user.State, model.State);
+            user.PostalCode = MergeOrKeep(user.PostalCode, model.PostalCode);
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
@@ -167,14 +162,14 @@ namespace ElectronicJova.Areas.Customer.Controllers
             return RedirectToAction(nameof(Profile));
         }
 
-        private static string? NormalizeOptional(string? value)
+        private static string? MergeOrKeep(string? currentValue, string? incomingValue)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(incomingValue))
             {
-                return null;
+                return currentValue;
             }
 
-            return value.Trim();
+            return incomingValue.Trim();
         }
 
         private static string DeriveFallbackName(ApplicationUser user)
