@@ -152,13 +152,16 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
             // ── Stripe Payment Session ──
             var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+
+            _logger.LogInformation("STARTING STRIPE SESSION for Order #{OrderId} User: {Email}", cartVM.OrderHeader.Id, appUser?.Email ?? "Guest");
+
             var options = new SessionCreateOptions
             {
                 SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={cartVM.OrderHeader.Id}",
                 CancelUrl = domain + $"customer/cart/PaymentCancelled?id={cartVM.OrderHeader.Id}",
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
-                CustomerEmail = appUser?.Email,
+                CustomerEmail = appUser?.Email, 
                 ClientReferenceId = cartVM.OrderHeader.Id.ToString()
             };
 
@@ -181,7 +184,18 @@ namespace ElectronicJova.Areas.Customer.Controllers
             }
 
             var service = new SessionService();
-            Session session = service.Create(options);
+            Session session;
+            try 
+            {
+                session = service.Create(options);
+                _logger.LogInformation("STRIPE SESSION CREATED: ID {SessionId}, URL {Url}", session.Id, session.Url);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "STRIPE CONNECTION FAILED");
+                TempData["error"] = "Error conectando con pasarela de pago: " + ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
 
             cartVM.OrderHeader.SessionId = session.Id;
             _unitOfWork.OrderHeader.Update(cartVM.OrderHeader);
