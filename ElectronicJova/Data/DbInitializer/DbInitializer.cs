@@ -60,7 +60,8 @@ namespace ElectronicJova.DbInitializer
                     StreetAddress = "123 Admin St",
                     City = "Admin City",
                     State = "AA",
-                    PostalCode = "11111"
+                    PostalCode = "11111",
+                    EmailConfirmed = true // CRITICAL: Bypass email confirmation for seed admin
                 };
 
                 var result = await _userManager.CreateAsync(adminUser, "Admin123*");
