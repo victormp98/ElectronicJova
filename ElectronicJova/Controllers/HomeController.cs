@@ -207,8 +207,8 @@ namespace ElectronicJova.Controllers
             var cartItemCount = (await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == userId)).Count();
             HttpContext.Session.SetInt32("CartItemCount", cartItemCount);
 
-            TempData["success"] = "Product added to cart successfully.";
-            return RedirectToAction(nameof(Index));
+            TempData["success"] = "Producto agregado al carrito con éxito.";
+            return RedirectToAction(nameof(Details), new { id = detailsVM.Product.Id });
         }
     }
 }
