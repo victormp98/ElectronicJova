@@ -31,9 +31,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarMain">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["area"]?.ToString() != "Admin" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
+
                         @if (User.IsInRole(SD.Role_Admin))
                         {
                             <li class="nav-item">

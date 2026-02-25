@@ -2,37 +2,43 @@
 @model SearchVM
 
 @{
-    ViewData["Title"] = "Search Results";
+    ViewData["Title"] = "Resultados de búsqueda";
 }
 
-<div class="container">
+<div class="container pb-5">
     <div class="row pt-4">
         <div class="col-12">
-            <h1 class="display-4 text-primary">Search Products</h1>
-            <hr />
+            <h1 class="display-5 fw-bold text-light mb-0">Resultados de búsqueda</h1>
+            <p class="text-muted">Encontramos los mejores productos para ti</p>
+            <hr class="border-secondary opacity-25" />
         </div>
     </div>
 
     <!-- Search and Filter Form -->
-    <div class="row mb-4">
+    <div class="row mb-5">
         <div class="col-12">
-            <form asp-controller="Home" asp-action="Search" method="get" class="row g-3 align-items-end">
-                <div class="col-md-6">
-                    <label for="searchString" class="form-label">Product Name or Description</label>
-                    <input type="text" name="searchString" class="form-control" id="searchString" placeholder="e.g., Lord of the Rings" value="@Model.SearchString">
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="CategoryId" class="form-label">Category</label>
-                    <select asp-for="CategoryId" asp-items="@Model.CategoryList" class="form-select">
-                        <option value="">All Categories</option>
-                    </select>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-search"></i> Filter
-                    </button>
-                </div>
-            </form>
+            <div class="card bg-surface border-secondary p-4 shadow-lg">
+                <form asp-controller="Home" asp-action="Search" method="get" class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label for="searchString" class="form-label text-secondary mb-2">Nombre del producto o descripción</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-search"></i></span>
+                            <input type="text" name="searchString" class="form-control bg-dark border-secondary text-light" id="searchString" placeholder="Ej: Laptop gamer, iPhone..." value="@Model.SearchString">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="CategoryId" class="form-label text-secondary mb-2">Categoría</label>
+                        <select asp-for="CategoryId" asp-items="@Model.CategoryList" class="form-select bg-dark border-secondary text-light">
+                            <option value="">Todas las categorías</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary py-2 shadow-info">
+                            Filtrar
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -40,40 +46,49 @@
     @if (Model.Products != null && Model.Products.Any())
     {
     <!-- Product Cards -->
-    <div class="row pb-3">
+    <div class="row pb-3 g-4">
         @foreach (var product in Model.Products)
         {
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="card h-100 product-card border-0 shadow-sm">
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card h-100 product-card border-0 shadow-sm bg-card overflow-hidden">
                     <a asp-action="Details" asp-route-id="@product.Id" class="text-decoration-none h-100 d-flex flex-column">
-                        <div class="position-relative">
-                            <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/300x200?text=No+Image")" class="card-img-top" alt="@product!.Title" loading="lazy"/>
+                        <div class="position-relative overflow-hidden bg-white p-3" style="height: 220px;">
+                            <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/300x200?text=No+Image")" 
+                                 class="card-img-top w-100 h-100" style="object-fit: contain;" alt="@product!.Title" loading="lazy"/>
                             
                             @* Stock Badges *@
                             @if(product.Stock <= 0)
                             {
-                                 <span class="badge bg-danger position-absolute top-0 start-0 m-2">Agotado</span>
+                                 <span class="badge bg-danger position-absolute top-0 start-0 m-2 px-2 py-1 shadow">Agotado</span>
                             }
                             else if(product.Stock < 5)
                             {
-                                 <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">¡Últimas unidades!</span>
+                                 <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 px-2 py-1 shadow">
+                                     <i class="bi bi-exclamation-triangle-fill me-1"></i>¡Últimas unidades!
+                                 </span>
                             }
 
                             @* Offer Badge *@
                             @if(product.ListPrice > product.Price100)
                             {
-                                <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                                <span class="badge bg-success position-absolute top-0 end-0 m-2 px-2 py-1 shadow">
                                     -@(Math.Round((1 - (double)product.Price100 / (double)product.ListPrice) * 100))% OFF
                                 </span>
                             }
                         </div>
                         
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-dark">@product!.Title</h5>
-                            <p class="small text-muted mb-2">@product!.Author</p>
+                        <div class="card-body d-flex flex-column p-3">
+                            <h6 class="card-title text-light fw-bold mb-1 text-truncate">@product!.Title</h6>
+                            <p class="small text-muted mb-3">por <span class="text-info">@product!.Author</span></p>
                             
-                            <div class="price mt-auto text-dark fw-bold">
-                                @product!.Price100.ToString("c")
+                            <div class="price mt-auto d-flex align-items-center gap-2">
+                                @if (product.ListPrice > product.Price100)
+                                {
+                                    <small class="text-muted text-decoration-line-through small">@product.ListPrice.ToString("c")</small>
+                                }
+                                <div class="text-info fw-bold fs-5">
+                                    @product!.Price100.ToString("c")
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -85,9 +100,11 @@
     else
     {
         <div class="row mt-5">
-            <div class="col-12 text-center">
-                <p class="lead">No products found matching your criteria.</p>
-                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-search fs-1 text-muted mb-3 d-block opacity-25"></i>
+                <h4 class="text-light">No encontramos productos</h4>
+                <p class="text-muted lead">Intenta con otros criterios de búsqueda.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary mt-3">Volver al Inicio</a>
             </div>
         </div>
     }
@@ -95,9 +112,9 @@
     <!-- Pagination Controls -->
     @if (Model.Products != null && Model.Products.TotalPages > 1)
     {
-        <div class="d-flex justify-content-center mt-4">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
+        <div class="d-flex justify-content-center mt-5">
+            <nav aria-label="Navegación de páginas">
+                <ul class="pagination pagination-dark shadow-sm">
                     @{
                         var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
                         var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
@@ -107,23 +124,21 @@
                         <a class="page-link" asp-action="Search"
                            asp-route-pageNumber="@(Model.Products.PageIndex - 1)"
                            asp-route-searchString="@Model.SearchString"
-                           asp-route-categoryId="@Model.CategoryId"
-                           aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span> Previous
+                           asp-route-categoryId="@Model.CategoryId">
+                            <i class="bi bi-chevron-left me-1"></i> Anterior
                         </a>
                     </li>
 
                     <li class="page-item active" aria-current="page">
-                        <span class="page-link">Page @Model.Products.PageIndex of @Model.Products.TotalPages</span>
+                        <span class="page-link px-4">Página @Model.Products.PageIndex de @Model.Products.TotalPages</span>
                     </li>
 
                     <li class="page-item @nextDisabled">
                         <a class="page-link" asp-action="Search"
                            asp-route-pageNumber="@(Model.Products.PageIndex + 1)"
                            asp-route-searchString="@Model.SearchString"
-                           asp-route-categoryId="@Model.CategoryId"
-                           aria-label="Next">
-                            Next <span aria-hidden="true">&raquo;</span>
+                           asp-route-categoryId="@Model.CategoryId">
+                            Siguiente <i class="bi bi-chevron-right ms-1"></i>
                         </a>
                     </li>
                 </ul>

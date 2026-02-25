@@ -163,6 +163,9 @@
                         <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold text-uppercase shadow-info" @(!inStock ? "disabled" : "")>
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
+                        <button type="button" id="btnBuyNow" class="btn btn-outline-info btn-lg py-3 fw-bold text-uppercase shadow-sm" @(!inStock ? "disabled" : "")>
+                            <i class="bi bi-lightning-fill me-2"></i>Comprar Ahora
+                        </button>
                     </div>
 
                     <!-- Assurance -->
@@ -225,6 +228,24 @@
                 priceDisplay.text(new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(total));
             }
             checkboxes.on('change', updateTotal);
+
+            // ── Buy Now ──────────────────────────────────
+            $('#btnBuyNow').click(function() {
+                const form = $(this).closest('form');
+                
+                // Submit via AJAX so we can redirect after
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function() {
+                        window.location.href = '@Url.Action("Index", "Cart", new { area = "Customer" })';
+                    },
+                    error: function() {
+                        toastr.error('Error al procesar la compra. Intente de nuevo.');
+                    }
+                });
+            });
 
             // ── Favorite toggle ───────────────────────────
             $('#favoriteBtnImage').click(function () {

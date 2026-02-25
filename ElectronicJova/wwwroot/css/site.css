@@ -421,3 +421,47 @@ footer {
   position: relative;
   width: 100%;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   UTILITIES & FIXES
+   ══════════════════════════════════════════════════════════════ */
+
+/* Hide number input arrows (spin buttons) — Fixes Item 4 */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
+/* Custom shadow utilities */
+.shadow-info {
+  box-shadow: 0 4px 15px rgba(91, 141, 239, 0.3) !important;
+}
+
+.shadow-primary {
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3) !important;
+}
+
+/* Pagination styling */
+.pagination-dark .page-link {
+  background: var(--bg-surface);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.pagination-dark .page-item.active .page-link {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #000;
+  font-weight: 700;
+}
+
+.pagination-dark .page-link:hover {
+  background: var(--bg-card-hover);
+  color: var(--cyan);
+}
