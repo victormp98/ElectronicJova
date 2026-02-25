@@ -50,6 +50,9 @@
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   --shadow-glow: 0 0 15px rgba(0, 212, 255, 0.2);
   --shadow-glow-strong: 0 0 25px rgba(0, 212, 255, 0.4);
+  /* New Tokens for Consistency */
+  --accent-cyan: #00D4FF;
+  --border-color: rgba(51, 65, 85, 0.5);
 }
 
 /* ── Base ────────────────────────────────────────────────────── */
@@ -224,6 +227,7 @@ a:hover {
   line-height: 1.1;
   background: linear-gradient(to right, #fff, var(--cyan));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1.5rem;
 }
@@ -244,12 +248,32 @@ a:hover {
   border-radius: 12px;
   box-shadow: var(--shadow-card);
   transition: var(--transition);
+  /* Added for better browser compatibility */
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .card:hover {
   border-color: var(--border-accent);
+  box-shadow: 0 8px 15px -1px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+  background: var(--bg-card-hover);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+}
+
+/* Background Utility Helpers */
+.bg-card {
+  background-color: var(--bg-card) !important;
+}
+
+.bg-surface {
+  background-color: var(--bg-surface) !important;
+}
+
+.bg-base {
+  background-color: var(--bg-base) !important;
 }
 
 .card-header {
@@ -430,6 +454,7 @@ footer {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
@@ -459,6 +484,12 @@ input[type=number] {
   border-color: var(--cyan);
   color: #000;
   font-weight: 700;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .pagination-dark .page-link:hover {

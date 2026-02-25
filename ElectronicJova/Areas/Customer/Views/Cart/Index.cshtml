@@ -101,3 +101,45 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        function updateCartAction(url, element) {
+            // Mostrar un indicador de carga si es necesario
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    if (data.success) {
+                        // Recargar solo la sección del catálogo para mayor fluidez
+                        // Por ahora recargamos la página pero sin dejar huella en el historial
+                        window.location.replace(window.location.href);
+                    } else {
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    window.location.reload();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Interceptar clics en los botones de cantidad y eliminar
+            // Usamos selectores CSS que coincidan con las rutas generadas
+            $('a[href*="/Plus"], a[href*="/Minus"], a[href*="/Remove"]').on('click', function (e) {
+                const url = $(this).attr('href');
+                if (url && url !== '#' && !url.includes('Home/Index')) { 
+                    e.preventDefault();
+                    updateCartAction(url, $(this));
+                }
+            });
+            
+            // Re-vincular tooltip
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
+}

@@ -182,7 +182,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
                     PriceData = new SessionLineItemPriceDataOptions
                     {
                         UnitAmount = (long)(item.Price * 100),
-                        Currency = "usd",
+                        Currency = "mxn",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = item.Product!.Title
@@ -288,6 +288,10 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 TempData["error"] = "No puedes agregar más unidades. Stock máximo alcanzado.";
             }
 
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true });
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -313,6 +317,10 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 await _unitOfWork.SaveAsync();
             }
 
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true });
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -329,6 +337,10 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 u => u.ApplicationUserId == cartFromDb.ApplicationUserId)).Count();
             HttpContext.Session.SetInt32("CartItemCount", count);
 
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true });
+            }
             return RedirectToAction(nameof(Index));
         }
     }
