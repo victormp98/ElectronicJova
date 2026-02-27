@@ -242,6 +242,9 @@
     </div>
 </div>
 
+<!-- Plantilla de Reporte Administrativo (Oculta en pantalla) -->
+<partial name="_PrintReport" model="Model" />
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -316,6 +319,19 @@
                     }
                 }
             });
+
+            // Lógica para capturar el gráfico antes de imprimir
+            window.onbeforeprint = function () {
+                const canvas = document.getElementById('salesChart');
+                const printImg = document.getElementById('print-chart-img');
+                const loadingMsg = document.getElementById('chart-loading-msg');
+                
+                if (canvas && printImg) {
+                    printImg.src = canvas.toDataURL('image/png');
+                    printImg.style.display = 'block';
+                    if (loadingMsg) loadingMsg.style.display = 'none';
+                }
+            };
         });
     </script>
 }

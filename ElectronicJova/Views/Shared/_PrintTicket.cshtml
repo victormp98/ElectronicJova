@@ -1,0 +1,84 @@
+@model ElectronicJova.Models.OrderHeader
+@using ElectronicJova.Models
+
+<div class="print-template ticket-wrapper">
+    <div class="ticket-header">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+                <h1 style="margin: 0; color: #000; font-size: 28pt;">ELECTRONIJOVA</h1>
+                <p style="margin: 5px 0 0 0; font-size: 10pt; color: #666;">Tecnología de última generación</p>
+                <p style="margin: 2px 0; font-size: 9pt;">RFC: EJOV-980101-ABC | Tel: +52 (55) 1234 5678</p>
+            </div>
+            <div style="text-align: right;">
+                <h2 style="margin: 0; color: #333;">FACTURA</h2>
+                <p style="margin: 5px 0; font-weight: bold; font-size: 14pt;">#@Model.Id</p>
+                <p style="margin: 0; font-size: 10pt;">Fecha: @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 50px; margin-bottom: 2rem;">
+        <div style="flex: 1;">
+            <h6 style="border-bottom: 1px solid #ddd; padding-bottom: 5px; text-transform: uppercase; font-size: 9pt; color: #555;">Facturar a:</h6>
+            <p style="margin: 5px 0;"><strong>@Model.Name</strong></p>
+            <p style="margin: 2px 0; font-size: 10pt;">@Model.StreetAddress</p>
+            <p style="margin: 2px 0; font-size: 10pt;">@Model.City, @Model.State @Model.PostalCode</p>
+            <p style="margin: 2px 0; font-size: 10pt;">Tel: @Model.PhoneNumber</p>
+        </div>
+        <div style="flex: 1;">
+            <h6 style="border-bottom: 1px solid #ddd; padding-bottom: 5px; text-transform: uppercase; font-size: 9pt; color: #555;">Método de Envío:</h6>
+            <p style="margin: 5px 0; font-size: 10pt;">Transportista: @(string.IsNullOrEmpty(Model.Carrier) ? "Estándar" : Model.Carrier)</p>
+            <p style="margin: 2px 0; font-size: 10pt;">Guía: @(string.IsNullOrEmpty(Model.TrackingNumber) ? "Pendiente" : Model.TrackingNumber)</p>
+            <p style="margin: 5px 0; font-size: 10pt;">Estado del Pago: <span style="text-transform: uppercase; font-weight: bold;">@Model.PaymentStatus</span></p>
+        </div>
+    </div>
+
+    <table class="ticket-table">
+        <thead>
+            <tr>
+                <th>DESCRIPCIÓN</th>
+                <th style="text-align: center; width: 80px;">CANT</th>
+                <th style="text-align: right; width: 120px;">PRECIO UNIT.</th>
+                <th style="text-align: right; width: 120px;">TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* Note: The items should be passed via viewbag or as a separate model if needed, but for now we assume they are accessible *@
+            @foreach (var detail in (IEnumerable<OrderDetail>)ViewData["OrderDetails"])
+            {
+                <tr>
+                    <td>
+                        <div style="font-weight: bold;">@detail.Product.Title</div>
+                        @if (!string.IsNullOrEmpty(detail.SelectedOptions))
+                        {
+                            <div style="font-size: 8pt; color: #666;">@detail.SelectedOptions</div>
+                        }
+                    </td>
+                    <td style="text-align: center;">@detail.Count</td>
+                    <td style="text-align: right;">@detail.Price.ToString("c")</td>
+                    <td style="text-align: right; font-weight: bold;">@((detail.Count * detail.Price).ToString("c"))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="ticket-total-box">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Subtotal:</span>
+            <span>@Model.OrderTotal.ToString("c")</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 9pt; color: #666;">
+            <span>IVA (16% INC.):</span>
+            <span>@((Model.OrderTotal * 0.16).ToString("c"))</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 10px; border-top: 2px solid #000; padding-top: 10px; font-weight: bold; font-size: 14pt;">
+            <span>TOTAL:</span>
+            <span>@Model.OrderTotal.ToString("c")</span>
+        </div>
+    </div>
+
+    <div style="margin-top: 100px; text-align: center; border-top: 1px dashed #ccc; padding-top: 20px;">
+        <p style="margin: 0; font-size: 10pt;">¡Gracias por su compra en ElectronicJova!</p>
+        <p style="margin: 5px 0; font-size: 8pt; color: #888;">Este documento es un comprobante de compra válido.</p>
+    </div>
+</div>

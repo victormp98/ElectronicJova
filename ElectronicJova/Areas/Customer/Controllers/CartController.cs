@@ -233,6 +233,9 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 return Forbid();
             }
 
+            // Pasamos los detalles del pedido para la plantilla de impresión
+            ViewData["OrderDetails"] = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == id, includeProperties: "Product");
+
             // Solo mostramos la página. El webhook ya habrá procesado el pago,
             // decrementado el stock y enviado el email de confirmación.
             return View(orderHeader);

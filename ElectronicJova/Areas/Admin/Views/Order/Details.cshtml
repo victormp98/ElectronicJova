@@ -251,6 +251,12 @@
     </form>
 </div>
 
+<!-- Plantilla de Ticket Profesional para Impresión -->
+@{
+    ViewData["OrderDetails"] = Model.OrderDetail;
+}
+<partial name="_PrintTicket" model="Model.OrderHeader" view-data="ViewData" />
+
 @section Scripts {
     @{
         <partial name="_ValidationScriptsPartial" />
