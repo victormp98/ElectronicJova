@@ -565,6 +565,23 @@ select {
    ══════════════════════════════════════════════════════════════ */
 @media print {
 
+  /* Forzar visibilidad y eliminar desbordamientos que causan el efecto 'screenshot' */
+  html,
+  body {
+    overflow: visible !important;
+    height: auto !important;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 11pt !important;
+  }
+
+  body {
+    margin: 1.5cm !important;
+  }
+
+  /* Ocultar elementos de navegación y decoraciones electrónicas */
   header,
   footer,
   .btn,
@@ -574,24 +591,24 @@ select {
   .login-blob-2,
   .hero-section::before,
   #statusIcon,
-  .no-print {
+  .no-print,
+  .dropdown,
+  .alert,
+  .breadcrumb {
     display: none !important;
   }
 
-  body {
-    background: #fff !important;
-    color: #000 !important;
-    padding: 0 !important;
-    margin: 1cm !important;
-    font-size: 12pt !important;
-  }
-
-  /* Show print-only header */
+  /* Membrete Corporativo */
   .print-header {
     display: block !important;
-    border-bottom: 2px solid #000;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+  }
+
+  .print-header h1 {
+    margin-top: 0;
+    color: #000 !important;
   }
 
   .container,
@@ -600,73 +617,113 @@ select {
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: block !important;
   }
 
+  /* Tarjetas como bloques de información limpia */
   .card {
     border: 1px solid #ccc !important;
     box-shadow: none !important;
     background: #fff !important;
     color: #000 !important;
     page-break-inside: avoid;
-    margin-bottom: 1rem !important;
+    margin-bottom: 1.5rem !important;
+    border-radius: 0 !important;
   }
 
   .card-header {
-    background: #f8f9fa !important;
+    background: #f0f0f0 !important;
     border-bottom: 1px solid #ccc !important;
     color: #000 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 10pt;
   }
 
+  /* Forzar texto negro en todo */
   .text-light,
   .text-muted,
   .text-info,
   .text-success,
   .text-warning,
-  .text-secondary {
+  .text-secondary,
+  .text-primary,
+  .text-danger {
     color: #000 !important;
   }
 
+  /* Eliminar fondos oscuros de cualquier componente */
   .bg-card,
   .bg-surface,
   .bg-base,
-  .bg-transparent {
+  .bg-transparent,
+  .bg-dark,
+  .bg-primary,
+  .bg-info,
+  .bg-warning,
+  .bg-success,
+  .bg-danger {
     background: #fff !important;
     color: #000 !important;
   }
 
-  #salesChart {
-    max-width: 100% !important;
-    height: 350px !important;
-    margin-bottom: 20px;
-  }
-
+  /* Ajustar tablas para que parezcan facturas */
   .table {
     color: #000 !important;
+    border: 1px solid #999 !important;
+    width: 100% !important;
+  }
+
+  .table th {
+    background-color: #f0f0f0 !important;
+    border: 1px solid #999 !important;
+  }
+
+  .table td {
     border: 1px solid #ccc !important;
   }
 
-  .table th,
-  .table td {
-    border: 1px solid #eee !important;
+  /* Gráficas nítidas */
+  #salesChart {
+    width: 100% !important;
+    height: 400px !important;
+    margin: 20px 0;
   }
 
+  /* Badges simplificados */
   .badge {
     border: 1px solid #000 !important;
     color: #000 !important;
     background: #fff !important;
     text-transform: uppercase;
     font-size: 8pt;
+    padding: 2px 5px !important;
+    border-radius: 0 !important;
   }
 
-  /* Page Break optimization */
+  /* Control de saltos de página corporativo */
+  h1,
   h2,
   h3,
-  h5 {
+  h4,
+  h5,
+  h6 {
     page-break-after: avoid;
+    orphans: 3;
+    widows: 3;
   }
 
-  table,
+  table {
+    page-break-inside: auto;
+  }
+
   tr {
     page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* Quitar enlaces subrayados o con URL al imprimir (estándar moderno) */
+  a[href]:after {
+    content: none !important;
   }
 }

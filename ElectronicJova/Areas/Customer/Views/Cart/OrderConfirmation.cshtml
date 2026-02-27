@@ -11,7 +11,7 @@
         <div class="col-12 col-md-8 col-lg-6 text-center">
 
             <!-- Success Icon with glow -->
-            <div id="statusIcon" class="mb-4">
+            <div id="statusIcon" class="mb-4 no-print">
                 <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 position-relative"
                      style="width: 100px; height: 100px; background: rgba(0, 212, 255, 0.05); border: 2px solid var(--border-accent);">
                     <div class="position-absolute w-100 h-100 rounded-circle" style="box-shadow: 0 0 30px var(--cyan-glow); animation: pulse-glow 2s infinite;"></div>
@@ -25,7 +25,7 @@
 
             <!-- Status Card -->
             <div class="card border-secondary mb-4 bg-card shadow-sm">
-                <div class="card-body p-4">
+                <div class="card-body p-4 text-center">
                     <h5 class="fw-bold mb-3 text-light">Estado del pedido</h5>
                     <div id="orderStatusBadge" class="d-flex align-items-center justify-content-center gap-2">
                         <i class="bi @SD.GetOrderStatusIcon(Model.OrderStatus) fs-4 text-warning" id="statusBadgeIcon"></i>
@@ -33,14 +33,10 @@
                             @SD.GetOrderStatusLabel(Model.OrderStatus)
                         </span>
                     </div>
-                    <p class="small mt-3 mb-0 text-muted">
-                        <i class="bi bi-wifi me-1 text-info"></i>
-                        El estado se actualiza automáticamente en tiempo real.
-                    </p>
                 </div>
             </div>
 
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center no-print">
                 <button onclick="window.print()" class="btn btn-outline-info px-4">
                     <i class="bi bi-printer me-2"></i>Imprimir Ticket
                 </button>
