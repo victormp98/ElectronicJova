@@ -9,8 +9,13 @@
         <h2 class="mb-0 fw-bold text-light">
             <i class="bi bi-speedometer2 me-2 text-info"></i>Panel de Administración
         </h2>
-        <div class="text-secondary small">
-            <i class="bi bi-calendar3 me-1"></i> @DateTime.Today.ToString("dd MMMM yyyy")
+        <div class="d-flex align-items-center gap-2">
+            <button onclick="window.print()" class="btn btn-outline-info rounded-pill">
+                <i class="bi bi-printer me-1"></i> Imprimir Reporte
+            </button>
+            <div class="text-secondary small">
+                <i class="bi bi-calendar3 me-1"></i> @DateTime.Today.ToString("dd MMMM yyyy")
+            </div>
         </div>
     </div>
 

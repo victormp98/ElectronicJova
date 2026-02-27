@@ -61,6 +61,14 @@
   --border-color: rgba(51, 65, 85, 0.5);
 }
 
+/* ── Global Fixes ────────────────────────────────────────────── */
+html,
+body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
 /* ── Micro-Animations ────────────────────────────────────────── */
 @keyframes float {
   0% {
@@ -550,4 +558,115 @@ select {
 .pagination-dark .page-link:hover {
   background: var(--bg-card-hover);
   color: var(--cyan);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRINT STYLES FOR TICKETS & REPORTS
+   ══════════════════════════════════════════════════════════════ */
+@media print {
+
+  header,
+  footer,
+  .btn,
+  .search-container,
+  .navbar,
+  .login-blob-1,
+  .login-blob-2,
+  .hero-section::before,
+  #statusIcon,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+    margin: 1cm !important;
+    font-size: 12pt !important;
+  }
+
+  /* Show print-only header */
+  .print-header {
+    display: block !important;
+    border-bottom: 2px solid #000;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+
+  .container,
+  .container-fluid {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .card {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+    page-break-inside: avoid;
+    margin-bottom: 1rem !important;
+  }
+
+  .card-header {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #ccc !important;
+    color: #000 !important;
+  }
+
+  .text-light,
+  .text-muted,
+  .text-info,
+  .text-success,
+  .text-warning,
+  .text-secondary {
+    color: #000 !important;
+  }
+
+  .bg-card,
+  .bg-surface,
+  .bg-base,
+  .bg-transparent {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  #salesChart {
+    max-width: 100% !important;
+    height: 350px !important;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .table th,
+  .table td {
+    border: 1px solid #eee !important;
+  }
+
+  .badge {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    background: #fff !important;
+    text-transform: uppercase;
+    font-size: 8pt;
+  }
+
+  /* Page Break optimization */
+  h2,
+  h3,
+  h5 {
+    page-break-after: avoid;
+  }
+
+  table,
+  tr {
+    page-break-inside: avoid;
+  }
 }
