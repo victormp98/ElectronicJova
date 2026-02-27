@@ -81,12 +81,30 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 .OrderBy(p => topProductIds.IndexOf(p.Id))
                 .ToList();
 
+            // 5. Ventas de los últimos 7 días para el gráfico
+            var last7DaysSalesList = new List<DailySale>();
+            for (int i = 6; i >= 0; i--)
+            {
+                var date = todayDate.AddDays(-i);
+                var nextDate = date.AddDays(1);
+                var sales = (await _unitOfWork.OrderHeader.GetAllAsync(u => 
+                    u.OrderDate >= date && 
+                    u.OrderDate < nextDate &&
+                    u.PaymentStatus == SD.PaymentStatusApproved)).Sum(u => u.OrderTotal);
+                
+                last7DaysSalesList.Add(new DailySale { 
+                    Date = date.ToString("dd MMM"), 
+                    Total = sales 
+                });
+            }
+
             var dashboardVM = new DashboardVM
             {
                 TotalSalesToday = totalSalesToday,
                 PendingOrders = pendingOrders,
                 TotalProducts = totalProducts,
-                TopProducts = topProducts
+                TopProducts = topProducts,
+                Last7DaysSales = last7DaysSalesList
             };
 
                 return View(dashboardVM);

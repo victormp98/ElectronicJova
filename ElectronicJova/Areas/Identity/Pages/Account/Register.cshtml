@@ -285,6 +285,37 @@
                 icon.className = 'bi bi-eye';
             }
         }
+
+        $(document).ready(function() {
+            const passwordInput = $('#passwordInput');
+            const emailInput = $('input[asp-for="Input.Email"]');
+            
+            // Password Strength
+            passwordInput.on('input', function() {
+                const val = $(this).val();
+                let score = 0;
+                if (val.length >= 6) score++;
+                if (/[A-Z]/.test(val)) score++;
+                if (/[0-9]/.test(val)) score++;
+                if (/[^A-Za-z0-9]/.test(val)) score++;
+
+                const colors = ['#FF4757', '#FFA502', '#2ED573', '#1E90FF'];
+                const strength = score > 0 ? colors[score-1] : 'var(--border)';
+                $(this).css('border-color', strength);
+                $(this).css('box-shadow', `0 0 10px ${strength}22`);
+            });
+
+            // Email format check
+            emailInput.on('input', function() {
+                const val = $(this).val();
+                const isValid = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(val);
+                if (val.length > 0) {
+                    $(this).css('border-color', isValid ? 'var(--success)' : 'var(--danger)');
+                } else {
+                    $(this).css('border-color', 'var(--border)');
+                }
+            });
+        });
     </script>
 </body>
 </html>

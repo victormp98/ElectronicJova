@@ -8,5 +8,12 @@ namespace ElectronicJova.Models.ViewModels
         public int PendingOrders { get; set; }
         public int TotalProducts { get; set; }
         public List<Product> TopProducts { get; set; } = new List<Product>();
+        public List<DailySale> Last7DaysSales { get; set; } = new List<DailySale>();
+    }
+
+    public class DailySale
+    {
+        public string Date { get; set; } = string.Empty;
+        public decimal Total { get; set; }
     }
 }
