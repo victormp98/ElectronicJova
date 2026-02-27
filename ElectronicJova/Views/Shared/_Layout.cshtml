@@ -71,27 +71,28 @@
                                     <li><partial name="_LoginPartial" /></li>
                                 </ul>
                             </li>
-                            @if (!User.IsInRole(SD.Role_Admin))
-                            {
-                                <li class="nav-item ms-lg-3">
-                                    <a class="btn btn-outline-info d-flex align-items-center gap-2 position-relative px-3 py-2" 
-                                       asp-area="Customer" asp-controller="Cart" asp-action="Index"
-                                       style="border-radius: 10px; border-width: 2px;">
-                                        <i class="bi bi-cart3 fs-5"></i>
-                                        <span class="d-none d-lg-inline fw-bold me-1">Mi Carrito</span>
-                                        @if(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") > 0)
-                                        {
-                                            <span class="badge bg-danger rounded-pill shadow-sm" style="font-size: 0.7rem;">
-                                                @(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0)
-                                            </span>
-                                        }
-                                    </a>
-                                </li>
-                            }
                         }
                         else
                         {
                             <partial name="_LoginPartial" />
+                        }
+
+                        @if (!User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item ms-lg-3">
+                                <a class="btn btn-outline-info d-flex align-items-center gap-2 position-relative px-3 py-2" 
+                                   asp-area="Customer" asp-controller="Cart" asp-action="Index"
+                                   style="border-radius: 10px; border-width: 2px;">
+                                    <i class="bi bi-cart3 fs-5"></i>
+                                    <span class="d-none d-lg-inline fw-bold me-1">Mi Carrito</span>
+                                    @if(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") > 0)
+                                    {
+                                        <span class="badge bg-danger rounded-pill shadow-sm" style="font-size: 0.7rem;">
+                                            @(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0)
+                                        </span>
+                                    }
+                                </a>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -129,5 +130,51 @@
     </script>
     
     @await RenderSectionAsync("Scripts", required: false)
+    
+    @* Live Search Script *@
+    <script>
+        $(document).ready(function () {
+            const searchInput = $('input[name="searchString"]');
+            const searchForm = searchInput.closest('form');
+            const searchContainer = searchInput.closest('.search-container');
+            
+            // Add suggestions container
+            const suggestionsContainer = $('<div class="list-group position-absolute w-100 shadow" id="search-suggestions" style="z-index: 1000; display: none; top: 100%;"></div>');
+            searchContainer.append(suggestionsContainer);
+            searchContainer.css('position', 'relative');
+
+            let timeout = null;
+            searchInput.on('input', function() {
+                const query = $(this).val();
+                clearTimeout(timeout);
+                
+                if (query.length < 2) {
+                    suggestionsContainer.hide().empty();
+                    return;
+                }
+
+                timeout = setTimeout(function() {
+                    $.get('/Home/GetSuggestions', { query: query }, function(data) {
+                        suggestionsContainer.empty();
+                        if (data && data.length > 0) {
+                            data.forEach(item => {
+                                const link = $(`<a href="/Home/Details/${item.id}" class="list-group-item list-group-item-action bg-dark text-light border-secondary">${item.title}</a>`);
+                                suggestionsContainer.append(link);
+                            });
+                            suggestionsContainer.show();
+                        } else {
+                            suggestionsContainer.hide();
+                        }
+                    });
+                }, 300);
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.search-container').length) {
+                    suggestionsContainer.hide();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

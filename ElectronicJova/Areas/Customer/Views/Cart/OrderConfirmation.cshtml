@@ -41,6 +41,9 @@
             </div>
 
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <button onclick="window.print()" class="btn btn-outline-info px-4">
+                    <i class="bi bi-printer me-2"></i>Imprimir Ticket
+                </button>
                 <a asp-area="Customer" asp-controller="Order" asp-action="Details" asp-route-id="@Model.Id"
                    class="btn btn-outline-secondary px-4">
                     <i class="bi bi-receipt me-2"></i>Ver detalle del pedido

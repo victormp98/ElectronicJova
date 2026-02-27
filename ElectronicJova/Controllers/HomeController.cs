@@ -210,5 +210,20 @@ namespace ElectronicJova.Controllers
             TempData["success"] = "Producto agregado al carrito con éxito.";
             return RedirectToAction(nameof(Details), new { id = detailsVM.Product.Id });
         }
+        [HttpGet]
+        public async Task<IActionResult> GetSuggestions(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return Json(new List<object>());
+            }
+
+            var products = await _unitOfWork.Product.GetAllAsync(
+                u => u.Title.Contains(query) || u.Description.Contains(query)
+            );
+
+            var suggestions = products.Take(5).Select(p => new { id = p.Id, title = p.Title });
+            return Json(suggestions);
+        }
     }
 }

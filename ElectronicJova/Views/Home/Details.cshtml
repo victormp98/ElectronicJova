@@ -119,7 +119,7 @@
                         <label asp-for="Count" class="form-label text-muted fw-semibold">Cantidad:</label>
                         <div class="input-group" style="width: 150px;">
                             <button type="button" class="btn btn-outline-secondary" id="btnMinus"><i class="bi bi-dash"></i></button>
-                            <input asp-for="Count" type="number" id="itemCount" class="form-control text-center fw-bold bg-dark text-light border-secondary" value="1" min="1" max="@Model.Product.Stock" />
+                            <input asp-for="Count" type="number" id="itemCount" class="form-control text-center fw-bold bg-dark text-light border-secondary" value="1" min="1" max="@Model.Product.Stock" onkeydown="return false;" />
                             <button type="button" class="btn btn-outline-secondary" id="btnPlus"><i class="bi bi-plus"></i></button>
                         </div>
                     </div>
