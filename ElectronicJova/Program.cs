@@ -115,13 +115,22 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
-// Security Headers Middleware
+// Security Headers Middleware with inclusive CSP for Admin Panel
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Append("X-Frame-Options", "DENY");
     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
     context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
-    context.Response.Headers.Append("Content-Security-Policy", "default-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://js.stripe.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https://via.placeholder.com https://*.stripe.com; frame-src https://js.stripe.com;");
+    
+    var csp = "default-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://js.stripe.com https://cdn.datatables.net; " +
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://js.stripe.com https://cdn.datatables.net; " +
+              "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://cdn.datatables.net; " +
+              "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " +
+              "img-src 'self' data: https://via.placeholder.com https://*.stripe.com; " +
+              "frame-src https://js.stripe.com; " +
+              "connect-src 'self' https://api.stripe.com;";
+              
+    context.Response.Headers.Append("Content-Security-Policy", csp);
     await next();
 });
 
