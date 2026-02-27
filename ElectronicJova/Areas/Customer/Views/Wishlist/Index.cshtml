@@ -42,8 +42,8 @@
                     <div class="card h-100 border-secondary bg-card shadow-sm product-card">
                         <!-- Image -->
                         <div class="position-relative overflow-hidden" style="border-radius: 0.5rem 0.5rem 0 0;">
-                            <img src="@ImageUrlHelper.GetDisplayUrl(item.Product.ImageUrl, "https://via.placeholder.com/300x400?text=No+Image")"
-                                 class="card-img-top" alt="@item.Product.Title"
+                            <img src="@ImageUrlHelper.GetDisplayUrl(item.Product!.ImageUrl, "https://via.placeholder.com/300x400?text=No+Image")"
+                                 class="card-img-top" alt="@item.Product!.Title"
                                  style="height: 220px; object-fit: cover; transition: transform 0.4s ease;" />
 
                             <!-- Stock Badges -->

@@ -147,12 +147,12 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 return View(model);
             }
 
-            user.Name = MergeOrKeep(user.Name, model.Name);
-            user.PhoneNumber = MergeOrKeep(user.PhoneNumber, model.PhoneNumber);
-            user.StreetAddress = MergeOrKeep(user.StreetAddress, model.StreetAddress);
-            user.City = MergeOrKeep(user.City, model.City);
-            user.State = MergeOrKeep(user.State, model.State);
-            user.PostalCode = MergeOrKeep(user.PostalCode, model.PostalCode);
+            user.Name = MergeOrKeep(user.Name, model.Name) ?? user.Name;
+            user.PhoneNumber = MergeOrKeep(user.PhoneNumber, model.PhoneNumber) ?? user.PhoneNumber;
+            user.StreetAddress = MergeOrKeep(user.StreetAddress, model.StreetAddress) ?? user.StreetAddress;
+            user.City = MergeOrKeep(user.City, model.City) ?? user.City;
+            user.State = MergeOrKeep(user.State, model.State) ?? user.State;
+            user.PostalCode = MergeOrKeep(user.PostalCode, model.PostalCode) ?? user.PostalCode;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)

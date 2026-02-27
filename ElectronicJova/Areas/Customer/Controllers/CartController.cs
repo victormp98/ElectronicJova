@@ -124,8 +124,14 @@ namespace ElectronicJova.Areas.Customer.Controllers
             var appUser = await _unitOfWork.ApplicationUser.GetFirstOrDefaultAsync(u => u.Id == userId);
             if (appUser != null)
             {
-                cartVM.OrderHeader.PhoneNumber = appUser.PhoneNumber;
-                cartVM.OrderHeader.Email = appUser.Email;
+                cartVM.OrderHeader.PhoneNumber = cartVM.OrderHeader.PhoneNumber ?? appUser.PhoneNumber;
+                cartVM.OrderHeader.Email = cartVM.OrderHeader.Email ?? appUser.Email;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // Si hay errores, no vamos a Stripe, recargamos la vista de resumen
+                return View(cartVM);
             }
 
             foreach (var cart in cartVM.ShoppingCartList)

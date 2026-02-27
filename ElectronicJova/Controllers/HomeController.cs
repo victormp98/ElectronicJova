@@ -173,7 +173,7 @@ namespace ElectronicJova.Controllers
                 optionsJson = System.Text.Json.JsonSerializer.Serialize(options.Select(o => new { o.Name, o.Value, o.AdditionalPrice }));
             }
 
-            ShoppingCart cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(
+            ShoppingCart? cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(
                 u => u.ApplicationUserId == userId && u.ProductId == detailsVM.Product.Id && u.SelectedOptions == optionsJson
             );
 

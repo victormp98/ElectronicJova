@@ -148,7 +148,10 @@ namespace ElectronicJova.Areas.Admin.Controllers
                         <p>Gracias por confiar en nosotros.</p>
                     </div>";
                 
-                await _emailSender.SendEmailAsync(orderHEaderFromDb.ApplicationUser.Email, emailSubject, emailBody);
+                if (orderHEaderFromDb.ApplicationUser != null && !string.IsNullOrEmpty(orderHEaderFromDb.ApplicationUser.Email))
+                {
+                    await _emailSender.SendEmailAsync(orderHEaderFromDb.ApplicationUser.Email, emailSubject, emailBody);
+                }
             }
             catch (Exception ex)
             {
@@ -261,7 +264,10 @@ namespace ElectronicJova.Areas.Admin.Controllers
                         <p>Lamentamos los inconvenientes.</p>
                     </div>";
                 
-                await _emailSender.SendEmailAsync(orderHEaderFromDb.ApplicationUser.Email, emailSubject, emailBody);
+                if (orderHEaderFromDb.ApplicationUser != null && !string.IsNullOrEmpty(orderHEaderFromDb.ApplicationUser.Email))
+                {
+                    await _emailSender.SendEmailAsync(orderHEaderFromDb.ApplicationUser.Email, emailSubject, emailBody);
+                }
             }
             catch (Exception) { /* Ignore email errors */ }
 

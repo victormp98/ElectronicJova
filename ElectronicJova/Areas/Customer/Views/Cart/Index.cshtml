@@ -33,14 +33,17 @@
                                 @if (!string.IsNullOrEmpty(item.SelectedOptions))
                                 {
                                     var opts = System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(item.SelectedOptions);
-                                    <div class="mb-2">
-                                        @foreach (var opt in opts)
-                                        {
-                                            <span class="badge bg-dark text-light border border-secondary me-1 mb-1" style="font-size: 0.7rem;">
-                                                @opt.GetProperty("Name"): @opt.GetProperty("Value")
-                                            </span>
-                                        }
-                                    </div>
+                                    if (opts != null)
+                                    {
+                                        <div class="mb-2">
+                                            @foreach (var opt in opts)
+                                            {
+                                                <span class="badge bg-dark text-light border border-secondary me-1 mb-1" style="font-size: 0.7rem;">
+                                                    @opt.GetProperty("Name"): @opt.GetProperty("Value")
+                                                </span>
+                                            }
+                                        </div>
+                                    }
                                 }
 
                                 @if (!string.IsNullOrEmpty(item.SpecialNotes))

@@ -43,21 +43,26 @@
             </tr>
         </thead>
         <tbody>
-            @* Note: The items should be passed via viewbag or as a separate model if needed, but for now we assume they are accessible *@
-            @foreach (var detail in (IEnumerable<OrderDetail>)ViewData["OrderDetails"])
+            @{
+                var orderDetails = ViewData["OrderDetails"] as IEnumerable<OrderDetail>;
+            }
+            @if (orderDetails != null)
             {
-                <tr>
-                    <td>
-                        <div style="font-weight: bold;">@detail.Product.Title</div>
-                        @if (!string.IsNullOrEmpty(detail.SelectedOptions))
-                        {
-                            <div style="font-size: 8pt; color: #666;">@detail.SelectedOptions</div>
-                        }
-                    </td>
-                    <td style="text-align: center;">@detail.Count</td>
-                    <td style="text-align: right;">@detail.Price.ToString("c")</td>
-                    <td style="text-align: right; font-weight: bold;">@((detail.Count * detail.Price).ToString("c"))</td>
-                </tr>
+                @foreach (var detail in orderDetails)
+                {
+                    <tr>
+                        <td>
+                            <div style="font-weight: bold;">@(detail.Product?.Title ?? "Producto")</div>
+                            @if (!string.IsNullOrEmpty(detail.SelectedOptions))
+                            {
+                                <div style="font-size: 8pt; color: #666;">@detail.SelectedOptions</div>
+                            }
+                        </td>
+                        <td style="text-align: center;">@detail.Count</td>
+                        <td style="text-align: right;">@detail.Price.ToString("c")</td>
+                        <td style="text-align: right; font-weight: bold;">@((detail.Count * detail.Price).ToString("c"))</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -69,7 +74,7 @@
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 9pt; color: #666;">
             <span>IVA (16% INC.):</span>
-            <span>@((Model.OrderTotal * 0.16).ToString("c"))</span>
+            <span>@((Model.OrderTotal * 0.16m).ToString("c"))</span>
         </div>
         <div style="display: flex; justify-content: space-between; margin-top: 10px; border-top: 2px solid #000; padding-top: 10px; font-weight: bold; font-size: 14pt;">
             <span>TOTAL:</span>

@@ -72,9 +72,9 @@
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
-                                            @User.Identity.Name?.Substring(0, 1).ToUpper()
+                                            @User.Identity?.Name?.Substring(0, 1).ToUpper()
                                         </div>
-                                        <span>@( (await UserManager.GetUserAsync(User))?.Name ?? User.Identity.Name )</span>
+                                        <span>@( (await UserManager.GetUserAsync(User))?.Name ?? User.Identity?.Name ?? "Usuario" )</span>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-secondary mt-2">
@@ -99,10 +99,10 @@
                                    style="border-radius: 10px; border-width: 2px;">
                                     <i class="bi bi-cart3 fs-5"></i>
                                     <span class="d-none d-lg-inline fw-bold me-1">Mi Carrito</span>
-                                    @if(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") > 0)
+                                    @if(HttpContextAccessor.HttpContext?.Session?.GetInt32("CartItemCount") != null && HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") > 0)
                                     {
                                         <span class="badge bg-danger rounded-pill shadow-sm" style="font-size: 0.7rem;">
-                                            @(HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount") ?? 0)
+                                            @HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount")
                                         </span>
                                     }
                                 </a>
