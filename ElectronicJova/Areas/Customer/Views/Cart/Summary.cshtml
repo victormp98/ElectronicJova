@@ -46,6 +46,16 @@
                                     <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger small fw-bold"></span>
                                 </div>
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-3">
+                                    <label asp-for="OrderHeader.Email" class="form-label text-secondary">Correo electrónico</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input asp-for="OrderHeader.Email" class="form-control" placeholder="correo@ejemplo.com" />
+                                    <span asp-validation-for="OrderHeader.Email" class="text-danger small fw-bold"></span>
+                                </div>
+                            </div>
                             
                             <div class="row mb-3">
                                 <div class="col-12 col-md-3">

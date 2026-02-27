@@ -76,6 +76,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
 
             CartVM.OrderHeader.Name = CartVM.OrderHeader.ApplicationUser.Name;
             CartVM.OrderHeader.PhoneNumber = CartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            CartVM.OrderHeader.Email = CartVM.OrderHeader.ApplicationUser.Email;
             CartVM.OrderHeader.StreetAddress = CartVM.OrderHeader.ApplicationUser.StreetAddress;
             CartVM.OrderHeader.City = CartVM.OrderHeader.ApplicationUser.City;
             CartVM.OrderHeader.State = CartVM.OrderHeader.ApplicationUser.State;
