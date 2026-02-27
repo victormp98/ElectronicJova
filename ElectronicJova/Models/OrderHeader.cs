@@ -9,8 +9,10 @@ namespace ElectronicJova.Models
         public int Id { get; set; }
 
         [Required]
+        [Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidateNever]
         public string ApplicationUserId { get; set; } = string.Empty;
         [ForeignKey("ApplicationUserId")]
+        [Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidateNever]
         public ApplicationUser? ApplicationUser { get; set; }
 
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;

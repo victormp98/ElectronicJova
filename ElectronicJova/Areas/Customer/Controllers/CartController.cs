@@ -128,9 +128,16 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 cartVM.OrderHeader.Email = cartVM.OrderHeader.Email ?? appUser.Email;
             }
 
+            // Remove system-filled fields from validation
+            ModelState.Remove("OrderHeader.ApplicationUserId");
+            ModelState.Remove("OrderHeader.OrderStatus");
+            ModelState.Remove("OrderHeader.PaymentStatus");
+
             if (!ModelState.IsValid)
             {
-                // Si hay errores, no vamos a Stripe, recargamos la vista de resumen
+                // Re-populate list if returning to view
+                cartVM.ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(
+                    u => u.ApplicationUserId == userId, includeProperties: "Product");
                 return View(cartVM);
             }
 

@@ -72,7 +72,12 @@
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
-                                            @User.Identity?.Name?.Substring(0, 1).ToUpper()
+                                            @{
+                                                var firstLetter = "U";
+                                                var name = User.Identity?.Name;
+                                                if (!string.IsNullOrEmpty(name)) firstLetter = name.Substring(0, 1).ToUpper();
+                                            }
+                                            @firstLetter
                                         </div>
                                         <span>@( (await UserManager.GetUserAsync(User))?.Name ?? User.Identity?.Name ?? "Usuario" )</span>
                                     </div>

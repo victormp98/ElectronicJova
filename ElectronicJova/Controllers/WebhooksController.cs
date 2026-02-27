@@ -104,11 +104,11 @@ namespace ElectronicJova.Controllers
                                             <p style='font-size: 12px; color: #999;'>ElectronicJova Inc.</p>
                                         </div>";
                                     
-                                    await _emailSender.SendEmailAsync(
-                                        session.CustomerDetails?.Email ?? orderHeader.ApplicationUser?.Email ?? session.CustomerEmail, 
-                                        emailSubject, 
-                                        emailBody
-                                    );
+                                    var targetEmail = session.CustomerDetails?.Email ?? orderHeader.ApplicationUser?.Email ?? session.CustomerEmail;
+                                    if (!string.IsNullOrEmpty(targetEmail))
+                                    {
+                                        await _emailSender.SendEmailAsync(targetEmail, emailSubject, emailBody);
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
