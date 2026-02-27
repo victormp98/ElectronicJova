@@ -137,12 +137,12 @@ app.Use(async (context, next) =>
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // app.UseExceptionHandler("/Home/Error"); 
+    // Comentado temporalmente para ver el error real si ocurre en producción
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
+// app.UseStatusCodePagesWithReExecute("/Home/Error/{0}"); // Deshabilitado para depurar 404
 
 var supportedCultures = new[] { "es-MX" };
 var localizationOptions = new RequestLocalizationOptions()
@@ -152,7 +152,7 @@ var localizationOptions = new RequestLocalizationOptions()
 
 app.UseRequestLocalization(localizationOptions);
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Deshabilitado: Coolify maneja SSL externamente
 app.UseStaticFiles();
 
 app.UseRouting();

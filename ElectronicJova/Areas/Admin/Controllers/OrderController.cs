@@ -16,27 +16,40 @@ namespace ElectronicJova.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHubContext<OrderStatusHub> _hubContext; // Restored
-        private readonly IEmailSender _emailSender; // Added Email Sender
+        private readonly IHubContext<OrderStatusHub> _hubContext;
+        private readonly IEmailSender _emailSender;
+        private readonly ILogger<OrderController> _logger; // Injected Logger
 
         [BindProperty]
         public OrderDetailsVM OrderDetailsVM { get; set; } = new();
 
-        public OrderController(IUnitOfWork unitOfWork, IHubContext<OrderStatusHub> hubContext, IEmailSender emailSender)
+        public OrderController(IUnitOfWork unitOfWork, IHubContext<OrderStatusHub> hubContext, IEmailSender emailSender, ILogger<OrderController> logger)
         {
             _unitOfWork = unitOfWork;
             _hubContext = hubContext;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader.GetQueryable(includeProperties: "ApplicationUser", tracked: false);
+            try 
+            {
+                _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
+                IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader.GetQueryable(includeProperties: "ApplicationUser", tracked: false);
 
-            int pageSize = 10;
-            var paginatedOrders = await PaginatedList<OrderHeader>.CreateAsync(orderHeaderQuery, pageNumber ?? 1, pageSize);
-
-            return View(paginatedOrders);
+                int pageSize = 10;
+                var paginatedOrders = await PaginatedList<OrderHeader>.CreateAsync(orderHeaderQuery, pageNumber ?? 1, pageSize);
+                
+                _logger.LogInformation("Admin Order Index loaded {Count} orders.", paginatedOrders.Count);
+                return View(paginatedOrders);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "FATAL ERROR in Admin Order Index. Context help: Verify OrderHeader table and ApplicationUser properties.");
+                // Retornar una lista vacía para evitar el 500 mientras se investiga
+                return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
+            }
         }
 
         public async Task<IActionResult> Details(int orderId)
