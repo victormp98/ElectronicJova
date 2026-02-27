@@ -74,11 +74,17 @@ builder.Services.AddSession(options =>
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 var stripeSecretKey = builder.Configuration["StripeSettings:SecretKey"];
 var stripeWebhookSecret = builder.Configuration["StripeSettings:WebhookSecret"];
-if (string.IsNullOrEmpty(stripeSecretKey))
-    throw new InvalidOperationException("StripeSettings:SecretKey no está configurado. Revisa appsettings.json o las variables de entorno.");
-if (string.IsNullOrEmpty(stripeWebhookSecret))
-    throw new InvalidOperationException("StripeSettings:WebhookSecret no está configurado. Sin esto, los webhooks de Stripe no se verifican.");
-StripeConfiguration.ApiKey = stripeSecretKey;
+
+if (string.IsNullOrEmpty(stripeSecretKey) || stripeSecretKey == "REPLACE_WITH_SECRET") {
+    Log.Error("STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.");
+    if (builder.Environment.IsDevelopment()) throw new InvalidOperationException("Stripe SecretKey missing in Development.");
+} else {
+    StripeConfiguration.ApiKey = stripeSecretKey;
+}
+
+if (string.IsNullOrEmpty(stripeWebhookSecret) || stripeWebhookSecret == "REPLACE_WITH_SECRET") {
+    Log.Warning("STRIPE WARNING: WebhookSecret no está configurado. Las notificaciones automáticas de pago fallarán.");
+}
 
 
 // Add Rate Limiting (Fase 4: Seguridad)

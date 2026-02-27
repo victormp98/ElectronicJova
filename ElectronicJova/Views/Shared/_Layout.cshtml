@@ -74,12 +74,19 @@
                                         <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
                                             @{
                                                 var firstLetter = "U";
-                                                var name = User.Identity?.Name;
-                                                if (!string.IsNullOrEmpty(name)) firstLetter = name.Substring(0, 1).ToUpper();
+                                                var displayName = "Usuario";
+                                                try {
+                                                    var user = await UserManager.GetUserAsync(User);
+                                                    displayName = user?.Name ?? User.Identity?.Name ?? "Usuario";
+                                                    if (!string.IsNullOrEmpty(displayName)) firstLetter = displayName.Substring(0, 1).ToUpper();
+                                                } catch {
+                                                    displayName = User.Identity?.Name ?? "Usuario";
+                                                    if (!string.IsNullOrEmpty(displayName)) firstLetter = displayName.Substring(0, 1).ToUpper();
+                                                }
                                             }
                                             @firstLetter
                                         </div>
-                                        <span>@( (await UserManager.GetUserAsync(User))?.Name ?? User.Identity?.Name ?? "Usuario" )</span>
+                                        <span>@displayName</span>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-secondary mt-2">

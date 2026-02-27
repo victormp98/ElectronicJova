@@ -128,16 +128,27 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 cartVM.OrderHeader.Email = cartVM.OrderHeader.Email ?? appUser.Email;
             }
 
-            // Remove system-filled fields from validation
-            ModelState.Remove("OrderHeader.ApplicationUserId");
-            ModelState.Remove("OrderHeader.OrderStatus");
-            ModelState.Remove("OrderHeader.PaymentStatus");
+            // Remove system-filled fields from validation (support both parameter naming conventions)
+            string[] systemFields = { "ApplicationUserId", "OrderStatus", "PaymentStatus" };
+            foreach (var field in systemFields)
+            {
+                ModelState.Remove($"OrderHeader.{field}");
+                ModelState.Remove($"cartVM.OrderHeader.{field}");
+            }
 
             if (!ModelState.IsValid)
             {
-                // Re-populate list if returning to view
+                // Re-populate list and recalculate totals if returning to view
                 cartVM.ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(
                     u => u.ApplicationUserId == userId, includeProperties: "Product");
+                
+                cartVM.OrderHeader.OrderTotal = 0;
+                foreach (var cart in cartVM.ShoppingCartList)
+                {
+                    cart.Price = PricingCalculator.GetPriceBasedOnQuantity(cart);
+                    cartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+                }
+                
                 return View(cartVM);
             }
 
