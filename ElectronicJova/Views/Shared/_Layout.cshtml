@@ -90,8 +90,11 @@
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-secondary mt-2">
-                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Wishlist" asp-action="Index"><i class="bi bi-heart me-2 text-danger"></i>Mis Favoritos</a></li>
-                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index"><i class="bi bi-box-seam me-2 text-info"></i>Mis Pedidos</a></li>
+                                    @if (!User.IsInRole(SD.Role_Admin))
+                                    {
+                                        <li><a class="dropdown-item" asp-area="Customer" asp-controller="Wishlist" asp-action="Index"><i class="bi bi-heart me-2 text-danger"></i>Mis Favoritos</a></li>
+                                        <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index"><i class="bi bi-box-seam me-2 text-info"></i>Mis Pedidos</a></li>
+                                    }
                                     <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Profile"><i class="bi bi-person me-2 text-warning"></i>Mi Perfil</a></li>
                                     <li><hr class="dropdown-divider border-secondary"></li>
                                     <li><partial name="_LoginPartial" /></li>
@@ -103,7 +106,7 @@
                             <partial name="_LoginPartial" />
                         }
 
-                        @if (!User.IsInRole(SD.Role_Admin))
+                        @if (User.Identity!.IsAuthenticated && !User.IsInRole(SD.Role_Admin))
                         {
                             <li class="nav-item ms-lg-3">
                                 <a class="btn btn-outline-info d-flex align-items-center gap-2 position-relative px-3 py-2" 
@@ -117,6 +120,17 @@
                                             @HttpContextAccessor.HttpContext.Session.GetInt32("CartItemCount")
                                         </span>
                                     }
+                                </a>
+                            </li>
+                        }
+                        else if (!User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item ms-lg-3">
+                                <a class="btn btn-outline-light d-flex align-items-center gap-2 px-3 py-2"
+                                   asp-area="Identity" asp-page="/Account/Login"
+                                   style="border-radius: 10px; border-width: 2px;">
+                                    <i class="bi bi-box-arrow-in-right fs-5"></i>
+                                    <span class="d-none d-lg-inline fw-bold">Ingresar</span>
                                 </a>
                             </li>
                         }

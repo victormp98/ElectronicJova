@@ -155,7 +155,13 @@ namespace ElectronicJova.Controllers
 
             if (userId == null)
             {
-                return Unauthorized();
+                // Redirigir al login en lugar de devolver 401 crudo.
+                // ReturnUrl apunta de vuelta al producto para que al iniciar sesión vuelva a él.
+                return RedirectToPage("/Account/Login", new
+                {
+                    area = "Identity",
+                    returnUrl = Url.Action("Details", "Home", new { id = detailsVM.Product.Id })
+                });
             }
 
             // B-05: Reload product from DB to prevent tampered hidden-field attacks

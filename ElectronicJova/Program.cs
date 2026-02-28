@@ -53,6 +53,19 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// Configurar rutas de autenticación explícitas para evitar el bug de 404 en producción
+// ASP.NET Identity por default usa /Account/Login (sin /Identity/), lo que genera 404 en producción.
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    // ReturnUrlParameter a la página de donde vino el usuario al intentar acceder sin sesión
+    options.ReturnUrlParameter = "returnUrl";
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+});
+
 builder.Services.AddOptions();
 builder.Services.Configure<ResendClientOptions>(o =>
 {
