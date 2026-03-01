@@ -28,23 +28,23 @@
                 Administra y da seguimiento a todos los pedidos de la tienda
             </p>
         </div>
-        <span class="badge rounded-pill px-3 py-2 bg-dark border border-secondary text-info d-none d-sm-inline-block">
+        <span class="badge rounded-pill px-3 py-2 bg-dark border border-secondary text-info">
             <i class="bi bi-list-check me-1"></i>@(Model?.Count() ?? 0) pedidos
         </span>
     </div>
 
     @if (Model != null && Model.Any())
     {
-        <div class="card border-secondary bg-card shadow-sm overflow-hidden">
+        <div class="card border-secondary bg-card shadow-sm overflow-hidden table-responsive-stack">
             <div class="card-body p-0">
                 <table class="table table-dark table-hover align-middle mb-0 bg-transparent">
                     <thead>
                         <tr class="text-secondary small text-uppercase fw-bold">
-                            <th class="py-3 ps-4">#</th>
+                            <th class="py-3 ps-4"># Pedido</th>
                             <th class="py-3">Cliente</th>
                             <th class="py-3 d-none d-md-table-cell">Teléfono</th>
                             <th class="py-3 d-none d-xl-table-cell">Correo</th>
-                            <th class="py-3 d-none d-sm-table-cell font-monospace">Total</th>
+                            <th class="py-3 d-none d-sm-table-cell">Total</th>
                             <th class="py-3">Estado</th>
                             <th class="text-end py-3 pe-4">Acciones</th>
                         </tr>
@@ -56,21 +56,20 @@
                                              orderHeader.OrderStatus == "Shipped"   ? "bg-info" :
                                              orderHeader.OrderStatus == "Cancelled" ? "bg-danger" : "bg-warning text-dark";
                             <tr>
-                                <td class="fw-bold ps-4 text-info">#@orderHeader.Id</td>
-                                <td class="text-light">
+                                <td class="fw-bold ps-4 text-info" data-label="# Pedido">#@orderHeader.Id</td>
+                                <td class="text-light" data-label="Cliente">
                                     <div class="fw-bold">@orderHeader.Name</div>
                                     <div class="small text-muted d-xl-none">@orderHeader.Email</div>
-                                    <div class="small text-info d-sm-none mt-1">@orderHeader.OrderTotal.ToString("c")</div>
                                 </td>
-                                <td class="text-muted d-none d-md-table-cell">@orderHeader.PhoneNumber</td>
-                                <td class="small text-muted d-none d-xl-table-cell">@orderHeader.Email</td>
-                                <td class="fw-bold text-info d-none d-sm-table-cell font-monospace">@orderHeader.OrderTotal.ToString("c")</td>
-                                <td>
-                                    <span class="badge rounded-pill @badgeClass px-2 py-1 small" style="font-size: 0.75rem;">
+                                <td class="text-muted d-none d-md-table-cell" data-label="Teléfono">@orderHeader.PhoneNumber</td>
+                                <td class="small text-muted d-none d-xl-table-cell" data-label="Correo">@orderHeader.Email</td>
+                                <td class="fw-bold text-info d-none d-sm-table-cell" data-label="Total">@orderHeader.OrderTotal.ToString("c")</td>
+                                <td data-label="Estado">
+                                    <span class="badge rounded-pill @badgeClass px-3 py-2">
                                         @SD.GetOrderStatusLabel(orderHeader.OrderStatus)
                                     </span>
                                 </td>
-                                <td class="text-end pe-4">
+                                <td class="text-end pe-4" data-label="Acciones">
                                     <a asp-action="Details" asp-route-orderId="@orderHeader.Id"
                                        class="btn btn-sm btn-outline-info rounded-circle p-2" title="Ver Detalles">
                                         <i class="bi bi-eye"></i>

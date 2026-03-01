@@ -216,18 +216,51 @@
     margin-left: 0;
     width: 100%;
     max-width: 100vw;
-    overflow-x: hidden;
+    overflow-x: visible;
   }
 
-  /* Ultra-Responsive Table Fix: Force vertical growth, no horizontal scroll */
-  .table td,
-  .table th {
+  /* Expert Responsive Table: Stack Pattern for Ultra-Mobile */
+  .table-responsive-stack .table thead {
+    display: none;
+  }
+
+  .table-responsive-stack .table tbody tr {
+    display: block;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 0.5rem;
+    background: var(--bg-card) !important;
+  }
+
+  .table-responsive-stack .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 0.75rem 1rem !important;
+    text-align: right;
     white-space: normal !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    padding: 0.75rem 0.5rem !important;
-    font-size: 0.85rem;
+  }
+
+  .table-responsive-stack .table td:last-child {
+    border-bottom: 0 !important;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.05);
+    margin-top: 0.5rem;
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* Use data-label for mobile headers */
+  .table-responsive-stack .table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-align: left;
+    margin-right: 1rem;
+    flex-shrink: 0;
   }
 }
-
-Riverside:
