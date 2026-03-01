@@ -37,24 +37,27 @@ namespace ElectronicJova.Areas.Admin.Controllers
             {
                 _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
                 
-                // Debug: Check total count in DB regardless of includes
-                var totalInDb = (await _unitOfWork.OrderHeader.GetAllAsync()).Count();
-                _logger.LogInformation("DEBUG: Total OrderHeaders in DB: {Count}", totalInDb);
-
-                // ── FIX: Añadir OrderByDescending para asegurar paginación correcta en MySQL ──
-                IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader
-                    .GetQueryable(tracked: false, includeProperties: "ApplicationUser")
-                    .OrderByDescending(u => u.Id);
+                // ── USAMOS GetAllAsync() PORQUE SABEMOS QUE FUNCIONA EN EL DASHBOARD ──
+                // Obtenemos todos los pedidos para asegurar que no se filtren por problemas de IQueryable
+                var allOrdersList = (await _unitOfWork.OrderHeader.GetAllAsync()).ToList();
+                int totalCount = allOrdersList.Count;
+                
+                _logger.LogInformation("DEBUG: Total orders found in DB: {Count}", totalCount);
 
                 int pageSize = 10;
-                var paginatedOrders = await PaginatedList<OrderHeader>.CreateAsync(orderHeaderQuery, pageNumber ?? 1, pageSize);
+                int currentPage = pageNumber ?? 1;
+
+                // Ordenamos y paginamos en memoria para máxima fiabilidad
+                var items = allOrdersList.OrderByDescending(u => u.Id)
+                                         .Skip((currentPage - 1) * pageSize)
+                                         .Take(pageSize)
+                                         .ToList();
+
+                var paginatedOrders = new PaginatedList<OrderHeader>(items, totalCount, currentPage, pageSize);
                 
-                _logger.LogInformation("Admin Order Index loaded {Count} orders for current page.", paginatedOrders.Count);
-                
-                if (paginatedOrders.Count == 0 && totalInDb > 0)
-                {
-                    _logger.LogWarning("WARNING: Admin Index is empty but DB has {Total} orders. Possible include or pagination failure.", totalInDb);
-                    TempData["info"] = $"Aviso: Hay {totalInDb} pedidos en total, pero la lista actual está vacía. Verifique la paginación.";
+                // Redirigir a página 1 si se intenta acceder a una página vacía existiendo datos
+                if (totalCount > 0 && items.Count == 0 && currentPage > 1) {
+                     return RedirectToAction(nameof(Index), new { pageNumber = 1 });
                 }
 
                 return View(paginatedOrders);
@@ -62,16 +65,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "FATAL ERROR in Admin Order Index.");
-                TempData["error"] = $"Error al cargar pedidos: {ex.Message}. Por favor contacte soporte.";
-                
-                // En caso de error, intentamos cargar sin Includes para ver si es un problema de relación
-                try {
-                    var fallbackQuery = _unitOfWork.OrderHeader.GetQueryable(tracked: false).OrderByDescending(u => u.Id);
-                    var fallbackList = await PaginatedList<OrderHeader>.CreateAsync(fallbackQuery, pageNumber ?? 1, 10);
-                    return View(fallbackList);
-                } catch {
-                    return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
-                }
+                TempData["error"] = $"Error al cargar pedidos: {ex.Message}.";
+                return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
             }
         }
 
