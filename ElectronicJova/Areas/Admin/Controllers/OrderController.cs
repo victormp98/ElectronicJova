@@ -35,35 +35,43 @@ namespace ElectronicJova.Areas.Admin.Controllers
         {
             try 
             {
-                _logger.LogInformation("Admin Order Index SURVIVOR MODE starting.");
+                _logger.LogInformation("Admin Order Index ADVANCED SURVIVOR starting.");
                 
-                // Usamos GetQueryable para retrasar la materialización
                 var query = _unitOfWork.OrderHeader.GetQueryable(tracked: false);
-                
                 var safeList = new List<OrderHeader>();
-                int totalCount = 0;
                 int corruptedCount = 0;
-                string? firstCorruptedId = null;
 
-                // Transmitimos los resultados uno por uno
-                foreach (var item in query.AsEnumerable())
+                // Usamos el enumerador manualmente para capturar errores de materialización
+                using (var enumerator = query.AsEnumerable().GetEnumerator())
                 {
-                    try {
-                        // El simple acceso a 'item' o sus propiedades puede disparar el error
-                        // si EF Core aún no ha terminado de mapear.
-                        safeList.Add(item);
-                        totalCount++;
-                    } catch (Exception ex) {
-                        corruptedCount++;
-                        _logger.LogError(ex, "SURVIVOR: FAILED TO MATERIALIZE A ROW.");
-                        // Intentamos seguir opacando el error para que la página cargue
+                    while (true)
+                    {
+                        try 
+                        {
+                            // Si MoveNext falla (porque el registro en la BD es corrupto), 
+                            // saltamos al catch y seguimos con el siguiente.
+                            if (!enumerator.MoveNext()) break;
+                            
+                            var item = enumerator.Current;
+                            if (item != null) {
+                                safeList.Add(item);
+                            }
+                        } 
+                        catch (Exception ex) 
+                        {
+                            corruptedCount++;
+                            _logger.LogError(ex, "ADVANCED SURVIVOR: Omitted a corrupted record.");
+                            // IMPORTANTE: En algunos enumeradores de DB, un error en MoveNext 
+                            // puede invalidar el enumerador. Si eso pasa, paramos.
+                            continue; 
+                        }
                     }
                 }
 
                 if (corruptedCount > 0) {
-                    TempData["info"] = $"Se detectaron {corruptedCount} registros corruptos en la base de datos que fueron omitidos para permitir la carga. Por favor contacte a soporte para limpieza de datos.";
+                    TempData["info"] = $"Se detectaron {corruptedCount} registros corruptos que fueron omitidos por seguridad.";
                 }
-
+ 
                 int pageSize = 10;
                 int currentPage = pageNumber ?? 1;
 
