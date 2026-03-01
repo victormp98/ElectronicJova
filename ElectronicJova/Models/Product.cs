@@ -43,7 +43,7 @@ namespace ElectronicJova.Models
         public decimal Price100 { get; set; } // Precio para 100+ unidades
 
         [Required]
-        [Range(0, 10000)]
+        [Range(0, 1000000)]
         [Display(Name = "Inventario Disponible")]
         public int Stock { get; set; }
 
