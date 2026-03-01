@@ -16,9 +16,9 @@
         </div>
         <div class="row">
             <div class="col-12 col-lg-10 order-2 order-lg-1">
-                <!-- ── Basic Info ────────────────────────── -->
+                <!-- ── Información Básica ────────────────────────── -->
                 <div class="card mb-4 border-secondary shadow-sm">
-                    <div class="card-header bg-dark text-white fw-bold">Basic Information</div>
+                    <div class="card-header bg-dark text-white fw-bold">Información Básica</div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label asp-for="Product.Name" class="form-label fw-bold">Nombre del Producto</label>
@@ -55,9 +55,9 @@
                     </div>
                 </div>
 
-                <!-- ── Pricing & Inventory ───────────────── -->
+                <!-- ── Precios e Inventario ───────────────── -->
                 <div class="card mb-4 border-secondary shadow-sm">
-                    <div class="card-header bg-dark text-white fw-bold">Pricing & Inventory</div>
+                    <div class="card-header bg-dark text-white fw-bold">Precios e Inventario</div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 col-md-6 mb-3">
@@ -100,12 +100,12 @@
                     </div>
                 </div>
 
-                 <!-- ── Product Options ───────────────────── -->
+                 <!-- ── Opciones de Producto ───────────────────── -->
                 <div class="card mb-4 border-secondary shadow-sm">
                     <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
-                        <span>Product Options</span>
+                        <span>Opciones de Producto</span>
                         <button type="button" class="btn btn-sm btn-success" id="btnAddOption">
-                            <i class="bi bi-plus-lg"></i> Add Option
+                            <i class="bi bi-plus-lg"></i> Agregar Opción
                         </button>
                     </div>
                     <div class="card-body">
@@ -113,11 +113,11 @@
                             <table class="table table-bordered text-center" id="optionsTable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Name (e.g. Color)</th>
-                                        <th>Value (e.g. Red)</th>
-                                        <th>Extra Price</th>
-                                        <th>Order</th>
-                                        <th>Action</th>
+                                        <th>Nombre (ej: Color)</th>
+                                        <th>Valor (ej: Rojo)</th>
+                                        <th>Precio Extra</th>
+                                        <th>Orden</th>
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -159,12 +159,12 @@
                 <div class="row">
                     <div class="col-12 col-md-6 mb-2">
                          <button type="submit" class="btn btn-primary w-100 py-2">
-                            @(Model.Product.Id == 0 ? "Create Product" : "Update Product")
+                            @(Model.Product.Id == 0 ? "Crear Producto" : "Actualizar Producto")
                         </button>
                     </div>
                     <div class="col-12 col-md-6">
                         <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary w-100 py-2">
-                            Back to List
+                            Regresar a la Lista
                         </a>
                     </div>
                 </div>
@@ -194,10 +194,10 @@
                     <tr>
                         <td>
                             <input name="ProductOptions[${optionIndex}].Id" type="hidden" value="0" />
-                            <input name="ProductOptions[${optionIndex}].Name" class="form-control" required placeholder="Color" />
+                            <input name="ProductOptions[${optionIndex}].Name" class="form-control" required placeholder="Ej: Color" />
                         </td>
                         <td>
-                            <input name="ProductOptions[${optionIndex}].Value" class="form-control" required placeholder="Red" />
+                            <input name="ProductOptions[${optionIndex}].Value" class="form-control" required placeholder="Ej: Rojo" />
                         </td>
                         <td>
                             <input name="ProductOptions[${optionIndex}].AdditionalPrice" class="form-control" type="number" step="0.01" value="0" />

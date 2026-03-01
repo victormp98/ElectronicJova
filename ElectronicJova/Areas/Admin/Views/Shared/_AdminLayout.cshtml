@@ -28,8 +28,8 @@
                 <span class="brand-text">Jova Admin</span>
             </a>
 
-            <!-- Nav -->
-            <p class="sidebar-section-label">Menú principal</p>
+            <!-- Navegación -->
+            <p class="sidebar-section-label">Menú Principal</p>
             <ul class="nav nav-pills flex-column mb-auto px-1">
                 <li class="nav-item">
                     <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
@@ -65,7 +65,7 @@
                         <span>Admin</span>
                     </a>
                     <ul class="dropdown-menu shadow border-0 mb-2" aria-labelledby="dropdownUser" style="bottom: 100%; top: auto;">
-                        <li><a class="dropdown-item" href="/"><i class="bi bi-shop me-2 text-cyan"></i>Ver Tienda</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-shop me-2 text-cyan"></i>Ir a la Tienda</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><partial name="_LoginPartial" /></li>
                     </ul>
@@ -99,7 +99,7 @@
     <div class="offcanvas offcanvas-start" tabindex="-1" id="adminMobileSidebar" style="width: 260px;">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title">
-                <i class="bi bi-lightning-charge-fill me-2" style="color: #00D4FF;"></i>Jova Admin
+                <i class="bi bi-lightning-charge-fill me-2" style="color: #00D4FF;"></i>Jova Panel Admin
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>

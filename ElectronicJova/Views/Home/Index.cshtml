@@ -53,7 +53,7 @@
                             <p class="small text-muted mb-2">@product.Brand | @product.Model</p>
                             
                             <div class="price mt-auto product-price">
-                                @product.Price100.ToString("c")
+                                @product.Price.ToString("c")
                             </div>
                         </div>
                     </a>
@@ -76,8 +76,8 @@
                     <li class="page-item @prevDisabled">
                         <a class="page-link rounded-pill px-3 me-2 shadow-sm" asp-action="Index"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"
-                           aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span> Previous
+                           aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span> Anterior
                         </a>
                     </li>
 
@@ -88,8 +88,8 @@
                     <li class="page-item @nextDisabled">
                         <a class="page-link rounded-pill px-3 ms-2 shadow-sm" asp-action="Index"
                            asp-route-pageNumber="@(Model.PageIndex + 1)"
-                           aria-label="Next">
-                            Next <span aria-hidden="true">&raquo;</span>
+                           aria-label="Siguiente">
+                            Siguiente <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>

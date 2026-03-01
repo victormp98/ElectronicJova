@@ -88,7 +88,7 @@
                         @if (hasDiscount)
                         {
                             <span class="text-decoration-line-through text-muted small">
-                                @Model.Product.ListPrice.ToString("c")
+                                @Model.Product.ListPrice.ToString("c") (Precio de Lista)
                             </span>
                         }
                         <div class="d-flex align-items-center gap-3">
@@ -96,7 +96,31 @@
                                 @Model.Product.Price.ToString("c")
                             </span>
                         </div>
-                        <div class="mt-2 text-muted small">
+                        
+                        <!-- Pricing Table for Clarity -->
+                        <div class="mt-3">
+                            <h6 class="text-light fw-bold small text-uppercase mb-2">Descuentos por volumen:</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-dark table-borderless mb-0" style="font-size: 0.85rem;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-muted">1-50 unidades</td>
+                                            <td class="text-info fw-bold text-end">@Model.Product.Price.ToString("c")</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-muted">51-100 unidades</td>
+                                            <td class="text-info fw-bold text-end">@Model.Product.Price50.ToString("c")</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-muted">+100 unidades</td>
+                                            <td class="text-info fw-bold text-end">@Model.Product.Price100.ToString("c")</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 text-muted small">
                             <i class="bi bi-credit-card-2-front me-1"></i>Pago seguro con Stripe
                         </div>
                     </div>
@@ -180,7 +204,7 @@
                     {
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold text-uppercase shadow-info" @(!inStock ? "disabled" : "")>
-                                <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
+                                <i class="bi bi-cart-plus me-2"></i>Añadir al Carrito
                             </button>
                             <button type="button" id="btnBuyNow" class="btn btn-outline-info btn-lg py-3 fw-bold text-uppercase shadow-sm" @(!inStock ? "disabled" : "")>
                                 <i class="bi bi-lightning-fill me-2"></i>Comprar Ahora
