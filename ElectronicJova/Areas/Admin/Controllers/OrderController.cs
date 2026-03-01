@@ -35,37 +35,38 @@ namespace ElectronicJova.Areas.Admin.Controllers
         {
             try 
             {
-                _logger.LogInformation("Admin Order Index debugging access.");
+                _logger.LogInformation("Admin Order Index DEEP DEBUGGING starting.");
                 
-                // ── INTENTAMOS IDENTIFICAR EL CAMPO CORRUPTO ──
-                var allHeaders = await _unitOfWork.OrderHeader.GetAllAsync();
-                var allOrdersList = new List<OrderHeader>();
+                // ── USAMOS GetQueryable() PARA NO MATERIALIZAR AÚN ──
+                // Esto nos permite iterar sobre los resultados de la base de datos uno por uno
+                var query = _unitOfWork.OrderHeader.GetQueryable(tracked: false);
                 
-                try {
-                    allOrdersList = allHeaders.ToList();
-                } catch (Exception ex) {
-                     _logger.LogError(ex, "Error materializing list. Starting row-by-row check.");
-                     // Si falla el ToList(), es que hay un registro corrupto.
-                     // Pero GetAllAsync ya devolvió el IEnumerable, el problema es al iterarlo (materializarlo).
-                }
-
                 int totalCount = 0;
                 var safeList = new List<OrderHeader>();
                 
-                // Iteración manual para encontrar el culpable
-                using (var enumerator = allHeaders.GetEnumerator())
+                // Usamos AsEnumerable() para que la materialización ocurra al iterar, no de golpe
+                var streamingResults = query.AsEnumerable();
+
+                using (var enumerator = streamingResults.GetEnumerator())
                 {
                     while (true)
                     {
-                        try {
+                        try 
+                        {
+                            // MoveNext() disparará la materialización del SIGUIENTE registro
                             if (!enumerator.MoveNext()) break;
+                            
                             var item = enumerator.Current;
                             safeList.Add(item);
                             totalCount++;
-                        } catch (Exception ex) {
-                            _logger.LogError(ex, "FAILED TO LOAD ORDER. Likely DBNull in non-nullable field. Total loaded so far: {Count}", totalCount);
-                            TempData["error"] = $"Dato corrupto detectado tras {totalCount} registros. Detalles: {ex.Message}";
-                            break; // Paramos aquí para mostrar lo que tengamos
+                        } 
+                        catch (Exception ex) 
+                        {
+                            // ¡AQUÍ CAERÁ EL ERROR DE DBNull A STRING!
+                            _logger.LogError(ex, "MATERIALIZATION FAILED for a row. Likely DBNull in a required field. Total safe: {Count}", totalCount);
+                            TempData["error"] = $"ERROR DE DATOS: Hay un registro corrupto en la base de datos que está bloqueando la lista. " +
+                                             $"Se detuvo tras {totalCount} registros exitosos. Detalle: {ex.Message}";
+                            break; 
                         }
                     }
                 }
