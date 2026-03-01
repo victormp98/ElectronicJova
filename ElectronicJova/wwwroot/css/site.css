@@ -67,6 +67,7 @@ body {
   overflow-x: hidden;
   position: relative;
   width: 100%;
+  max-width: 100vw;
 }
 
 /* ── Micro-Animations ────────────────────────────────────────── */
@@ -363,6 +364,11 @@ a:hover {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  max-width: 100%;
+  word-wrap: break-word;
+  /* Added for word wrapping */
+  overflow-wrap: break-word;
+  /* Added for word wrapping */
 }
 
 .product-price {
@@ -456,6 +462,7 @@ a:hover {
   border-collapse: separate;
   border-spacing: 0 8px;
   color: var(--text-primary);
+  width: 100% !important;
 }
 
 .table thead th {
