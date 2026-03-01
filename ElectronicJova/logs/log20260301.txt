@@ -1,0 +1,6 @@
+2026-03-01 13:54:56.723 -06:00 [ERR] STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.
+2026-03-01 13:56:18.978 -06:00 [ERR] STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.
+2026-03-01 13:57:51.797 -06:00 [ERR] STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.
+2026-03-01 14:00:23.383 -06:00 [ERR] STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.
+2026-03-01 14:00:50.053 -06:00 [ERR] STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.
+2026-03-01 14:01:39.023 -06:00 [ERR] STRIPE FATAL: SecretKey no está configurado. Los pagos no funcionarán.
