@@ -69,13 +69,17 @@ namespace ElectronicJova.Controllers
                                 _unitOfWork.OrderHeader.Update(orderHeader);
                                 await _unitOfWork.SaveAsync();
 
-                                // Decrement Stock
+                                // Decrement Stock with safety check
                                 var orderDetails = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == orderHeader.Id, includeProperties: "Product");
                                 foreach (var detail in orderDetails)
                                 {
                                     var product = detail.Product;
                                     if (product != null)
                                     {
+                                        if (product.Stock < detail.Count)
+                                        {
+                                            Console.WriteLine($"[CRITICAL] Stock insuficiente para Producto ID {product.Id} '{product.Title}'. Requerido: {detail.Count}, Disponible: {product.Stock}. Se procesará de todos modos pero requiere revisión.");
+                                        }
                                         product.Stock -= detail.Count;
                                         _unitOfWork.Product.Update(product);
                                     }

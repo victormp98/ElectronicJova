@@ -19,7 +19,11 @@
 
     <div class="card border-0 shadow-sm overflow-hidden" style="background: var(--bg-card); border: 1px solid var(--border) !important;">
         <div class="card-body p-0">
-            <table id="tblData" class="table table-dark table-hover align-middle mb-0" style="width:100%">
+            <table id="tblData" 
+                   data-url-getall="@Url.Action("GetAll", "Product", new { area = "Admin" })"
+                   data-url-upsert="@Url.Action("Upsert", "Product", new { area = "Admin" })"
+                   data-url-delete="@Url.Action("Delete", "Product", new { area = "Admin" })"
+                   class="table table-dark table-hover align-middle mb-0" style="width:100%">
                 <thead style="background: var(--bg-surface);">
                     <tr>
                         <th class="py-3 ps-4 text-secondary text-uppercase small fw-bold">Title</th>

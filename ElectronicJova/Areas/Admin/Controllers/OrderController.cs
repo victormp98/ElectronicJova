@@ -251,17 +251,21 @@ namespace ElectronicJova.Areas.Admin.Controllers
             await _unitOfWork.SaveAsync();
 
             // ── CRITICAL FIX: STOCK REVERSAL ──
-            // Al cancelar, devolvemos los productos al inventario
-            var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == orderHEaderFromDb.Id, includeProperties: "Product");
-            foreach (var detail in orderDetails)
+            // Al cancelar, devolvemos los productos al inventario SOLO SI el pago fue aprobado
+            // (ya que el Webhook es quien decrementa el stock al aprobarse el pago).
+            if (orderHEaderFromDb.PaymentStatus == SD.PaymentStatusApproved)
             {
-                if (detail.Product != null)
+                var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == orderHEaderFromDb.Id, includeProperties: "Product");
+                foreach (var detail in orderDetails)
                 {
-                    detail.Product.Stock += detail.Count;
-                    _unitOfWork.Product.Update(detail.Product);
+                    if (detail.Product != null)
+                    {
+                        detail.Product.Stock += detail.Count;
+                        _unitOfWork.Product.Update(detail.Product);
+                    }
                 }
+                await _unitOfWork.SaveAsync();
             }
-            await _unitOfWork.SaveAsync();
 
             // EMAIL NOTIFICATION: Pedido Cancelado
             try 
