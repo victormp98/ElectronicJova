@@ -147,7 +147,7 @@ namespace ElectronicJova.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize] // User must be logged in to add to cart
+        [Authorize(Roles = SD.Role_Customer)] // Only Customers can add to cart
         public async Task<IActionResult> Details(DetailsVM detailsVM, List<int>? selectedOptions, string? specialNotes)
         {
             var claimsIdentity = (ClaimsIdentity?)User.Identity;

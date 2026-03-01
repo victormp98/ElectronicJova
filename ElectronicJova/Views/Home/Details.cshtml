@@ -41,15 +41,18 @@
                         }
                     </div>
 
-                    <!-- Favorite Button -->
-                    <button type="button"
-                            class="position-absolute top-0 end-0 m-3 btn btn-secondary rounded-circle d-flex align-items-center justify-content-center p-0"
-                            id="favoriteBtnImage"
-                            data-bs-toggle="tooltip"
-                            title="@(Model.IsFavorite ? "Quitar de favoritos" : "Guardar en favoritos")"
-                            style="width: 45px; height: 45px; z-index: 2;">
-                        <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-5 text-danger"></i>
-                    </button>
+                    <!-- Favorite Button (Hidden for Admin) -->
+                    @if (!User.IsInRole(SD.Role_Admin))
+                    {
+                        <button type="button"
+                                class="position-absolute top-0 end-0 m-3 btn btn-secondary rounded-circle d-flex align-items-center justify-content-center p-0"
+                                id="favoriteBtnImage"
+                                data-bs-toggle="tooltip"
+                                title="@(Model.IsFavorite ? "Quitar de favoritos" : "Guardar en favoritos")"
+                                style="width: 45px; height: 45px; z-index: 2;">
+                            <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") fs-5 text-danger"></i>
+                        </button>
+                    }
 
                     <img src="@ImageUrlHelper.GetDisplayUrl(Model.Product!.ImageUrl, "https://via.placeholder.com/600x600?text=No+Image")"
                          class="img-fluid rounded"
@@ -114,15 +117,18 @@
                         }
                     </div>
 
-                    <!-- Quantity -->
-                    <div class="mb-3">
-                        <label asp-for="Count" class="form-label text-muted fw-semibold">Cantidad:</label>
-                        <div class="input-group" style="width: 150px;">
-                            <button type="button" class="btn btn-outline-secondary" id="btnMinus"><i class="bi bi-dash"></i></button>
-                            <input asp-for="Count" type="number" id="itemCount" class="form-control text-center fw-bold bg-dark text-light border-secondary" value="1" min="1" max="@Model.Product.Stock" onkeydown="return false;" />
-                            <button type="button" class="btn btn-outline-secondary" id="btnPlus"><i class="bi bi-plus"></i></button>
+                    <!-- Quantity (Hidden for Admin) -->
+                    @if (!User.IsInRole(SD.Role_Admin))
+                    {
+                        <div class="mb-3">
+                            <label asp-for="Count" class="form-label text-muted fw-semibold">Cantidad:</label>
+                            <div class="input-group" style="width: 150px;">
+                                <button type="button" class="btn btn-outline-secondary" id="btnMinus"><i class="bi bi-dash"></i></button>
+                                <input asp-for="Count" type="number" id="itemCount" class="form-control text-center fw-bold bg-dark text-light border-secondary" value="1" min="1" max="@Model.Product.Stock" onkeydown="return false;" />
+                                <button type="button" class="btn btn-outline-secondary" id="btnPlus"><i class="bi bi-plus"></i></button>
+                            </div>
                         </div>
-                    </div>
+                    }
 
                     <!-- Options -->
                     @if (Model.ProductOptions != null && Model.ProductOptions.Any())
@@ -159,14 +165,27 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold text-uppercase shadow-info" @(!inStock ? "disabled" : "")>
-                            <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
-                        </button>
-                        <button type="button" id="btnBuyNow" class="btn btn-outline-info btn-lg py-3 fw-bold text-uppercase shadow-sm" @(!inStock ? "disabled" : "")>
-                            <i class="bi bi-lightning-fill me-2"></i>Comprar Ahora
-                        </button>
-                    </div>
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <div class="alert alert-info border-info bg-opacity-10 d-flex align-items-center rounded-3 p-3">
+                            <i class="bi bi-shield-lock-fill fs-4 me-3 text-info"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold text-info text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Modo Administrador</h6>
+                                <p class="mb-0 small text-light opacity-75">Las funciones de compra están deshabilitadas para usuarios administrativos.</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold text-uppercase shadow-info" @(!inStock ? "disabled" : "")>
+                                <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
+                            </button>
+                            <button type="button" id="btnBuyNow" class="btn btn-outline-info btn-lg py-3 fw-bold text-uppercase shadow-sm" @(!inStock ? "disabled" : "")>
+                                <i class="bi bi-lightning-fill me-2"></i>Comprar Ahora
+                            </button>
+                        </div>
+                    }
 
                     <!-- Assurance -->
                     <div class="d-flex align-items-center gap-3 p-3 rounded mt-3" style="background: rgba(0, 200, 150, 0.05); border: 1px solid rgba(0, 200, 150, 0.2);">
