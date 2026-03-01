@@ -228,7 +228,7 @@ namespace ElectronicJova.Controllers
                 u => u.Name.Contains(query) || u.Description.Contains(query)
             );
 
-            var suggestions = products.Take(5).Select(p => new { id = p.Id, title = p.Name });
+            var suggestions = products.Take(5).Select(p => new { id = p.Id, name = p.Name });
             return Json(suggestions);
         }
     }

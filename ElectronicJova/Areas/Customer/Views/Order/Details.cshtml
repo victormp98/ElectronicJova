@@ -140,7 +140,7 @@
                             <img src="@ImageUrlHelper.GetDisplayUrl(detail.Product?.ImageUrl, "https://via.placeholder.com/60")"
                                  width="60" height="60" class="rounded me-3" style="object-fit: cover; border: 1px solid var(--border-color);" />
                             <div class="flex-grow-1">
-                                <div class="fw-semibold" style="color: var(--text-primary);">@detail.Product?.Title</div>
+                                <div class="fw-semibold" style="color: var(--text-primary);">@detail.Product?.Name</div>
                                 <small class="text-muted">Cantidad: @detail.Count</small>
 
                                 @if (!string.IsNullOrEmpty(detail.SelectedOptions))

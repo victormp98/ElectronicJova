@@ -141,7 +141,8 @@ namespace ElectronicJova.Areas.Admin.Controllers
                             _unitOfWork.ProductOption.Update(option);
                         }
                     }
-
+                    
+                    var inputIds = productVM.ProductOptions.Select(u => u.Id).ToList();
                     var optionsToDelete = existingOptions.Where(u => !inputIds.Contains(u.Id)).ToList();
                     if (optionsToDelete.Any())
                     {

@@ -78,7 +78,7 @@ namespace ElectronicJova.Controllers
                                     {
                                         if (product.Stock < detail.Count)
                                         {
-                                            Console.WriteLine($"[CRITICAL] Stock insuficiente para Producto ID {product.Id} '{product.Title}'. Requerido: {detail.Count}, Disponible: {product.Stock}. Se procesará de todos modos pero requiere revisión.");
+                                            Console.WriteLine($"[CRITICAL] Stock insuficiente para Producto ID {product.Id} '{product.Name}'. Requerido: {detail.Count}, Disponible: {product.Stock}. Se procesará de todos modos pero requiere revisión.");
                                         }
                                         product.Stock -= detail.Count;
                                         _unitOfWork.Product.Update(product);

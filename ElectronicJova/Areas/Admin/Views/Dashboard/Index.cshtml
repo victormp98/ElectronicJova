@@ -125,7 +125,7 @@
                                                 <div class="d-flex align-items-center">
                                                     @if (!string.IsNullOrEmpty(product.ImageUrl))
                                                     {
-                                                        <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/45?text=No+Image")" width="45" height="45" class="rounded shadow-sm me-3 object-fit-cover" alt="@product.Title">
+                                                        <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/45?text=No+Image")" width="45" height="45" class="rounded shadow-sm me-3 object-fit-cover" alt="@product.Name">
                                                     }
                                                     else
                                                     {
@@ -134,8 +134,8 @@
                                                         </div>
                                                     }
                                                     <div>
-                                                        <div class="fw-bold text-light">@product.Title</div>
-                                                        <div class="text-muted small">@product.ISBN</div>
+                                                        <div class="fw-bold text-light">@product.Name</div>
+                                                        <div class="text-muted small">@product.Model</div>
                                                     </div>
                                                 </div>
                                             </td>

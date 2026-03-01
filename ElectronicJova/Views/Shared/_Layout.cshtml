@@ -188,7 +188,7 @@
                         suggestionsContainer.empty();
                         if (data && data.length > 0) {
                             data.forEach(item => {
-                                const link = $(`<a href="/Home/Details/${item.id}" class="list-group-item list-group-item-action bg-dark text-light border-secondary">${item.title}</a>`);
+                                const link = $(`<a href="/Home/Details/${item.id}" class="list-group-item list-group-item-action bg-dark text-light border-secondary">${item.name}</a>`);
                                 suggestionsContainer.append(link);
                             });
                             suggestionsContainer.show();

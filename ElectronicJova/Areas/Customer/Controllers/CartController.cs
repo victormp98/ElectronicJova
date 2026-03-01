@@ -113,7 +113,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(p => p.Id == cart.ProductId);
                 if (product == null || product.Stock < cart.Count)
                 {
-                    TempData["error"] = $"'{product?.Title ?? "Un producto"}' ya no tiene suficiente stock disponible.";
+                    TempData["error"] = $"'{product?.Name ?? "Un producto"}' ya no tiene suficiente stock disponible.";
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -214,7 +214,7 @@ namespace ElectronicJova.Areas.Customer.Controllers
                         Currency = "mxn",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = item.Product!.Title
+                            Name = item.Product!.Name
                         }
                     },
                     Quantity = item.Count

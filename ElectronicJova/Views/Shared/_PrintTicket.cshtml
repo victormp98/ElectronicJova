@@ -52,7 +52,7 @@
                 {
                     <tr>
                         <td>
-                            <div style="font-weight: bold;">@(detail.Product?.Title ?? "Producto")</div>
+                            <div style="font-weight: bold;">@(detail.Product?.Name ?? "Producto")</div>
                             @if (!string.IsNullOrEmpty(detail.SelectedOptions))
                             {
                                 <div style="font-size: 8pt; color: #666;">@detail.SelectedOptions</div>
