@@ -79,6 +79,27 @@ namespace ElectronicJova.Areas.Admin.Controllers
             orderHEaderFromDb.State = OrderDetailsVM.OrderHeader.State;
             orderHEaderFromDb.PostalCode = OrderDetailsVM.OrderHeader.PostalCode;
 
+            // ── FIX: Permitir cambio manual de estado y loguearlo ──
+            if (orderHEaderFromDb.OrderStatus != OrderDetailsVM.OrderHeader.OrderStatus)
+            {
+                var previousStatus = orderHEaderFromDb.OrderStatus;
+                orderHEaderFromDb.OrderStatus = OrderDetailsVM.OrderHeader.OrderStatus;
+                orderHEaderFromDb.OrderStatusValue = (int)SD.ParseOrderStatus(orderHEaderFromDb.OrderStatus);
+
+                await OrderStatusLogger.LogAsync(
+                    _unitOfWork,
+                    orderHEaderFromDb.Id,
+                    previousStatus,
+                    orderHEaderFromDb.OrderStatus,
+                    User.Identity?.Name,
+                    "Actualización manual de estado");
+            }
+
+            if (!string.IsNullOrEmpty(OrderDetailsVM.OrderHeader.Carrier))
+                orderHEaderFromDb.Carrier = OrderDetailsVM.OrderHeader.Carrier;
+            if (!string.IsNullOrEmpty(OrderDetailsVM.OrderHeader.TrackingNumber))
+                orderHEaderFromDb.TrackingNumber = OrderDetailsVM.OrderHeader.TrackingNumber;
+
             _unitOfWork.OrderHeader.Update(orderHEaderFromDb);
             await _unitOfWork.SaveAsync();
             TempData["success"] = "Detalles del pedido actualizados.";

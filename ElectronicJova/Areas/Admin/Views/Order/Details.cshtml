@@ -14,6 +14,10 @@
         <div>
             <h2 class="fw-bold mb-0">
                 Pedido <span style="color: var(--accent-cyan);">#@Model.OrderHeader?.Id</span>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <span class="badge bg-danger ms-2 fs-6" style="vertical-align: middle;">MODO ADMINISTRADOR</span>
+                }
             </h2>
             <small class="text-muted">@Model.OrderHeader?.OrderDate.ToString("dddd, dd MMMM yyyy HH:mm")</small>
         </div>
@@ -235,6 +239,12 @@
                             {
                                 <button type="submit" asp-action="ShipOrder" class="btn btn-info text-white">
                                     <i class="bi bi-truck me-1"></i>Marcar como Enviado
+                                </button>
+                            }
+                            @if (Model.OrderHeader?.OrderStatus == SD.StatusShipped)
+                            {
+                                <button type="submit" asp-action="MarkDelivered" class="btn btn-success">
+                                    <i class="bi bi-check2-all me-1"></i>Marcar como Entregado
                                 </button>
                             }
                             @if (Model.OrderHeader?.OrderStatus != SD.StatusCancelled && Model.OrderHeader?.OrderStatus != SD.StatusShipped && Model.OrderHeader?.OrderStatus != SD.StatusDelivered)

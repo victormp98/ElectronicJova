@@ -54,6 +54,10 @@ namespace ElectronicJova.Areas.Customer.Controllers
                 CartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
 
+            // ── FIX: SINCRONIZAR SESIÓN ──
+            // Aseguramos que el contador del Navbar coincida con la realidad de la DB al entrar al carrito.
+            HttpContext.Session.SetInt32("CartItemCount", CartVM.ShoppingCartList.Count());
+
             return View(CartVM);
         }
 
@@ -257,6 +261,14 @@ namespace ElectronicJova.Areas.Customer.Controllers
             {
                 return Forbid();
             }
+
+            // ── FIX: LIMPIAR CARRITO Y SESIÓN ──
+            // Una vez que el usuario llega aquí, el pedido ya está procesado ó en proceso de webhook.
+            // Vaciamos el carrito de la DB para este usuario y reseteamos el contador de la sesión.
+            List<ShoppingCart> shoppingCarts = (await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == userId)).ToList();
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            await _unitOfWork.SaveAsync();
+            HttpContext.Session.SetInt32("CartItemCount", 0);
 
             // Pasamos los detalles del pedido para la plantilla de impresión
             ViewData["OrderDetails"] = await _unitOfWork.OrderDetail.GetAllAsync(u => u.OrderHeaderId == id, includeProperties: "Product");
