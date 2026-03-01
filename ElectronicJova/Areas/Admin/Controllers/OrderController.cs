@@ -35,35 +35,50 @@ namespace ElectronicJova.Areas.Admin.Controllers
         {
             try 
             {
-                _logger.LogInformation("Admin Order Index DEEP DEBUGGING starting.");
-                _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
+                _logger.LogInformation("Admin Order Index SURVIVOR MODE starting.");
                 
-                // Obtenemos todos los pedidos. Gracias al cambio en el modelo (string?), 
-                // ya no fallará si hay campos NULL en la base de datos.
-                var allOrders = await _unitOfWork.OrderHeader.GetAllAsync();
-                var allOrdersList = allOrders.OrderByDescending(u => u.Id).ToList();
+                // Usamos GetQueryable para retrasar la materialización
+                var query = _unitOfWork.OrderHeader.GetQueryable(tracked: false);
                 
-                int totalCount = allOrdersList.Count;
+                var safeList = new List<OrderHeader>();
+                int totalCount = 0;
+                int corruptedCount = 0;
+                string? firstCorruptedId = null;
+
+                // Transmitimos los resultados uno por uno
+                foreach (var item in query.AsEnumerable())
+                {
+                    try {
+                        // El simple acceso a 'item' o sus propiedades puede disparar el error
+                        // si EF Core aún no ha terminado de mapear.
+                        safeList.Add(item);
+                        totalCount++;
+                    } catch (Exception ex) {
+                        corruptedCount++;
+                        _logger.LogError(ex, "SURVIVOR: FAILED TO MATERIALIZE A ROW.");
+                        // Intentamos seguir opacando el error para que la página cargue
+                    }
+                }
+
+                if (corruptedCount > 0) {
+                    TempData["info"] = $"Se detectaron {corruptedCount} registros corruptos en la base de datos que fueron omitidos para permitir la carga. Por favor contacte a soporte para limpieza de datos.";
+                }
+
                 int pageSize = 10;
                 int currentPage = pageNumber ?? 1;
 
-                var items = allOrdersList.Skip((currentPage - 1) * pageSize)
-                                         .Take(pageSize)
-                                         .ToList();
+                var items = safeList.OrderByDescending(u => u.Id)
+                                    .Skip((currentPage - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToList();
 
-                var paginatedOrders = new PaginatedList<OrderHeader>(items, totalCount, currentPage, pageSize);
-                
-                // Redirigir a página 1 si la actual está vacía pero hay datos
-                if (totalCount > 0 && items.Count == 0 && currentPage > 1) {
-                     return RedirectToAction(nameof(Index), new { pageNumber = 1 });
-                }
-
+                var paginatedOrders = new PaginatedList<OrderHeader>(items, safeList.Count, currentPage, pageSize);
                 return View(paginatedOrders);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "FATAL ERROR in Admin Order Index.");
-                TempData["error"] = $"Error al cargar pedidos: {ex.Message}.";
+                _logger.LogError(ex, "FATAL ERROR in Admin Order Index SURVIVOR.");
+                TempData["error"] = $"Error crítico de inicialización: {ex.Message}.";
                 return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
             }
         }

@@ -15,15 +15,15 @@ namespace ElectronicJova.Models
         public ApplicationUser? ApplicationUser { get; set; }
 
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
-        public DateTime ShippingDate { get; set; }
+        public DateTime? ShippingDate { get; set; }
 
         [Required]
         public decimal OrderTotal { get; set; }
 
         public string? OrderStatus { get; set; }
-        public int OrderStatusValue { get; set; } // Enums for strict validation
+        public int? OrderStatusValue { get; set; } // Enums for strict validation
         public string? PaymentStatus { get; set; }
-        public int PaymentStatusValue { get; set; } // Enums for strict validation
+        public int? PaymentStatusValue { get; set; } // Enums for strict validation
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set; }
 
