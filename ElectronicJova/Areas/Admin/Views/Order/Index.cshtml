@@ -2,7 +2,7 @@
 @model PaginatedList<OrderHeader>
 
 @{
-    ViewData["Title"] = "Gestión de Pedidos";
+    ViewData["Title"] = "Pedidos";
 }
 
 <div class="container-fluid p-4">
@@ -14,18 +14,6 @@
             <div>
                 <h5 class="fw-bold mb-1 text-danger">Error Carga de Pedidos</h5>
                 <p class="mb-0"><strong>Detalle Técnico:</strong> @TempData["error"]</p>
-                <small class="text-danger mt-1 d-block">Por favor captura esto para el soporte.</small>
-            </div>
-        </div>
-    }
-
-    @if (TempData["info"] != null)
-    {
-        <div class="alert alert-info shadow-sm border-info border-2 text-dark bg-info bg-opacity-10 p-4 mb-4 rounded-3 d-flex align-items-center">
-            <i class="bi bi-info-circle-fill fs-3 text-info me-3"></i>
-            <div>
-                <h5 class="fw-bold mb-1 text-info">Aviso Diagnóstico</h5>
-                <p class="mb-0">@TempData["info"]</p>
             </div>
         </div>
     }
@@ -47,61 +35,51 @@
 
     @if (Model != null && Model.Any())
     {
-        <div class="card border-0 shadow-sm bg-card overflow-hidden">
-            <table class="table table-dark table-hover align-middle mb-0 border-secondary" style="background-color: var(--bg-card) !important;">
-                <thead class="bg-dark">
-                    <tr>
-                        <th class="py-3 ps-4 text-secondary text-uppercase small fw-bold">
-                            <i class="bi bi-hash me-1 text-info"></i># Pedido
-                        </th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">
-                            <i class="bi bi-person me-1 text-info"></i>Cliente
-                        </th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-md-table-cell">
-                            <i class="bi bi-telephone me-1 text-info"></i>Teléfono
-                        </th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-xl-table-cell">
-                            <i class="bi bi-envelope me-1 text-info"></i>Correo
-                        </th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold d-sm-table-cell">
-                            <i class="bi bi-currency-dollar me-1 text-info"></i>Total
-                        </th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">
-                            <i class="bi bi-info-circle me-1 text-info"></i>Estado
-                        </th>
-                        <th class="py-3 text-center text-secondary text-uppercase small fw-bold">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var orderHeader in Model)
-                    {
-                        var badgeClass = orderHeader.OrderStatus == "Delivered" ? "bg-success" :
-                                         orderHeader.OrderStatus == "Shipped"   ? "bg-info" :
-                                         orderHeader.OrderStatus == "Cancelled" ? "bg-danger" : "bg-warning text-dark";
-                        <tr>
-                            <td class="fw-bold ps-4 text-info">#@orderHeader.Id</td>
-                            <td class="text-light">
-                                <div class="fw-bold">@orderHeader.Name</div>
-                                <div class="small text-muted d-xl-none">@orderHeader.Email</div>
-                            </td>
-                            <td class="text-muted d-none d-lg-table-cell">@orderHeader.PhoneNumber</td>
-                            <td class="small text-muted d-none d-xl-table-cell">@orderHeader.Email</td>
-                            <td class="fw-bold text-info">@orderHeader.OrderTotal.ToString("c")</td>
-                            <td>
-                                <span class="badge rounded-pill @badgeClass px-3 py-2">
-                                    @SD.GetOrderStatusLabel(orderHeader.OrderStatus)
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <a asp-action="Details" asp-route-orderId="@orderHeader.Id"
-                                   class="btn btn-outline-info btn-sm rounded-pill px-3">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                            </td>
+        <div class="card border-secondary bg-card shadow-sm overflow-hidden">
+            <div class="card-body p-0">
+                <table class="table table-dark table-hover align-middle mb-0 bg-transparent">
+                    <thead>
+                        <tr class="text-secondary small text-uppercase fw-bold">
+                            <th class="py-3 ps-4"># Pedido</th>
+                            <th class="py-3">Cliente</th>
+                            <th class="py-3 d-none d-md-table-cell">Teléfono</th>
+                            <th class="py-3 d-none d-xl-table-cell">Correo</th>
+                            <th class="py-3 d-sm-table-cell">Total</th>
+                            <th class="py-3">Estado</th>
+                            <th class="text-end py-3 pe-4">Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="border-top border-secondary">
+                        @foreach (var orderHeader in Model)
+                        {
+                            var badgeClass = orderHeader.OrderStatus == "Delivered" ? "bg-success" :
+                                             orderHeader.OrderStatus == "Shipped"   ? "bg-info" :
+                                             orderHeader.OrderStatus == "Cancelled" ? "bg-danger" : "bg-warning text-dark";
+                            <tr>
+                                <td class="fw-bold ps-4 text-info">#@orderHeader.Id</td>
+                                <td class="text-light">
+                                    <div class="fw-bold">@orderHeader.Name</div>
+                                    <div class="small text-muted d-xl-none">@orderHeader.Email</div>
+                                </td>
+                                <td class="text-muted d-none d-md-table-cell">@orderHeader.PhoneNumber</td>
+                                <td class="small text-muted d-none d-xl-table-cell">@orderHeader.Email</td>
+                                <td class="fw-bold text-info d-sm-table-cell">@orderHeader.OrderTotal.ToString("c")</td>
+                                <td>
+                                    <span class="badge rounded-pill @badgeClass px-3 py-2">
+                                        @SD.GetOrderStatusLabel(orderHeader.OrderStatus)
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a asp-action="Details" asp-route-orderId="@orderHeader.Id"
+                                       class="btn btn-sm btn-outline-info rounded-circle p-2" title="Ver Detalles">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     }
     else
@@ -140,3 +118,4 @@
         </div>
     }
 </div>
+ Riverside:

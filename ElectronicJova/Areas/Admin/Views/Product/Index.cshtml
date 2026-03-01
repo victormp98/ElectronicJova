@@ -1,36 +1,39 @@
 @model IEnumerable<Product>
 
 @{
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Productos";
 }
 
 <div class="container-fluid p-4">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Product List</h2>
+    <!-- Page Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fw-bold mb-0 text-light">
+                <i class="bi bi-box-seam-fill me-2 text-info"></i>Catálogo de Productos
+            </h2>
+            <p class="mb-0 mt-1 text-muted small">
+                Gestiona el inventario, precios y categorías de tus productos
+            </p>
         </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> &nbsp; Create New Product
-            </a>
-        </div>
+        <a asp-controller="Product" asp-action="Upsert" class="btn btn-info rounded-pill px-4">
+            <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+        </a>
     </div>
-    <br /><br />
 
-    <div class="card border-0 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border) !important;">
+    <div class="card border-secondary bg-card shadow-sm overflow-hidden">
         <div class="card-body p-0">
             <table id="tblData" 
                    data-url-getall="@Url.Action("GetAll", "Product", new { area = "Admin" })"
                    data-url-upsert="@Url.Action("Upsert", "Product", new { area = "Admin" })"
                    data-url-delete="@Url.Action("Delete", "Product", new { area = "Admin" })"
-                   class="table table-dark table-hover align-middle mb-0" style="width:100%">
-                <thead style="background: var(--bg-surface);">
-                    <tr>
-                        <th class="py-3 ps-4 text-secondary text-uppercase small fw-bold">Producto</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-lg-table-cell">Modelo</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-sm-table-cell">Precio</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-md-table-cell">Marca</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">Categoría</th>
+                   class="table table-dark table-hover align-middle mb-0 bg-transparent" style="width:100%">
+                <thead>
+                    <tr class="text-secondary small text-uppercase fw-bold">
+                        <th class="py-3 ps-4">Producto</th>
+                        <th class="py-3 d-none d-lg-table-cell">Modelo</th>
+                        <th class="py-3 d-none d-sm-table-cell">Precio</th>
+                        <th class="py-3 d-none d-md-table-cell">Marca</th>
+                        <th class="py-3">Categoría</th>
                         <th class="text-end py-3 pe-4"></th>
                     </tr>
                 </thead>
@@ -42,3 +45,4 @@
 @section Scripts {
     <script src="~/js/product.js"></script>
 }
+ Riverside:
