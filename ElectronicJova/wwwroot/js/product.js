@@ -15,8 +15,8 @@ function loadDataTable() {
         "columns": [
             { data: 'name', "width": "20%" },
             { data: 'model', "width": "15%" },
-            { data: 'brand', "width": "15%" },
             { data: 'listPrice', "width": "10%" },
+            { data: 'brand', "width": "15%" },
             { data: 'category.name', "width": "15%" },
             {
                 data: 'id',
