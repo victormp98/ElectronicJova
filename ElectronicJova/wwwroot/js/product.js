@@ -13,9 +13,9 @@ function loadDataTable() {
     dataTable = tbl.DataTable({
         "ajax": { url: urlGetAll },
         "columns": [
-            { data: 'name', "width": "25%", "className": "ps-4" },
+            { data: 'name', "width": "30%", "className": "ps-4" },
             { data: 'model', "width": "15%", "className": "d-none d-lg-table-cell" },
-            { data: 'listPrice', "width": "10%", "className": "d-none d-md-table-cell" },
+            { data: 'listPrice', "width": "10%", "className": "d-none d-sm-table-cell" },
             { data: 'brand', "width": "15%", "className": "d-none d-md-table-cell" },
             { data: 'category.name', "width": "15%" },
             {
