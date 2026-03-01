@@ -7,6 +7,29 @@
 
 <div class="container-fluid p-4">
 
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger shadow-sm border-danger border-2 text-dark bg-danger bg-opacity-10 p-4 mb-4 rounded-3 d-flex align-items-center">
+            <i class="bi bi-exclamation-octagon-fill fs-3 text-danger me-3"></i>
+            <div>
+                <h5 class="fw-bold mb-1 text-danger">Error Carga de Pedidos</h5>
+                <p class="mb-0"><strong>Detalle Técnico:</strong> @TempData["error"]</p>
+                <small class="text-danger mt-1 d-block">Por favor captura esto para el soporte.</small>
+            </div>
+        </div>
+    }
+
+    @if (TempData["info"] != null)
+    {
+        <div class="alert alert-info shadow-sm border-info border-2 text-dark bg-info bg-opacity-10 p-4 mb-4 rounded-3 d-flex align-items-center">
+            <i class="bi bi-info-circle-fill fs-3 text-info me-3"></i>
+            <div>
+                <h5 class="fw-bold mb-1 text-info">Aviso Diagnóstico</h5>
+                <p class="mb-0">@TempData["info"]</p>
+            </div>
+        </div>
+    }
+
     <!-- Page Header -->
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
