@@ -36,7 +36,12 @@ namespace ElectronicJova.Areas.Admin.Controllers
             try 
             {
                 _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
-                IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader.GetQueryable(tracked: false);
+                
+                // ── FIX: Añadir OrderByDescending para asegurar paginación correcta en MySQL ──
+                // Además re-incluimos ApplicationUser si es necesario, pero con tracked: false
+                IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader
+                    .GetQueryable(tracked: false, includeProperties: "ApplicationUser")
+                    .OrderByDescending(u => u.Id);
 
                 int pageSize = 10;
                 var paginatedOrders = await PaginatedList<OrderHeader>.CreateAsync(orderHeaderQuery, pageNumber ?? 1, pageSize);
@@ -46,9 +51,17 @@ namespace ElectronicJova.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "FATAL ERROR in Admin Order Index. Context help: Verify OrderHeader table and ApplicationUser properties.");
-                // Retornar una lista vacía para evitar el 500 mientras se investiga
-                return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
+                _logger.LogError(ex, "FATAL ERROR in Admin Order Index.");
+                TempData["error"] = $"Error al cargar pedidos: {ex.Message}. Por favor contacte soporte.";
+                
+                // En caso de error, intentamos cargar sin Includes para ver si es un problema de relación
+                try {
+                    var fallbackQuery = _unitOfWork.OrderHeader.GetQueryable(tracked: false).OrderByDescending(u => u.Id);
+                    var fallbackList = await PaginatedList<OrderHeader>.CreateAsync(fallbackQuery, pageNumber ?? 1, 10);
+                    return View(fallbackList);
+                } catch {
+                    return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
+                }
             }
         }
 
