@@ -8,9 +8,8 @@ namespace ElectronicJova.Models
     {
         public int Id { get; set; }
 
-        [Required]
         [Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidateNever]
-        public string ApplicationUserId { get; set; } = string.Empty;
+        public string? ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         [Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidateNever]
         public ApplicationUser? ApplicationUser { get; set; }

@@ -35,37 +35,56 @@ namespace ElectronicJova.Areas.Admin.Controllers
         {
             try 
             {
-                _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
+                _logger.LogInformation("Admin Order Index debugging access.");
                 
-                // ── USAMOS GetAllAsync() PORQUE SABEMOS QUE FUNCIONA EN EL DASHBOARD ──
-                // Obtenemos todos los pedidos para asegurar que no se filtren por problemas de IQueryable
-                var allOrdersList = (await _unitOfWork.OrderHeader.GetAllAsync()).ToList();
-                int totalCount = allOrdersList.Count;
+                // ── INTENTAMOS IDENTIFICAR EL CAMPO CORRUPTO ──
+                var allHeaders = await _unitOfWork.OrderHeader.GetAllAsync();
+                var allOrdersList = new List<OrderHeader>();
                 
-                _logger.LogInformation("DEBUG: Total orders found in DB: {Count}", totalCount);
-
-                int pageSize = 10;
-                int currentPage = pageNumber ?? 1;
-
-                // Ordenamos y paginamos en memoria para máxima fiabilidad
-                var items = allOrdersList.OrderByDescending(u => u.Id)
-                                         .Skip((currentPage - 1) * pageSize)
-                                         .Take(pageSize)
-                                         .ToList();
-
-                var paginatedOrders = new PaginatedList<OrderHeader>(items, totalCount, currentPage, pageSize);
-                
-                // Redirigir a página 1 si se intenta acceder a una página vacía existiendo datos
-                if (totalCount > 0 && items.Count == 0 && currentPage > 1) {
-                     return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+                try {
+                    allOrdersList = allHeaders.ToList();
+                } catch (Exception ex) {
+                     _logger.LogError(ex, "Error materializing list. Starting row-by-row check.");
+                     // Si falla el ToList(), es que hay un registro corrupto.
+                     // Pero GetAllAsync ya devolvió el IEnumerable, el problema es al iterarlo (materializarlo).
                 }
 
+                int totalCount = 0;
+                var safeList = new List<OrderHeader>();
+                
+                // Iteración manual para encontrar el culpable
+                using (var enumerator = allHeaders.GetEnumerator())
+                {
+                    while (true)
+                    {
+                        try {
+                            if (!enumerator.MoveNext()) break;
+                            var item = enumerator.Current;
+                            safeList.Add(item);
+                            totalCount++;
+                        } catch (Exception ex) {
+                            _logger.LogError(ex, "FAILED TO LOAD ORDER. Likely DBNull in non-nullable field. Total loaded so far: {Count}", totalCount);
+                            TempData["error"] = $"Dato corrupto detectado tras {totalCount} registros. Detalles: {ex.Message}";
+                            break; // Paramos aquí para mostrar lo que tengamos
+                        }
+                    }
+                }
+
+                int pageSize = 15; // Aumentamos un poco para ver más
+                int currentPage = pageNumber ?? 1;
+
+                var items = safeList.OrderByDescending(u => u.Id)
+                                    .Skip((currentPage - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToList();
+
+                var paginatedOrders = new PaginatedList<OrderHeader>(items, totalCount, currentPage, pageSize);
                 return View(paginatedOrders);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "FATAL ERROR in Admin Order Index.");
-                TempData["error"] = $"Error al cargar pedidos: {ex.Message}.";
+                TempData["error"] = $"Error fatal: {ex.Message}.";
                 return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
             }
         }
