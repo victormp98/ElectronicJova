@@ -89,7 +89,6 @@
             </header>
 
             <main role="main" class="p-4">
-                <partial name="_Notification" />
                 @RenderBody()
             </main>
         </div>
@@ -135,6 +134,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <partial name="_Notification" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
