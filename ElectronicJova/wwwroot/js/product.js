@@ -13,10 +13,10 @@ function loadDataTable() {
     dataTable = tbl.DataTable({
         "ajax": { url: urlGetAll },
         "columns": [
-            { data: 'title', "width": "25%" },
-            { data: 'isbn', "width": "15%" },
+            { data: 'name', "width": "20%" },
+            { data: 'model', "width": "15%" },
+            { data: 'brand', "width": "15%" },
             { data: 'listPrice', "width": "10%" },
-            { data: 'price', "width": "10%" },
             { data: 'category.name', "width": "15%" },
             {
                 data: 'id',

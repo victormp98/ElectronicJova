@@ -21,9 +21,9 @@
                     <div class="card-header bg-dark text-white fw-bold">Basic Information</div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label asp-for="Product.Title" class="form-label fw-bold"></label>
-                            <input asp-for="Product.Title" class="form-control" placeholder="Enter title" />
-                            <span asp-validation-for="Product.Title" class="text-danger"></span>
+                            <label asp-for="Product.Name" class="form-label fw-bold">Nombre del Producto</label>
+                            <input asp-for="Product.Name" class="form-control" placeholder="Ej: Refrigerador Samsung 24'" />
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Product.Description" class="form-label fw-bold"></label>
@@ -32,15 +32,25 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 mb-3">
-                                <label asp-for="Product.ISBN" class="form-label fw-bold"></label>
-                                <input asp-for="Product.ISBN" class="form-control" />
-                                <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                                <label asp-for="Product.Model" class="form-label fw-bold">Modelo</label>
+                                <input asp-for="Product.Model" class="form-control" placeholder="Ej: RS27T5200SR" />
+                                <span asp-validation-for="Product.Model" class="text-danger"></span>
                             </div>
                             <div class="col-12 col-md-6 mb-3">
-                                <label asp-for="Product.Author" class="form-label fw-bold"></label>
-                                <input asp-for="Product.Author" class="form-control" />
-                                <span asp-validation-for="Product.Author" class="text-danger"></span>
+                                <label asp-for="Product.Brand" class="form-label fw-bold">Marca</label>
+                                <input asp-for="Product.Brand" class="form-control" placeholder="Ej: Samsung" />
+                                <span asp-validation-for="Product.Brand" class="text-danger"></span>
                             </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Product.Specifications" class="form-label fw-bold">Especificaciones Técnicas</label>
+                            <textarea asp-for="Product.Specifications" rows="3" class="form-control" placeholder="Potencia, dimensiones, eficiencia energética..."></textarea>
+                            <span asp-validation-for="Product.Specifications" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Product.Warranty" class="form-label fw-bold">Información de Garantía</label>
+                            <input asp-for="Product.Warranty" class="form-control" placeholder="Ej: 1 año con el fabricante" />
+                            <span asp-validation-for="Product.Warranty" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 @model DetailsVM
 
 @{
-    ViewData["Title"] = Model.Product!.Title;
+    ViewData["Title"] = Model.Product!.Name;
     var hasDiscount = Model.Product.ListPrice > Model.Product.Price;
     var discountPct = hasDiscount
         ? (int)Math.Round((1 - (double)Model.Product.Price / (double)Model.Product.ListPrice) * 100)
@@ -56,7 +56,7 @@
 
                     <img src="@ImageUrlHelper.GetDisplayUrl(Model.Product!.ImageUrl, "https://via.placeholder.com/600x600?text=No+Image")"
                          class="img-fluid rounded"
-                         alt="@Model.Product.Title"
+                         alt="@Model.Product.Name"
                          loading="lazy"
                          id="mainProductImage"
                          style="max-height: 500px; object-fit: contain;" />
@@ -74,13 +74,14 @@
                         </span>
                     </div>
 
-                    <!-- Header -->
-                    <div>
-                        <h1 class="fw-bold mb-1 text-light display-6">@Model.Product.Title</h1>
-                        <p class="text-muted mb-0">
-                            por <span class="text-info fw-semibold">@Model.Product.Author</span>
-                        </p>
-                    </div>
+                     <!-- Header -->
+                     <div>
+                         <h1 class="fw-bold mb-1 text-light display-6">@Model.Product.Name</h1>
+                         <p class="text-muted mb-0">
+                             Modelo: <span class="text-info fw-semibold">@Model.Product.Model</span> | 
+                             Marca: <span class="text-info fw-semibold">@Model.Product.Brand</span>
+                         </p>
+                     </div>
 
                     <!-- Price Card -->
                     <div class="card p-4 border-0 bg-opacity-50" style="background: rgba(0,0,0,0.2);">
@@ -202,17 +203,37 @@
 
         <div class="section-divider my-5"></div>
 
-        <!-- ── Description ─────────────────────────────────── -->
-        <div class="row">
-            <div class="col-12 col-lg-8">
-                <h3 class="fw-bold mb-4 text-light">
-                    <i class="bi bi-file-text me-2 text-info"></i>Descripción
-                </h3>
-                <div class="text-secondary" style="white-space: pre-wrap; line-height: 1.8;">
-                    @Model.Product.Description
-                </div>
-            </div>
-        </div>
+         <!-- ── Technical Info ─────────────────────────── -->
+         <div class="row mt-4">
+             <div class="col-12 col-lg-6 mb-4">
+                 <h3 class="fw-bold mb-4 text-light">
+                     <i class="bi bi-gear-fill me-2 text-info"></i>Especificaciones
+                 </h3>
+                 <div class="text-secondary" style="white-space: pre-wrap; line-height: 1.8;">
+                     @(string.IsNullOrEmpty(Model.Product.Specifications) ? "No hay especificaciones técnicas disponibles." : Model.Product.Specifications)
+                 </div>
+             </div>
+             <div class="col-12 col-lg-6 mb-4">
+                 <h3 class="fw-bold mb-4 text-light">
+                     <i class="bi bi-shield-check me-2 text-info"></i>Garantía
+                 </h3>
+                 <div class="text-secondary" style="white-space: pre-wrap; line-height: 1.8;">
+                     @(string.IsNullOrEmpty(Model.Product.Warranty) ? "Consulte los términos de garantía con el fabricante." : Model.Product.Warranty)
+                 </div>
+             </div>
+         </div>
+
+         <!-- ── Description ─────────────────────────────────── -->
+         <div class="row mt-4">
+             <div class="col-12">
+                 <h3 class="fw-bold mb-4 text-light">
+                     <i class="bi bi-file-text me-2 text-info"></i>Descripción del producto
+                 </h3>
+                 <div class="text-secondary" style="white-space: pre-wrap; line-height: 1.8;">
+                     @Model.Product.Description
+                 </div>
+             </div>
+         </div>
     </div>
 </form>
 

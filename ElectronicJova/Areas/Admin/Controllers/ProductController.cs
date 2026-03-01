@@ -142,7 +142,6 @@ namespace ElectronicJova.Areas.Admin.Controllers
                         }
                     }
 
-                    var inputIds = productVM.ProductOptions.Select(u => u.Id).ToList();
                     var optionsToDelete = existingOptions.Where(u => !inputIds.Contains(u.Id)).ToList();
                     if (optionsToDelete.Any())
                     {
@@ -162,10 +161,10 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
                 string actionType = productVM.Product.Id == 0 ? "Created" : "Updated";
                 _logger.LogInformation(
-                    "Admin {User} {Action} Product: {Title} (ID: {Id})",
+                    "Admin {User} {Action} Product: {Name} (ID: {Id})",
                     User.Identity?.Name,
                     actionType,
-                    productVM.Product.Title,
+                    productVM.Product.Name,
                     productVM.Product.Id);
 
                 TempData["success"] = "Product created/updated successfully";
@@ -219,7 +218,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
             _unitOfWork.Product.Remove(productToDelete);
             _unitOfWork.Save();
 
-            _logger.LogWarning("Admin {User} DELETED Product: {Title} (ID: {Id})", User.Identity?.Name, productToDelete.Title, id);
+            _logger.LogWarning("Admin {User} DELETED Product: {Name} (ID: {Id})", User.Identity?.Name, productToDelete.Name, id);
 
             return Json(new { success = true, message = "Delete Successful" });
         }

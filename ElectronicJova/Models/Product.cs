@@ -9,13 +9,18 @@ namespace ElectronicJova.Models
         public int Id { get; set; }
 
         [Required]
-        public string Title { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         [Required]
-        public string ISBN { get; set; } = string.Empty;
+        [Display(Name = "Modelo")]
+        public string Model { get; set; } = string.Empty;
         [Required]
-        public string Author { get; set; } = string.Empty;
+        [Display(Name = "Marca")]
+        public string Brand { get; set; } = string.Empty;
 
+        public string? Specifications { get; set; } // Technical specs
+        public string? Warranty { get; set; }       // Warranty info
+        
         [Required]
         [Range(1, 10000)] // Example range for ListPrice
         public decimal ListPrice { get; set; } // Precio de lista - sin descuento

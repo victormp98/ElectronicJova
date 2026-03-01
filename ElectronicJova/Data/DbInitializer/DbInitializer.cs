@@ -127,30 +127,30 @@ namespace ElectronicJova.DbInitializer
 
             if (catComputadoras.HasValue)
             {
-                products.Add(new Product { Title = "Laptop Gamer Pro X15", Description = "Potencia extrema con RTX 4080 y procesador i9.", ISBN = "LAP-001", Author = "MSI", ListPrice = 2500, Price = 2300, Price50 = 2200, Price100 = 2100, CategoryId = catComputadoras.Value, Stock = 15, ImageUrl = "\\images\\products\\laptop-gamer.png" });
-                products.Add(new Product { Title = "Ultrabook Air 13", Description = "Ligera, potente y con batería para todo el día.", ISBN = "LAP-002", Author = "Apple", ListPrice = 1200, Price = 1100, Price50 = 1050, Price100 = 1000, CategoryId = catComputadoras.Value, Stock = 20, ImageUrl = "\\images\\products\\macbook.jpg" });
+                products.Add(new Product { Name = "Laptop Gamer Pro X15", Description = "Potencia extrema con RTX 4080 y procesador i9.", Model = "LAP-001", Brand = "MSI", ListPrice = 2500, Price = 2300, Price50 = 2200, Price100 = 2100, CategoryId = catComputadoras.Value, Stock = 15, ImageUrl = "\\images\\products\\laptop-gamer.png", Specifications = "RTX 4080, 32GB RAM, 1TB SSD", Warranty = "2 años" });
+                products.Add(new Product { Name = "Ultrabook Air 13", Description = "Ligera, potente y con batería para todo el día.", Model = "LAP-002", Brand = "Apple", ListPrice = 1200, Price = 1100, Price50 = 1050, Price100 = 1000, CategoryId = catComputadoras.Value, Stock = 20, ImageUrl = "\\images\\products\\macbook.jpg", Specifications = "M2 Chip, 8GB RAM, 256GB SSD", Warranty = "1 año" });
             }
 
             if (catCelulares.HasValue)
             {
-                products.Add(new Product { Title = "iPhone 15 Pro", Description = "Titanio. Tan fuerte. Tan ligero. Tan Pro.", ISBN = "CEL-001", Author = "Apple", ListPrice = 999, Price = 950, Price50 = 920, Price100 = 900, CategoryId = catCelulares.Value, Stock = 50, ImageUrl = "\\images\\products\\iphone15.png" });
-                products.Add(new Product { Title = "Samsung Galaxy S24", Description = "La IA llega a tu teléfono.", ISBN = "CEL-002", Author = "Samsung", ListPrice = 899, Price = 850, Price50 = 820, Price100 = 800, CategoryId = catCelulares.Value, Stock = 40, ImageUrl = "\\images\\products\\s24.jpg" });
+                products.Add(new Product { Name = "iPhone 15 Pro", Description = "Titanio. Tan fuerte. Tan ligero. Tan Pro.", Model = "CEL-001", Brand = "Apple", ListPrice = 999, Price = 950, Price50 = 920, Price100 = 900, CategoryId = catCelulares.Value, Stock = 50, ImageUrl = "\\images\\products\\iphone15.png", Specifications = "A17 Pro chip, 128GB", Warranty = "1 año" });
+                products.Add(new Product { Name = "Samsung Galaxy S24", Description = "La IA llega a tu teléfono.", Model = "CEL-002", Brand = "Samsung", ListPrice = 899, Price = 850, Price50 = 820, Price100 = 800, CategoryId = catCelulares.Value, Stock = 40, ImageUrl = "\\images\\products\\s24.jpg", Specifications = "Snapdragon 8 Gen 3, 256GB", Warranty = "1 año" });
             }
 
             if (catGaming.HasValue)
             {
-                products.Add(new Product { Title = "PlayStation 5", Description = "Juega como nunca antes.", ISBN = "GM-001", Author = "Sony", ListPrice = 499, Price = 499, Price50 = 480, Price100 = 470, CategoryId = catGaming.Value, Stock = 10, ImageUrl = "\\images\\products\\ps5.jpg" });
-                products.Add(new Product { Title = "Xbox Series X", Description = "La Xbox más rápida y potente de la historia.", ISBN = "GM-002", Author = "Microsoft", ListPrice = 499, Price = 480, Price50 = 460, Price100 = 450, CategoryId = catGaming.Value, Stock = 12, ImageUrl = "\\images\\products\\xbox.jpg" });
+                products.Add(new Product { Name = "PlayStation 5", Description = "Juega como nunca antes.", Model = "GM-001", Brand = "Sony", ListPrice = 499, Price = 499, Price50 = 480, Price100 = 470, CategoryId = catGaming.Value, Stock = 10, ImageUrl = "\\images\\products\\ps5.jpg", Specifications = "825GB SSD, Digital Edition", Warranty = "1 año" });
+                products.Add(new Product { Name = "Xbox Series X", Description = "La Xbox más rápida y potente de la historia.", Model = "GM-002", Brand = "Microsoft", ListPrice = 499, Price = 480, Price50 = 460, Price100 = 450, CategoryId = catGaming.Value, Stock = 12, ImageUrl = "\\images\\products\\xbox.jpg", Specifications = "1TB SSD, True 4K Gaming", Warranty = "1 año" });
             }
 
             if (catAudio.HasValue)
             {
-                products.Add(new Product { Title = "Sony WH-1000XM5", Description = "Cancelación de ruido líder en la industria.", ISBN = "AUD-001", Author = "Sony", ListPrice = 350, Price = 320, Price50 = 300, Price100 = 290, CategoryId = catAudio.Value, Stock = 30, ImageUrl = "\\images\\products\\sony-headphones.png" });
+                products.Add(new Product { Name = "Sony WH-1000XM5", Description = "Cancelación de ruido líder en la industria.", Model = "AUD-001", Brand = "Sony", ListPrice = 350, Price = 320, Price50 = 300, Price100 = 290, CategoryId = catAudio.Value, Stock = 30, ImageUrl = "\\images\\products\\sony-headphones.png", Specifications = "LDAC, 30h batería", Warranty = "1 año" });
             }
 
             foreach (var prod in products)
             {
-                if (!_db.Products.Any(p => p.ISBN == prod.ISBN))
+                if (!_db.Products.Any(p => p.Model == prod.Model))
                 {
                     _db.Products.Add(prod);
                 }

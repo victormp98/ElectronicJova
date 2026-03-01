@@ -85,7 +85,7 @@ namespace ElectronicJova.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                productQuery = productQuery.Where(p => p.Title.Contains(searchString) ||
+                productQuery = productQuery.Where(p => p.Name.Contains(searchString) ||
                                                     p.Description.Contains(searchString));
             }
 
@@ -225,10 +225,10 @@ namespace ElectronicJova.Controllers
             }
 
             var products = await _unitOfWork.Product.GetAllAsync(
-                u => u.Title.Contains(query) || u.Description.Contains(query)
+                u => u.Name.Contains(query) || u.Description.Contains(query)
             );
 
-            var suggestions = products.Take(5).Select(p => new { id = p.Id, title = p.Title });
+            var suggestions = products.Take(5).Select(p => new { id = p.Id, title = p.Name });
             return Json(suggestions);
         }
     }
