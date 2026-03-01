@@ -15,9 +15,9 @@ function loadDataTable() {
         "columns": [
             { data: 'name', "width": "30%", "className": "ps-4" },
             { data: 'model', "width": "15%", "className": "d-none d-lg-table-cell" },
-            { data: 'listPrice', "width": "10%", "className": "d-none d-sm-table-cell" },
+            { data: 'listPrice', "width": "15%", "className": "d-none d-sm-table-cell fw-bold text-info" },
             { data: 'brand', "width": "15%", "className": "d-none d-md-table-cell" },
-            { data: 'category.name', "width": "15%" },
+            { data: 'category.name', "width": "15%", "className": "d-none d-sm-table-cell" },
             {
                 data: 'id',
                 "render": function (data) {
@@ -26,7 +26,7 @@ function loadDataTable() {
                         <a onClick=Delete('${urlDelete}/${data}') class="btn btn-danger btn-sm mx-1 rounded"> <i class="bi bi-trash-fill"></i></a>
                     </div>`
                 },
-                "width": "20%",
+                "width": "10%",
                 "className": "text-end pe-4"
             }
         ]
@@ -59,3 +59,4 @@ function Delete(url) {
         }
     })
 }
+Riverside:
