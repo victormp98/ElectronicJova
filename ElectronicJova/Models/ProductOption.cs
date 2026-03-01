@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ElectronicJova.Models
 {
@@ -8,6 +9,7 @@ namespace ElectronicJova.Models
         public int Id { get; set; }
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
+        [ValidateNever]
         public virtual Product? Product { get; set; }
 
         [Required]
