@@ -4,7 +4,7 @@
     ViewData["Title"] = "Products";
 }
 
-<div class="container p-3">
+<div class="container-fluid p-4">
     <div class="row pt-4">
         <div class="col-6">
             <h2 class="text-primary">Product List</h2>
@@ -17,7 +17,7 @@
     </div>
     <br /><br />
 
-    <div class="card border-0 shadow-sm overflow-hidden" style="background: var(--bg-card); border: 1px solid var(--border) !important;">
+    <div class="card border-0 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border) !important;">
         <div class="card-body p-0">
             <table id="tblData" 
                    data-url-getall="@Url.Action("GetAll", "Product", new { area = "Admin" })"
@@ -27,10 +27,10 @@
                 <thead style="background: var(--bg-surface);">
                     <tr>
                         <th class="py-3 ps-4 text-secondary text-uppercase small fw-bold">Producto</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">Modelo</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">Precio Lista</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">Marca</th>
-                        <th class="py-3 text-secondary text-uppercase small fw-bold">Category</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-lg-table-cell">Modelo</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-md-table-cell">Precio Lista</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold d-none d-md-table-cell">Marca</th>
+                        <th class="py-3 text-secondary text-uppercase small fw-bold">Categoría</th>
                         <th class="text-end py-3 pe-4"></th>
                     </tr>
                 </thead>

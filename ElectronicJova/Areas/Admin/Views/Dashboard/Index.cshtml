@@ -105,78 +105,76 @@
                     </h5>
                 </div>
                 <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover align-middle mb-0 bg-transparent">
-                            <thead>
-                                <tr class="text-secondary small text-uppercase fw-bold">
-                                    <th class="ps-4 py-3">Producto</th>
-                                    <th class="py-3">Precio</th>
-                                    <th class="py-3">Inventario</th>
-                                    <th class="text-end pe-4 py-3">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody class="border-top border-secondary">
-                                @if (Model.TopProducts.Any())
+                    <table class="table table-dark table-hover align-middle mb-0 bg-transparent">
+                        <thead>
+                            <tr class="text-secondary small text-uppercase fw-bold">
+                                <th class="ps-4 py-3">Producto</th>
+                                <th class="py-3 d-none d-sm-table-cell">Precio</th>
+                                <th class="py-3 d-none d-md-table-cell">Inventario</th>
+                                <th class="text-end pe-4 py-3">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-top border-secondary">
+                            @if (Model.TopProducts.Any())
+                            {
+                                @foreach (var product in Model.TopProducts)
                                 {
-                                    @foreach (var product in Model.TopProducts)
-                                    {
-                                        <tr>
-                                            <td class="ps-4 py-3">
-                                                <div class="d-flex align-items-center">
-                                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
-                                                    {
-                                                        <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/45?text=No+Image")" width="45" height="45" class="rounded shadow-sm me-3 object-fit-cover" alt="@product.Name">
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="bg-dark rounded me-3 d-flex align-items-center justify-content-center border border-secondary" style="width: 45px; height: 45px;">
-                                                            <i class="bi bi-image text-muted"></i>
-                                                        </div>
-                                                    }
-                                                    <div>
-                                                        <div class="fw-bold text-light">@product.Name</div>
-                                                        <div class="text-muted small">@product.Model</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="py-3">
-                                                <span class="fw-bold text-info">@product.Price.ToString("c")</span>
-                                            </td>
-                                            <td class="py-3">
-                                                @if (product.Stock <= 5)
+                                    <tr>
+                                        <td class="ps-4 py-3">
+                                            <div class="d-flex align-items-center">
+                                                @if (!string.IsNullOrEmpty(product.ImageUrl))
                                                 {
-                                                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 border border-danger">Bajo: @product.Stock</span>
-                                                }
-                                                else if (product.Stock <= 20)
-                                                {
-                                                    <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 border border-warning">Medio: @product.Stock</span>
+                                                    <img src="@ImageUrlHelper.GetDisplayUrl(product.ImageUrl, "https://via.placeholder.com/45?text=No+Image")" width="45" height="45" class="rounded shadow-sm me-3 object-fit-cover" alt="@product.Name">
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 border border-success">Ok: @product.Stock</span>
+                                                    <div class="bg-dark rounded me-3 d-flex align-items-center justify-content-center border border-secondary" style="width: 45px; height: 45px;">
+                                                        <i class="bi bi-image text-muted"></i>
+                                                    </div>
                                                 }
-                                            </td>
-                                            <td class="text-end pe-4 py-3">
-                                                <a asp-controller="Product" asp-action="Upsert" asp-route-id="@product.Id" 
-                                                   class="btn btn-sm btn-outline-info rounded-circle p-2" title="Editar">
-                                                    <i class="bi bi-pencil-fill"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="4" class="text-center py-5 text-muted">
-                                            <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
-                                            Aún no hay datos de ventas para mostrar.
+                                                <div>
+                                                    <div class="fw-bold text-light">@product.Name</div>
+                                                    <div class="text-muted small d-none d-lg-block">@product.Model</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 d-none d-sm-table-cell">
+                                            <span class="fw-bold text-info">@product.Price.ToString("c")</span>
+                                        </td>
+                                        <td class="py-3 d-none d-md-table-cell">
+                                            @if (product.Stock <= 5)
+                                            {
+                                                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 border border-danger">Bajo: @product.Stock</span>
+                                            }
+                                            else if (product.Stock <= 20)
+                                            {
+                                                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 border border-warning">Medio: @product.Stock</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 border border-success">Ok: @product.Stock</span>
+                                            }
+                                        </td>
+                                        <td class="text-end pe-4 py-3">
+                                            <a asp-controller="Product" asp-action="Upsert" asp-route-id="@product.Id" 
+                                               class="btn btn-sm btn-outline-info rounded-circle p-2" title="Editar">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+                                        Aún no hay datos de ventas para mostrar.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

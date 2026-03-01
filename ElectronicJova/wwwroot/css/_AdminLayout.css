@@ -152,9 +152,12 @@
 /* ── Main Content ────────────────────────────────────────────── */
 .main-content {
   margin-left: var(--offcanvas-width);
+  width: calc(100% - var(--offcanvas-width));
   background: var(--bg-base);
   min-height: 100vh;
   transition: margin-left var(--offcanvas-transition-duration) ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ── Mobile Header ───────────────────────────────────────────── */
