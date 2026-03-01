@@ -36,60 +36,37 @@ namespace ElectronicJova.Areas.Admin.Controllers
             try 
             {
                 _logger.LogInformation("Admin Order Index DEEP DEBUGGING starting.");
+                _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
                 
-                // ── USAMOS GetQueryable() PARA NO MATERIALIZAR AÚN ──
-                // Esto nos permite iterar sobre los resultados de la base de datos uno por uno
-                var query = _unitOfWork.OrderHeader.GetQueryable(tracked: false);
+                // Obtenemos todos los pedidos. Gracias al cambio en el modelo (string?), 
+                // ya no fallará si hay campos NULL en la base de datos.
+                var allOrders = await _unitOfWork.OrderHeader.GetAllAsync();
+                var allOrdersList = allOrders.OrderByDescending(u => u.Id).ToList();
                 
-                int totalCount = 0;
-                var safeList = new List<OrderHeader>();
-                
-                // Usamos AsEnumerable() para que la materialización ocurra al iterar, no de golpe
-                var streamingResults = query.AsEnumerable();
-
-                using (var enumerator = streamingResults.GetEnumerator())
-                {
-                    while (true)
-                    {
-                        try 
-                        {
-                            // MoveNext() disparará la materialización del SIGUIENTE registro
-                            if (!enumerator.MoveNext()) break;
-                            
-                            var item = enumerator.Current;
-                            safeList.Add(item);
-                            totalCount++;
-                        } 
-                        catch (Exception ex) 
-                        {
-                            // ¡AQUÍ CAERÁ EL ERROR DE DBNull A STRING!
-                            _logger.LogError(ex, "MATERIALIZATION FAILED for a row. Likely DBNull in a required field. Total safe: {Count}", totalCount);
-                            TempData["error"] = $"ERROR DE DATOS: Hay un registro corrupto en la base de datos que está bloqueando la lista. " +
-                                             $"Se detuvo tras {totalCount} registros exitosos. Detalle: {ex.Message}";
-                            break; 
-                        }
-                    }
-                }
-
-                int pageSize = 15; // Aumentamos un poco para ver más
+                int totalCount = allOrdersList.Count;
+                int pageSize = 10;
                 int currentPage = pageNumber ?? 1;
 
-                var items = safeList.OrderByDescending(u => u.Id)
-                                    .Skip((currentPage - 1) * pageSize)
-                                    .Take(pageSize)
-                                    .ToList();
+                var items = allOrdersList.Skip((currentPage - 1) * pageSize)
+                                         .Take(pageSize)
+                                         .ToList();
 
                 var paginatedOrders = new PaginatedList<OrderHeader>(items, totalCount, currentPage, pageSize);
+                
+                // Redirigir a página 1 si la actual está vacía pero hay datos
+                if (totalCount > 0 && items.Count == 0 && currentPage > 1) {
+                     return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+                }
+
                 return View(paginatedOrders);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "FATAL ERROR in Admin Order Index.");
-                TempData["error"] = $"Error fatal: {ex.Message}.";
+                TempData["error"] = $"Error al cargar pedidos: {ex.Message}.";
                 return View(new PaginatedList<OrderHeader>(new List<OrderHeader>(), 0, 1, 10));
             }
         }
-
         public async Task<IActionResult> Details(int orderId)
         {
             OrderDetailsVM = new OrderDetailsVM()
