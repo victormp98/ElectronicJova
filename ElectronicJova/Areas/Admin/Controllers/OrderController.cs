@@ -36,7 +36,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
             try 
             {
                 _logger.LogInformation("Admin Order Index access. Page={Page}", pageNumber);
-                IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader.GetQueryable(includeProperties: "ApplicationUser", tracked: false);
+                IQueryable<OrderHeader> orderHeaderQuery = _unitOfWork.OrderHeader.GetQueryable(tracked: false);
 
                 int pageSize = 10;
                 var paginatedOrders = await PaginatedList<OrderHeader>.CreateAsync(orderHeaderQuery, pageNumber ?? 1, pageSize);
