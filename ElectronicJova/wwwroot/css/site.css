@@ -583,6 +583,15 @@ h4,
   /* Lighter than default muted for dark bg */
 }
 
+/* Force dark background on disabled/readonly inputs (Fixes Username white-on-white) */
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  opacity: 0.8;
+  border-color: var(--border) !important;
+}
+
 
 /* Custom shadow utilities */
 .shadow-info {

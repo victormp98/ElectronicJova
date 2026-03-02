@@ -105,16 +105,16 @@
 }
 
 .sidebar-nav .nav-link.active {
-  color: var(--sidebar-active-color) !important;
-  background: var(--sidebar-active-bg);
-  border-left-color: var(--sidebar-active-border);
-  font-weight: 600;
-  box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.05);
+  color: #000 !important;
+  background: var(--cyan);
+  border-left-color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0 15px var(--cyan-glow);
 }
 
 .sidebar-nav .nav-link.active i {
-  color: var(--cyan);
-  filter: drop-shadow(0 0 6px var(--cyan-glow));
+  color: #000;
+  filter: none;
 }
 
 /* Sidebar footer (user dropdown) */
