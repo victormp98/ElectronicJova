@@ -27,6 +27,7 @@ namespace ElectronicJova.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            HttpContext.Session.Clear(); // Limpiar todas las variables de sesión (incluyendo el carrito)
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)

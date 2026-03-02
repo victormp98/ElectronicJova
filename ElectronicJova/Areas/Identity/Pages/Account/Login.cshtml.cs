@@ -22,11 +22,18 @@ namespace ElectronicJova.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ElectronicJova.Data.Repository.IUnitOfWork _unitOfWork;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, 
+            UserManager<ApplicationUser> userManager,
+            ElectronicJova.Data.Repository.IUnitOfWork unitOfWork,
+            ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
@@ -117,6 +124,15 @@ namespace ElectronicJova.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    // Actualizar el contador del carrito inmediatamente al entrar
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        var cartCount = (await _unitOfWork.ShoppingCart.GetAllAsync(u => u.ApplicationUserId == user.Id)).Count();
+                        HttpContext.Session.SetInt32("CartItemCount", cartCount);
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

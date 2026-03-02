@@ -189,7 +189,7 @@
         </div>
         <p class="login-subtitle mb-4">Únete a nuestra comunidad tecnológica</p>
 
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3" role="alert" style="display: none;"></div>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3" role="alert"></div>
 
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <!-- Name -->
@@ -287,6 +287,19 @@
         }
 
         $(document).ready(function() {
+            // Mostrar alerta de SweetAlert2 si hay errores de validación en el resumen
+            const validationSummary = $('[asp-validation-summary="ModelOnly"]');
+            if (validationSummary.length && validationSummary.text().trim() !== "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error en el registro!',
+                    text: 'Por favor, revisa que los datos sean correctos. La contraseña debe tener al menos 6 caracteres, una mayúscula, un número y un carácter especial.',
+                    background: '#1a1d27',
+                    color: '#ffffff',
+                    confirmButtonColor: '#00d4ff'
+                });
+            }
+
             const passwordInput = $('#passwordInput');
             const emailInput = $('input[asp-for="Input.Email"]');
             
