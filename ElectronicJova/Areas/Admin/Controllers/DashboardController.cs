@@ -50,14 +50,14 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
 
             // 1. Calcular Ventas de Hoy (Pedidos pagados hoy)
-            // Usamos rango de fechas para evitar problemas de traducción de .Date en EF Core con algunos proveedores
             DateTime startOfDay = todayDate;
             DateTime endOfDay = todayDate.AddDays(1);
 
+            // Incluimos tanto 'Approved' como 'Processing' ya que ambos representan una venta cobrada
             var ordersToday = await _unitOfWork.OrderHeader.GetAllAsync(u => 
                 u.OrderDate >= startOfDay && 
                 u.OrderDate < endOfDay &&
-                u.PaymentStatus == SD.PaymentStatusApproved);
+                (u.PaymentStatus == SD.PaymentStatusApproved || u.OrderStatus == SD.StatusInProcess));
             
             decimal totalSalesToday = ordersToday.Sum(u => u.OrderTotal);
 
@@ -90,7 +90,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
                 var sales = (await _unitOfWork.OrderHeader.GetAllAsync(u => 
                     u.OrderDate >= date && 
                     u.OrderDate < nextDate &&
-                    u.PaymentStatus == SD.PaymentStatusApproved)).Sum(u => u.OrderTotal);
+                    (u.PaymentStatus == SD.PaymentStatusApproved || u.OrderStatus == SD.StatusInProcess))).Sum(u => u.OrderTotal);
                 
                 last7DaysSalesList.Add(new DailySale { 
                     Date = date.ToString("dd MMM"), 

@@ -533,6 +533,57 @@ input[type=number] {
   /* Firefox */
 }
 
+/* ══════════════════════════════════════════════════════════════
+   IDENTITY & PROFILE CONTRAST FIXES
+   ══════════════════════════════════════════════════════════════ */
+.form-floating>label {
+  color: var(--text-secondary) !important;
+}
+
+.form-floating>.form-control:focus~label,
+.form-floating>.form-control:not(:placeholder-shown)~label {
+  color: var(--cyan) !important;
+  opacity: 1;
+}
+
+h3,
+h4,
+.h3,
+.h4 {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+.list-group-item {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+.list-group-item.active {
+  background-color: var(--cyan) !important;
+  border-color: var(--cyan) !important;
+  color: #000 !important;
+}
+
+.nav-pills .nav-link {
+  color: var(--text-secondary) !important;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--cyan) !important;
+  color: #000 !important;
+  font-weight: 600;
+}
+
+/* Fix for profile details contrast */
+.profile-card text-muted,
+.text-muted {
+  color: #94a3b8 !important;
+  /* Lighter than default muted for dark bg */
+}
+
+
 /* Custom shadow utilities */
 .shadow-info {
   box-shadow: 0 4px 15px rgba(91, 141, 239, 0.3) !important;

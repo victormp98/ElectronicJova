@@ -40,10 +40,10 @@
                             }
 
                             @* Offer Badge *@
-                            @if(product.ListPrice > product.Price100)
+                            @if(product.ListPrice > product.Price)
                             {
                                 <span class="badge bg-success position-absolute top-0 end-0 m-2">
-                                    -@(Math.Round((1 - (double)product.Price100 / (double)product.ListPrice) * 100))% OFF
+                                    -@(Math.Round((1 - (double)product.Price / (double)product.ListPrice) * 100))% OFF
                                 </span>
                             }
                         </div>
