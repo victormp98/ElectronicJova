@@ -17,7 +17,7 @@ function loadDataTable() {
             "url": urlGetAll,
             "error": function (xhr, error, thrown) {
                 console.error("DataTables AJAX error:", error, thrown);
-                toastr.error("Error al cargar los productos. Por favor, recarga la página.");
+                Swal.fire({ title: 'Error', text: 'Error al cargar los productos. Por favor, recarga la página.', icon: 'error' });
             }
         },
         "columns": [
