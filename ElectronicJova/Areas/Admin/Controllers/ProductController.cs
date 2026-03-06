@@ -122,7 +122,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
 
                 if (productVM.ProductOptions != null)
                 {
-                    var existingOptions = _unitOfWork.ProductOption.GetAll(u => u.ProductId == productVM.Product.Id).ToList();
+                    var existingOptions = _unitOfWork.ProductOption.GetQueryable(u => u.ProductId == productVM.Product.Id, tracked: false).ToList();
 
                     foreach (var option in productVM.ProductOptions)
                     {
