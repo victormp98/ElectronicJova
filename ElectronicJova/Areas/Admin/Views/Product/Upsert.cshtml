@@ -219,10 +219,21 @@
 
         function removeRow(btn) {
             $(btn).closest('tr').remove();
-            // Optional: Re-index lines if you want strictly sequential indices, 
-            // but ASP.NET Core model binding can handle non-sequential indices 
-            // if you use a specific syntax or just ensure uniqueness.
-            // For simple list binding, sequential 0...N is safest.
+            
+            // Re-indexar las filas restantes para que el Model Binder las acepte (necesita indices secuenciales continuos como [0], [1], [2]...)
+            $('#optionsTable tbody tr').each(function(index) {
+                $(this).find('input').each(function() {
+                    let nameAttr = $(this).attr('name');
+                    if(nameAttr && nameAttr.includes('ProductOptions[')) {
+                        // Reemplazar cualquier indice viejo por el indice actual (index)
+                        let newName = nameAttr.replace(/ProductOptions\[\d+\]/, 'ProductOptions[' + index + ']');
+                        $(this).attr('name', newName);
+                    }
+                });
+            });
+            
+            // Actualizar la variable global optionIndex
+            optionIndex = $('#optionsTable tbody tr').length;
         }
     </script>
 }
