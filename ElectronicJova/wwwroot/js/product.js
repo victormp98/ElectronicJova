@@ -94,9 +94,9 @@ function Delete(url) {
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
-                        toastr.success(data.message);
+                        Swal.fire({ title: 'Éxito!', text: data.message, icon: 'success' });
                     } else {
-                        toastr.error(data.message);
+                        Swal.fire({ title: 'Error', text: data.message, icon: 'error' });
                     }
                 }
             })
