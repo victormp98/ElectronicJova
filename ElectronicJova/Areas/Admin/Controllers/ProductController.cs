@@ -201,7 +201,7 @@ namespace ElectronicJova.Areas.Admin.Controllers
             var associatedOrders = _unitOfWork.OrderDetail.GetAll(u => u.ProductId == id);
             if (associatedOrders.Any())
             {
-                return Json(new { success = false, message = "No se puede eliminar: El producto tiene historico de ventas. Desactivalo en su lugar." });
+                return Json(new { success = false, message = "No se puede eliminar: El producto tiene historico de ventas. Para ocultarlo en la tienda, por favor cambia su Inventario (Stock) a 0." });
             }
 
             if (!string.IsNullOrEmpty(productToDelete.ImageUrl))

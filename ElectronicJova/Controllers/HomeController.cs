@@ -25,8 +25,9 @@ namespace ElectronicJova.Controllers
 
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            // Retrieve queryable for products
-            IQueryable<Product> productQuery = _unitOfWork.Product.GetQueryable(includeProperties: "Category", tracked: false);
+            // Retrieve queryable for products, filtering by Stock > 0
+            IQueryable<Product> productQuery = _unitOfWork.Product.GetQueryable(includeProperties: "Category", tracked: false)
+                                                                  .Where(p => p.Stock > 0);
 
             int pageSize = 8;
             var paginatedProducts = await PaginatedList<Product>.CreateAsync(productQuery, pageNumber ?? 1, pageSize);
@@ -80,8 +81,9 @@ namespace ElectronicJova.Controllers
         {
             _logger.LogInformation("Search initiated for: {SearchString}, CategoryId: {CategoryId}, Page: {PageNumber}", searchString, categoryId, pageNumber);
 
-            // Start with a queryable object for efficient filtering
-            IQueryable<Product> productQuery = _unitOfWork.Product.GetQueryable(includeProperties: "Category", tracked: false);
+            // Start with a queryable object for efficient filtering, filtering by Stock > 0
+            IQueryable<Product> productQuery = _unitOfWork.Product.GetQueryable(includeProperties: "Category", tracked: false)
+                                                                  .Where(p => p.Stock > 0);
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -225,7 +227,7 @@ namespace ElectronicJova.Controllers
             }
 
             var products = await _unitOfWork.Product.GetAllAsync(
-                u => u.Name.Contains(query) || u.Description.Contains(query)
+                u => u.Stock > 0 && (u.Name.Contains(query) || u.Description.Contains(query))
             );
 
             var suggestions = products.Take(5).Select(p => new { id = p.Id, name = p.Name });
