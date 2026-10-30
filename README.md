@@ -1,17 +1,55 @@
 # ElectronicJova
 
-Proyecto de comercio electrónico con ASP.NET Core, Identity, MySQL, integración con Stripe y notificaciones SignalR. Se trata de un proyecto de portafolio; **no se declara listo para operación comercial en producción**.
+Tienda web con ASP.NET Core 8 MVC, Identity, Entity Framework Core, MySQL, Stripe Checkout y SignalR.
 
-## Estado de revisión
+## Funcionalidad
 
-- El repositorio contiene pruebas unitarias en `ElectronicJova.UnitTests`.
-- Para ejecutar el proyecto, configura de forma privada la conexión a base de datos, el correo transaccional y las credenciales de Stripe; no publiques secretos en archivos rastreados.
-- **Pendiente crítico:** el procesamiento del webhook en `ElectronicJova/Controllers/WebhooksController.cs` confirma el pago y descuenta inventario mediante guardados separados. La implementación actual registra stock insuficiente y continúa el descuento. Antes de usar pagos reales, implementar operaciones transaccionales, manejo de concurrencia e idempotencia, y probar reintentos del webhook.
-- Los registros y resultados de compilación generados se han excluido de esta rama de limpieza. Eliminarlos del árbol actual no los elimina del historial de Git.
+- Catálogo, categorías y variantes de productos.
+- Carrito de compra con actualización de cantidades y precios.
+- Roles administrativos y de cliente mediante ASP.NET Core Identity.
+- Creación y seguimiento de pedidos.
+- Sesiones Stripe Checkout y recepción de eventos de pago.
+- Notificaciones de cambio de estado mediante SignalR.
 
-## Revisión manual antes de publicar
+## Componentes
 
-1. Configurar credenciales locales fuera del repositorio.
-2. Ejecutar compilación y pruebas unitarias.
-3. Revisar migraciones, métodos administrativos y flujos de pago.
-4. No habilitar pagos reales hasta resolver el problema de inventario.
+- `ElectronicJova/Areas/Admin/`: catálogo, administración y operaciones de pedidos.
+- `ElectronicJova/Areas/Customer/`: tienda y carrito.
+- `ElectronicJova/Areas/Identity/`: registro e inicio de sesión.
+- `ElectronicJova/Controllers/WebhooksController.cs`: eventos de Stripe.
+- `ElectronicJova/Data/`: contexto EF Core, repositorios y migraciones.
+- `ElectronicJova.UnitTests/`: pruebas de precios, carrito y repositorios.
+
+## Dependencias
+
+- .NET SDK 8
+- MySQL compatible con el proveedor Pomelo de Entity Framework Core
+- Cuenta de Stripe con claves de prueba para ejecutar el checkout
+- Configuración de correo transaccional para confirmaciones
+
+## Configuración local
+
+`ElectronicJova/ElectronicJova.csproj` define `UserSecretsId` para configuración privada durante el desarrollo. Establece estos valores sin incluir secretos en archivos versionados:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "<CONEXION_MYSQL_LOCAL>" --project ElectronicJova/ElectronicJova.csproj
+dotnet user-secrets set "StripeSettings:SecretKey" "<CLAVE_STRIPE_TEST>" --project ElectronicJova/ElectronicJova.csproj
+dotnet user-secrets set "StripeSettings:WebhookSecret" "<SECRETO_WEBHOOK_TEST>" --project ElectronicJova/ElectronicJova.csproj
+dotnet user-secrets set "ResendSettings:ApiKey" "<TOKEN_CORREO_TEST>" --project ElectronicJova/ElectronicJova.csproj
+```
+
+Los valores entre `<...>` son marcadores de posición. Nunca utilices claves reales en un commit.
+
+## Compilación y pruebas
+
+```powershell
+dotnet build ElectronicJova.slnx
+dotnet test ElectronicJova.slnx
+dotnet run --project ElectronicJova/ElectronicJova.csproj
+```
+
+## Procesamiento de pagos
+
+`WebhooksController` verifica la firma de Stripe antes de procesar `checkout.session.completed`. La actualización de estado e inventario requiere coherencia transaccional e idempotencia frente a reintentos y concurrencia. Antes de habilitar pagos reales, valida el stock disponible, evita descuentos duplicados y prueba fallos intermedios durante la confirmación. Este flujo requiere validación de integración.
+
+Los logs generados y los resultados locales de compilación no forman parte del código fuente ni deben incluir información de pedidos o usuarios.
