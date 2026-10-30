@@ -55,7 +55,7 @@ namespace ElectronicJova.UnitTests
             var productId = 1;
             var cartList = new List<ShoppingCart>
             {
-                new ShoppingCart { ProductId = productId, Count = 10, Product = new Product { Id = productId, Title = "Product 1", Stock = 5 } }
+                new ShoppingCart { ProductId = productId, Count = 10, Product = new Product { Id = productId, Name = "Product 1", Stock = 5 } }
             };
 
             _mockUnitOfWork.Setup(u => u.ShoppingCart.GetAllAsync(
@@ -90,7 +90,7 @@ namespace ElectronicJova.UnitTests
             
             // Arrange
             var productId = 1;
-            var product = new Product { Id = productId, Title = "Product 1", Stock = 20, Price = 10 };
+            var product = new Product { Id = productId, Name = "Product 1", Stock = 20, Price = 10 };
             var cartList = new List<ShoppingCart>
             {
                 new ShoppingCart { ProductId = productId, Count = 5, Product = product }
