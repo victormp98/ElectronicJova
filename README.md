@@ -50,6 +50,22 @@ dotnet run --project ElectronicJova/ElectronicJova.csproj
 
 ## Procesamiento de pagos
 
-`WebhooksController` verifica la firma de Stripe antes de procesar `checkout.session.completed`. La actualización de estado e inventario requiere coherencia transaccional e idempotencia frente a reintentos y concurrencia. Antes de habilitar pagos reales, valida el stock disponible, evita descuentos duplicados y prueba fallos intermedios durante la confirmación. Este flujo requiere validación de integración.
+`WebhooksController` valida la firma del evento `checkout.session.completed` mediante la biblioteca de Stripe y procesa únicamente sesiones con estado `paid`.
 
-Los logs generados y los resultados locales de compilación no forman parte del código fuente ni deben incluir información de pedidos o usuarios.
+El servicio inicia una transacción de base de datos con aislamiento `Serializable`, obtiene el pedido y sus partidas, agrupa cantidades por producto y verifica existencias antes de modificar el inventario. La actualización de estado, los descuentos y el registro de transición comparten un mismo `SaveChangesAsync` y `CommitAsync`.
+
+Un pedido con estado `PaymentStatusApproved` responde sin repetir el descuento. Cuando faltan existencias o no existe el pedido, el webhook devuelve `503`, registra la incidencia y permite el reintento de Stripe. La intervención operativa puede ser necesaria para resolver inconsistencias de stock.
+
+SignalR y el correo se ejecutan después de confirmar la transacción. Los errores de notificación no revierten el estado del pedido.
+
+### Pruebas de integración recomendadas
+
+1. Webhook válido con stock suficiente: estado aprobado y descuento único.
+2. Evento repetido: inventario sin cambios adicionales.
+3. Dos webhooks concurrentes: un único descuento efectivo.
+4. Varias líneas del mismo producto: validar cantidad total agrupada.
+5. Stock insuficiente, pedido inexistente y fallo de persistencia: transacción revertida.
+6. Firma de Stripe inválida: HTTP 400 sin modificar pedidos.
+7. Error de SignalR o SMTP después del commit: conservar el pedido aprobado.
+
+Para validar concurrencia y transacciones utiliza el mismo proveedor MySQL configurado en el despliegue, no únicamente pruebas con dobles en memoria.
