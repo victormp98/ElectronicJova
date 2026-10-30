@@ -54,7 +54,7 @@ namespace ElectronicJova.Models
         public int CategoryId { get; set; } // Foreign Key to Category
 
         [ForeignKey("CategoryId")]
-        [ValidateNever]  // FIX: Prevent model binding from validating this navigation property on POST
+        [ValidateNever]  // La navegación se carga por EF Core; no forma parte del modelo de entrada.
         public Category Category { get; set; } = null!; // Navigation property
     }
 }

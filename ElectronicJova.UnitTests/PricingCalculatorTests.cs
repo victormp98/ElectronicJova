@@ -22,7 +22,7 @@ namespace ElectronicJova.UnitTests
             // Arrange
             var product = new Product
             {
-                Title = "Test Product",
+                Name = "Test Product",
                 Price = price,
                 Price50 = price50,
                 Price100 = price100
@@ -47,7 +47,7 @@ namespace ElectronicJova.UnitTests
             // Arrange
             var product = new Product
             {
-                Title = "Test Product",
+                Name = "Test Product",
                 Price = 10.00M,
                 Price50 = 9.00M,
                 Price100 = 8.00M
@@ -77,7 +77,7 @@ namespace ElectronicJova.UnitTests
             // Arrange
             var product = new Product
             {
-                Title = "Test Product",
+                Name = "Test Product",
                 Price = 10.00M
             };
 

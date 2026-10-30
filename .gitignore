@@ -54,3 +54,14 @@ appsettings.Development.json
 appsettings.Production.json
 *.pfx
 secrets.json
+
+# Generated diagnostics and runtime logs
+/build_*.txt
+/ElectronicJova/build_*.txt
+/ElectronicJova/logs/
+*.sqlite
+*.sqlite3
+*.db
+.env
+.env.*
+!.env.example
